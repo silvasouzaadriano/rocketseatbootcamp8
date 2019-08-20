@@ -1,0 +1,49 @@
+### Installing node on Linux with zshrc terminal
+
+    - First install nvm (commands on url: https://github.com/nvm-sh/nvm)
+      - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+
+    - Add the nvm on path
+      - Open the file .zshrc (i.e: vim ~/,zshrc)
+      - Add the lines bellow
+        # Path for nvm
+        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+    - In order to to check if nvm was installed restart or close/open the terminal and then run the line command bellow:
+      - nvm --version
+
+    - Install the node with LTS version (url: https://nodejs.org/en/)
+      - i.e: nvm install 10.16.3
+
+    - Then set the version installed as default
+      - nvm alias default 10.16.3
+
+    - In order to to check if node was installed restart or close/open the terminal and then run the line command bellow:
+      - node -v
+
+### Installing node on Windows
+
+    - First Install the chocolatey (https://chocolatey.org/)
+    - Install the NodeJs via package manager (https://nodejs.org/en/download/package-manager/#windows)
+      - Using Chocolatey:
+        - cinst nodejs
+        - or for full install with npm
+          - cinst nodejs.install
+
+    - In order to to check if node was installed restart or close/open the terminal and then run the line command bellow:
+      - node -v
+
+### Installing yarn
+
+    - First access the site https://yarnpkg.com/pt-BR/ and choose your language
+    - On main screen click on Install yarn and then follow the steps according to OS.
+    - In order to avoid reinstal the Node its recommended 
+     - For Linux the line command : sudo apt-get install --no-install-recommends yarn
+     - For Mac the line command: brew install yarn --without-node
+     - For Windows the line command: choco install yarn
+
+    - In order to to check if yarn was installed restart or close/open the terminal and then run the line command bellow:
+      - yarn -v
+
+  
