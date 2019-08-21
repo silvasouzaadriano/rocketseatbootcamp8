@@ -69,10 +69,16 @@
             "scripts": {
               "dev": "nodemon index.js"
             }
-            
+
         - For run the script, on terminal use the line command: yarn dev
 
+### Debbuging on VSCODE
 
+    - First stop the nodemon
+    - On VSCODE, click on forth button (with bug image)
+    - Then click on open launch icon to create the launch.json file with the setup
+    - Add the .vscode folder on .gitignore file
+    - So, the IDE is ready for debugging process
 
 
 
