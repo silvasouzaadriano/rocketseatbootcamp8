@@ -2,49 +2,65 @@ const express = require('express');
 
 const server = express();
 
+// Para que o express entenda as requisições put e post que trabalham com json
+// é necessário dizer a ele que tais requisições trabalham com esse formato
+server.use(express.json());
+
 // Query params enviados com interrogação (?) i.e: ?teste=1
 // Route params enviados com /. i.e: /users/1
 // Request body. Conteúdo das rotas post e put. i.e: { "name": "Adriano", "email": "silva.souza.adriano@gmail.com" }
 
-/*
-
-// localhost:3000/teste
-server.get('/teste', (req, res) => {
-  
-  //return res.send('Hello World!');
-  return res.json({ message: 'Hello World!'});
-})
-
-// exemplo com query params
-// localhost:3000/teste1?nome=Adriano
-server.get('/teste1', (req, res) => {
-
-  const nome = req.query.nome;
-  
-  //return res.send('Hello World!');
-  return res.json({ message: `Hello ${nome}`});
-})
-
-// exemplo com route params
-// localhost:3000/users/1
-server.get('/users/:id', (req, res) => {
-
-  //const id = req.params.id;
-  const { id } = req.params;
-  
-  //return res.send('Hello World!');
-  return res.json({ message: `Buscando o usuário com id ${id}`});
-})*/
+//CRUD  - Create, Read Update, Delete
 
 const users = ['Adriano', 'Grace Kelly', 'Giampaolo Salvadori'];
 
-// localhost:3000/users/1
-// O index vai receber a posição do usuário no array users
+// Rota para retornar todos os usuários
+server.get('/users', (req, res) => {
+  return res.json(users);
+})
+
+// Rota para retornar um usuário
 server.get('/users/:index', (req, res) => {
 
   const { index } = req.params;
   
   return res.json(users[index]);
+})
+
+// Rota para cadastrar um usuário
+// Essa rota utilizará o Request body para capturar o usuário a ser cadastrado
+// Nesse caso teremos uma propriedade chamada name que deverá vir no corpo da requisição em formato json
+server.post('/users', (req, res) => {
+  
+  const { name } = req.body;
+  
+  users.push(name);
+
+  return res.json(users);
+  
+})
+
+// Rota para editar um usuário
+server.put('/users/:index', (req, res) => {
+  const { index } = req.params;
+  const { name } = req.body;
+
+  users[index] = name;
+
+  return res.json(users);
+
+})
+
+// Rota para apagar um usuário
+server.delete('/users/:index', (req, res) => {
+  
+  const { index } = req.params;
+
+  // Apaga uma posição do vetor, nesse caso baseando-se na variável index
+  users.splice(index, 1);
+
+  // Boa prática para rotas de deleção, utilizar o método send que informa se deu tudo certo
+  return res.send();
 })
 
 server.listen(3000);
