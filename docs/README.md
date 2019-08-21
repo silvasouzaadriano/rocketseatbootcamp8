@@ -46,4 +46,12 @@
     - In order to to check if yarn was installed restart or close/open the terminal and then run the line command bellow:
       - yarn -v
 
+### Installing Node application cloning the repository from github
+
+    - After close the repository to a local folder
+    - Assure that the file package.json is on root folder then run the command:
+      - yarn
+    - For start the application in manually mode run the command:
+      - node <main JS file>. i.e: node index.js
+
   

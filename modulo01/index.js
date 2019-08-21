@@ -6,6 +6,8 @@ const server = express();
 // Route params enviados com /. i.e: /users/1
 // Request body. Conteúdo das rotas post e put. i.e: { "name": "Adriano", "email": "silva.souza.adriano@gmail.com" }
 
+/*
+
 // localhost:3000/teste
 server.get('/teste', (req, res) => {
   
@@ -32,6 +34,17 @@ server.get('/users/:id', (req, res) => {
   
   //return res.send('Hello World!');
   return res.json({ message: `Buscando o usuário com id ${id}`});
+})*/
+
+const users = ['Adriano', 'Grace Kelly', 'Giampaolo'];
+
+// localhost:3000/users/1
+// O index vai receber a posição do usuário no array users
+server.get('/users/:index', (req, res) => {
+
+  const { index } = req.params;
+  
+  return res.json(users[index]);
 })
 
 server.listen(3000);
