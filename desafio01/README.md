@@ -36,10 +36,10 @@ Se eu chamar a rota `POST /projects` repassando `{ id: 1, title: 'Novo projeto' 
 
 - Crie um middleware global chamado em todas requisições que imprime (`console.log`) uma contagem de quantas requisições foram feitas na aplicação até então;
 
-## Entrega
 
-Esse desafio **não precisa ser entregue** e não receberá correção, mas você pode ver o resultado do código do desafio aqui: https://github.com/Rocketseat/bootcamp-gostack-desafio-01
+## Para executar o projeto
 
-Após concluir o desafio, adicionar esse código ao seu Github é uma boa forma de demonstrar seus conhecimentos para oportunidades futuras.
+Após fazer clone do projeto (git clone https://github.com/silvasouzaadriano/rocketseatbootcamp8.git), dentro da pasta desafio01
 
-“Sua única limitação é você mesmo”!
+ - Execute o comando yarn para instalar as depêndencias
+ - Execute yarn dev para iniciar o servidor
