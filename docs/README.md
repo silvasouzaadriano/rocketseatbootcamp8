@@ -54,4 +54,22 @@
     - For start the application in manually mode run the command:
       - node <main JS file>. i.e: node index.js
 
+### Installing Insomnia
+
+    - For simulate the execution of APIs a good application would the Insomnia.
+    - In order to install it access the url https://insomnia.rest/ and follow the instructions
+
+### Installing dependencies for Nodejs - Modulo01
+
+    - Inside to project folder created run the following line commands:
+      - yarn add express
+      - yarn add nodemon -D (the flag D is to avoid the deploy in production, whih means only for development). Note that the nodemon is used to watch the appllication and run it automatically
+        - After install the nodemon, it's necessary create a script called dev, informing the main file to use it on terminal. For achieve it, inside to package.json, before dependencies add a tag called scripts as per example bellow.
+        - For run the script, on terminal use the line command: yarn dev
+
+
+
+
+
+
   

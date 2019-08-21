@@ -36,7 +36,7 @@ server.get('/users/:id', (req, res) => {
   return res.json({ message: `Buscando o usuário com id ${id}`});
 })*/
 
-const users = ['Adriano', 'Grace Kelly', 'Giampaolo'];
+const users = ['Adriano', 'Grace Kelly', 'Giampaolo Salvadori'];
 
 // localhost:3000/users/1
 // O index vai receber a posição do usuário no array users
