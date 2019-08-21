@@ -1,0 +1,16 @@
+{
+  "name": "desafio01",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Adriano R S Souza <silva.souza.adriano@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
