@@ -178,7 +178,23 @@
             'migrations-path': resolve(__dirname, 'src', 'database', 'migrations'),
             'seeders-path': resolve(__dirname, 'src', 'database', 'seeds'),
           }
-            
+   
+### Sequelize commands
+
+    - For create the migration file:
+
+      yarn sequelize migration:create --name=<migration-name>
+      i.e: yarn sequelize migration:create --name=create-users
+
+    - For run the migration:
+
+      yarn sequelize db:migrate
+
+    - For undo the last migration or even all last migration create:
+
+      yarn sequelize db:migrate:undo (this one undo the last migration)
+      yarn sequelize db:migrate:undo:all (this one undo all migrations)
+
 
 ### Debbuging on VSCODE
 
