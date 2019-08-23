@@ -89,8 +89,83 @@
                 "js": "sucrase-node"
               }
             }
-        - yarn add sucrase -D (This a lib for use the notation import instead of require. i.e: import { Router} from 'express')   
-        - For run the script, on terminal use the line command: yarn dev     
+         - For start the escript, on terminal use the line command: yarn dev
+
+      - yarn add sucrase -D (This a lib for use the notation import instead of require. i.e: import { Router} from 'express')   
+      - yarn add eslint -D (verify the code linting, it means if the code is following the patterns)
+        - For initialize the eslint run the line command:
+            - yarn eslint --init to start the configuration by choosen the following option
+              - First screen, choose: to check syntax, find problems and enforce code style
+              - Second screen, choose: JavaScript modules (import/export) if the sucrase is installed or CommonJS (require,exports), if not
+              - Third screen, choose None of these
+              - Forth screen
+              - Fifth screen, unmark Browser (press tab space) and choose Node (press tabe space)
+              - Sixth screen, choose: Use a popular style guide
+              - Seventh screen, choose: Airbnb
+              - Eighth screen, choose: JavaScript
+              - Ninth screen, inform Yes to install Airbnb plugins and dependencies
+              - Once process finish, once you are using yar,  delete from root folder the file package-lock.json and run the command yarn to add the configuration on yarn.lock file
+              - On VSCODE install the VS Code ESLint extension, then add on seetings.json file the lines bellow:
+
+                "eslint.autoFixOnSave": true,
+                "eslint.validate": [
+                  {
+                    "language": "javascript",
+                    "autoFix": true
+                  },
+                  {
+                    "language": "javascriptreact",
+                    "autoFix": true
+                  },
+                  {
+                    "language": "typescript",
+                    "autoFix": true
+                  },
+                  {
+                    "language": "typescriptreact",
+                    "autoFix": true
+                  }
+                ],
+              - Open the .eslintrc.js file, which is on root folder and set the rules section as per bellow
+
+                  rules: {
+                    "prettier/prettier": "error",
+                    "class-methods-use-this": "off",
+                    "no-param-reassign": "off",
+                    "camelcase": "off",
+                    "no-unused-vars": ["error", {"argsIgnorePattern": "next"}]
+                  },
+              - In order to avoid conflicts between eslint rules and prettier rules (for example change single quote (') to double quote (") when saving a file, create a file called .prettierrc.js adding the following rules
+
+                  {
+                    "singleQuote": true,
+                    "trailingComma": "es5"
+                  }
+            - For set automatic fix using eslint run the command:
+              yarn eslint --fix src --ext .js
+
+
+        - yarn add prettier eslint-config-prettier eslint-plugin-prettier -D. After install the prettier, open the .eslintrc.js file and add to extends propert as second parameter the prettier and also create a property called plugins adding the prettier as well. i.e:
+
+            extends: [
+              'airbnb-base',
+              'prettier'
+            ],
+            plugins: ['prettier'],       
+
+                
+        -  Install on VSCODE the plugin called editorconfig to assure a basic pattern among all developers. After the installion, click on root tree, in a blank space, click with right button and choose Generate .editorconfig and assure that the content is exacly equal to it:
+
+          root = true
+
+          [*]
+          indent_style = space
+          indent_size = 2
+          charset = utf-8
+          trim_trailing_whitespace = true
+          insert_final_newline = true
+
+            
 
 ### Debbuging on VSCODE
 
