@@ -71,6 +71,26 @@
             }
 
         - For run the script, on terminal use the line command: yarn dev
+        - yarn add sucrase -D (This a lib for use the notation import instead of require. i.e: import { Router} from 'express')
+
+### Installing dependencies for Nodejs - Modulo02
+
+    - Inside to project folder created run the following line commands:
+      - yarn add express
+      - yarn add nodemon -D (the flag D is to avoid the deploy in production, whih means only for development). Note that the nodemon is used to watch the appllication and run it automatically
+        - After install the nodemon, it's necessary create a script called dev, informing the main file to use it on terminal. For achieve it, inside to package.json, before dependencies add a tag called scripts as per example bellow.
+
+            "scripts": {
+              "dev": "nodemon index.js"
+            }
+        - Create on root folder a file called nodemon.json with the follinw content:
+            {
+              "execMap": {
+                "js": "sucrase-node"
+              }
+            }
+        - yarn add sucrase -D (This a lib for use the notation import instead of require. i.e: import { Router} from 'express')   
+        - For run the script, on terminal use the line command: yarn dev     
 
 ### Debbuging on VSCODE
 
