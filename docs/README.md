@@ -165,6 +165,19 @@
           trim_trailing_whitespace = true
           insert_final_newline = true
 
+        - yarn add sequelize (documentation in https://sequelize.org/master/manual/)
+        - yarn add sequelize-cli -D
+        - yarn add pg pg-hstore (dependencies for postgres work with sequelize)
+        - On root tree create a file called .sequelizerc with the following content
+
+          const { resolve } = require('path');
+
+          module.exports = {
+            'config': resolve(__dirname, 'src', 'config', 'database.js'),
+            'models-path': resolve(__dirname, 'src', 'app', 'models'),
+            'migrations-path': resolve(__dirname, 'src', 'database', 'migrations'),
+            'seeders-path': resolve(__dirname, 'src', 'database', 'seeds'),
+          }
             
 
 ### Debbuging on VSCODE
