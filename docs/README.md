@@ -100,6 +100,35 @@
     - Add the .vscode folder on .gitignore file
     - So, the IDE is ready for debugging process
 
+### Installing Docker - Linux Mint
+
+    - For Linux Minut- Follows the steps on url: https://computingforgeeks.com/install-docker-and-docker-compose-on-linux-mint-19/
+    - After installing setup docker to does not user sudo. That might be achieved by
+    follow the steps on url: https://docs.docker.com/install/linux/linux-postinstall/
+
+### Docker - Creating the container for last version of Postgresl
+
+    - From url https://hub.docker.com/_/postgres, use the command line bellow:
+      - docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres i.e:
+      docker run --name database -e POSTGRES_PASSWORD=docket -p 5432:5432 -d postgres
+
+      Note that a in the end a code/key must be showed. Something like that:
+
+      Digest: sha256:f766d03bb49c7dd16fe32c1eb2645d13cb315adc029557cd1e4a0a9c094933d5
+      Status: Downloaded newer image for postgres:latest
+      5bb3fea0e42f2bac3828f8963bec2104888f8176e9ecf214d0aeff311464b4df
+
+    - For verify the the new container is running, run line command: docker ps
+    - For verify all the container in the machine, including the closed ones run line command:
+       docker ps -a
+    - For verify if the database is running fine on postgresql container, install the interface Postbird
+    from url https://electronjs.org/apps/postbird
+    - After open the Postgres with Postbird, create a database called gobarber
+    - For stop a container run the command: docker stop <container name>
+    - For start a container, run the command: docker start <container name>
+    - For check errors in container run the command docker logs <container name>
+
+
 
 
 
