@@ -1,6 +1,7 @@
 import User from '../models/User';
 
 class UserController {
+  // User creation
   async store(req, res) {
     // Verifying the user email already exist
     const userExists = await User.findOne({ where: { email: req.body.email } });
@@ -17,6 +18,12 @@ class UserController {
       email,
       provider,
     });
+  }
+
+  // User update, which only must be accessed with user logged
+  async update(req, res) {
+    console.log(req.userId);
+    return res.json({ ok: true });
   }
 }
 
