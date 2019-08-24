@@ -145,39 +145,41 @@
               yarn eslint --fix src --ext .js
 
 
-        - yarn add prettier eslint-config-prettier eslint-plugin-prettier -D. After install the prettier, open the .eslintrc.js file and add to extends propert as second parameter the prettier and also create a property called plugins adding the prettier as well. i.e:
+      - yarn add prettier eslint-config-prettier eslint-plugin-prettier -D. After install the prettier, open the .eslintrc.js file and add to extends propert as second parameter the prettier and also create a property called plugins adding the prettier as well. i.e:
 
-            extends: [
-              'airbnb-base',
-              'prettier'
-            ],
-            plugins: ['prettier'],       
+          extends: [
+            'airbnb-base',
+            'prettier'
+          ],
+          plugins: ['prettier'],       
 
-                
-        -  Install on VSCODE the plugin called editorconfig to assure a basic pattern among all developers. After the installion, click on root tree, in a blank space, click with right button and choose Generate .editorconfig and assure that the content is exacly equal to it:
+              
+      -  Install on VSCODE the plugin called editorconfig to assure a basic pattern among all developers. After the installion, click on root tree, in a blank space, click with right button and choose Generate .editorconfig and assure that the content is exacly equal to it:
 
-          root = true
+        root = true
 
-          [*]
-          indent_style = space
-          indent_size = 2
-          charset = utf-8
-          trim_trailing_whitespace = true
-          insert_final_newline = true
+        [*]
+        indent_style = space
+        indent_size = 2
+        charset = utf-8
+        trim_trailing_whitespace = true
+        insert_final_newline = true
 
-        - yarn add sequelize (documentation in https://sequelize.org/master/manual/)
-        - yarn add sequelize-cli -D
-        - yarn add pg pg-hstore (dependencies for postgres work with sequelize)
-        - On root tree create a file called .sequelizerc with the following content
+      - yarn add sequelize (documentation in https://sequelize.org/master/manual/)
+      - yarn add sequelize-cli -D
+      - yarn add pg pg-hstore (dependencies for postgres work with sequelize)
+      - On root tree create a file called .sequelizerc with the following content
 
-          const { resolve } = require('path');
+        const { resolve } = require('path');
 
-          module.exports = {
-            'config': resolve(__dirname, 'src', 'config', 'database.js'),
-            'models-path': resolve(__dirname, 'src', 'app', 'models'),
-            'migrations-path': resolve(__dirname, 'src', 'database', 'migrations'),
-            'seeders-path': resolve(__dirname, 'src', 'database', 'seeds'),
-          }
+        module.exports = {
+          'config': resolve(__dirname, 'src', 'config', 'database.js'),
+          'models-path': resolve(__dirname, 'src', 'app', 'models'),
+          'migrations-path': resolve(__dirname, 'src', 'database', 'migrations'),
+          'seeders-path': resolve(__dirname, 'src', 'database', 'seeds'),
+        }
+      - yarn add bcryptjs (for create password hashs)
+
    
 ### Sequelize commands
 
