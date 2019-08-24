@@ -179,6 +179,17 @@
           'seeders-path': resolve(__dirname, 'src', 'database', 'seeds'),
         }
       - yarn add bcryptjs (for create password hashs)
+      - yarn add jsonwebtoken (for session controlller)
+        - On the SessionController.js, after user/password validation, will be necessary return a token as well using the jsonwebtokem, once we are working with API. This action will be done on attribute called token (see it beelow). However, there is a second argument on this attribute which correspond to a security encrypt description to be used, which will be the token properly. This description would be created by website https://www.md5online.org/ just informing any description (i.e: gobarberrocketseatnode2) on field "Enter a word here to get its MD5 hash :" and clicking on encrypt button
+
+          return res.json({
+            user: {
+              id,
+              name,
+              email,
+            },
+            token: jwt.sign({ id }, ''),
+          });
 
    
 ### Sequelize commands

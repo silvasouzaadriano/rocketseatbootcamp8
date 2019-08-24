@@ -25,6 +25,11 @@ class User extends Model {
 
     return this;
   }
+
+  // This method will be used by SessionController (returning True or False)
+  checkPassword(password) {
+    return bcrypt.compare(password, this.password_hash);
+  }
 }
 
 export default User;
