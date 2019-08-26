@@ -48,7 +48,7 @@
 
 ### Installing Node application cloning the repository from github
 
-    - After close the repository to a local folder
+    - After clone the repository to a local folder
     - Assure that the file package.json is on root folder then run the command:
       - yarn
     - For start the application in manually mode run the command:
@@ -98,9 +98,8 @@
               - First screen, choose: to check syntax, find problems and enforce code style
               - Second screen, choose: JavaScript modules (import/export) if the sucrase is installed or CommonJS (require,exports), if not
               - Third screen, choose None of these
-              - Forth screen
-              - Fifth screen, unmark Browser (press tab space) and choose Node (press tabe space)
-              - Sixth screen, choose: Use a popular style guide
+              - Forth screen, unmark Browser (press tab space) and choose Node (press tabe space)
+              - Fifth screen, choose: Use a popular style guide
               - Seventh screen, choose: Airbnb
               - Eighth screen, choose: JavaScript
               - Ninth screen, inform Yes to install Airbnb plugins and dependencies
@@ -180,7 +179,7 @@
         }
       - yarn add bcryptjs (for create password hashs)
       - yarn add jsonwebtoken (for session controlller)
-        - On the SessionController.js, after user/password validation, will be necessary return a token as well using the jsonwebtokem, once we are working with API. This action will be done on attribute called token (see it beelow). However, there is a second argument on this attribute which correspond to a security encrypt description to be used, which will be the token properly. This description would be created by website https://www.md5online.org/ just informing any description (i.e: gobarberrocketseatnode2) on field "Enter a word here to get its MD5 hash :" and clicking on encrypt button
+        - On the SessionController.js, after user/password validation, will be necessary return a token as well using the jsonwebtokem, once we are working with API. This action will be done on attribute called token (see it bellow). However, there is a second argument on this attribute which correspond to a security encrypt description to be used, which will be the token properly. This description would be created by website https://www.md5online.org/ just informing any description (i.e: gobarberrocketseatnode2) on field "Enter a word here to get its MD5 hash :" and clicking on encrypt button
 
           return res.json({
             user: {
