@@ -190,6 +190,7 @@
             },
             token: jwt.sign({ id }, ''),
           });
+      - yarn add yup (for validation)
 
    
 ### Sequelize commands
