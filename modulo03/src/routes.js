@@ -5,6 +5,7 @@ import multerConfig from './config/multer';
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 import FileController from './app/controllers/FileController';
+import ProviderController from './app/controllers/ProviderController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -17,15 +18,18 @@ routes.post('/users', UserController.store);
 // Route for session controller
 routes.post('/sessions', SessionController.store);
 
-// Router for determine the authMiddleware as global
+// Route for determine the authMiddleware as global
 // It means that from this point on all router will
 // incorporate this middleware
 routes.use(authMiddleware);
 
-// Router for user update. This route must accessed when user is authenticated
+// Route for user update. This route must accessed when user is authenticated
 routes.put('/users', UserController.update);
 
-// Router to upload files
+// Route for list the user providers
+routes.get('/providers', ProviderController.index);
+
+// Route to upload files
 routes.post('/files', upload.single('file'), FileController.store);
 
 export default routes;
