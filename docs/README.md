@@ -194,6 +194,14 @@
 ### Installing dependencies for Nodejs - Modulo03
 
   - yarn add multer (upload files multi part form data - another approach once json does not support it)
+
+  - Create the migrations
+    - Create the table files:
+      - yarn sequelize migration:create --name=create-files
+    - Add new new field on users table
+      yarn sequelize migration:create --name=add-avatar-field-to-users
+    - After create and/or change the controllers, run the command: 
+      - yarn sequelize db:migrate
    
 ### Sequelize commands
 
