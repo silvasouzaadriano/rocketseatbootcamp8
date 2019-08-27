@@ -191,6 +191,9 @@
           });
       - yarn add yup (for validation)
 
+### Installing dependencies for Nodejs - Modulo03
+
+  - yarn add multer (upload files multi part form data - another approach once json does not support it)
    
 ### Sequelize commands
 
