@@ -196,11 +196,13 @@
   - yarn add multer (upload files multi part form data - another approach once json does not support it)
 
   - Create the migrations
-    - Create the table files:
+    - files table:
       - yarn sequelize migration:create --name=create-files
     - Add new new field on users table
       yarn sequelize migration:create --name=add-avatar-field-to-users
-    - After create and/or change the controllers, run the command: 
+    - appointments table:
+      - yarn sequelize migration:create --name=create-appointments
+    - For which migration created and updated accordingly, run the command bellow to create the table: 
       - yarn sequelize db:migrate
    
 ### Sequelize commands
