@@ -204,6 +204,8 @@
       - yarn sequelize migration:create --name=create-appointments
     - For which migration created and updated accordingly, run the command bellow to create the table: 
       - yarn sequelize db:migrate
+
+  - yarn add date-fns@next (for manipulate dates)
    
 ### Sequelize commands
 
