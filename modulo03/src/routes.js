@@ -44,6 +44,9 @@ routes.get('/schedule', ScheduleController.index);
 // Route for get the provider notifications
 routes.get('/notifications', NotificationController.index);
 
+// Route for mark notification as read
+routes.put('/notifications/:id', NotificationController.update);
+
 // Route to upload files
 routes.post('/files', upload.single('file'), FileController.store);
 
