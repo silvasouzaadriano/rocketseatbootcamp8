@@ -266,6 +266,7 @@
     - docker run --name mongobarber -p 27017:27017 -d -t mongo
     - For verify if the mongo is running open the url http://localhost:27017/ . Its expected the following message: 
       - It looks like you are trying to access MongoDB over HTTP on the native driver port.
+    - For access the database a good option would be the MongoDB Compass Community (https://www.mongodb.com/download-center/compass)
 
 
 
