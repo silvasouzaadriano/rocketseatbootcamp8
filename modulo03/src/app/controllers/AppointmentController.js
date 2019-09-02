@@ -60,6 +60,11 @@ class AppointmentController {
         .json({ error: 'You can only create appointments with providers' });
     }
 
+    // Check if the provider is the same user
+    if (req.userId === provider_id) {
+      return res.status(401).json({ error: 'The user cannot be the provider' });
+    }
+
     /**
      * Data validations
      */
