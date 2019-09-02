@@ -30,8 +30,11 @@ routes.put('/users', UserController.update);
 // Route for list the user providers
 routes.get('/providers', ProviderController.index);
 
-// Route for appointments
+// Route for appointments creation
 routes.post('/appointments', AppointmentController.store);
+
+// Foute for appointments list
+routes.get('/appointments', AppointmentController.index);
 
 // Route to upload files
 routes.post('/files', upload.single('file'), FileController.store);
