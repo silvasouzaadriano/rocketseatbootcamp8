@@ -59,7 +59,7 @@
     - For simulate the execution of APIs a good application would the Insomnia.
     - In order to install it access the url https://insomnia.rest/ and follow the instructions
 
-### Installing dependencies for Nodejs - Modulo01
+### Installing dependencies for Nodejs - Module01
 
     - Inside to project folder created run the following line commands:
       - yarn add express
@@ -73,7 +73,7 @@
         - For run the script, on terminal use the line command: yarn dev
         - yarn add sucrase -D (This a lib for use the notation import instead of require. i.e: import { Router} from 'express')
 
-### Installing dependencies for Nodejs - Modulo02
+### Installing dependencies for Nodejs - Module02
 
     - Inside to project folder created run the following line commands:
       - yarn add express
@@ -191,7 +191,7 @@
           });
       - yarn add yup (for validation)
 
-### Installing dependencies for Nodejs - Modulo03
+### Installing dependencies for Nodejs - Module03
 
   - yarn add multer (upload files multi part form data - another approach once json does not support it)
 
@@ -206,6 +206,7 @@
       - yarn sequelize db:migrate
 
   - yarn add date-fns@next (for manipulate dates)
+  - yarn add mongoose
    
 ### Sequelize commands
 
@@ -259,6 +260,12 @@
     - For stop a container run the command: docker stop <container name>
     - For start a container, run the command: docker start <container name>
     - For check errors in container run the command docker logs <container name>
+
+  ### Docker - Creating the container for MongoDb (module 3)
+
+    - docker run --name mongobarber -p 27017:27017 -d -t mongo
+    - For verify if the mongo is running open the url http://localhost:27017/ . Its expected the following message: 
+      - It looks like you are trying to access MongoDB over HTTP on the native driver port.
 
 
 
