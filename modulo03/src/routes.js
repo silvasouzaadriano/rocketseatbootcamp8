@@ -38,6 +38,9 @@ routes.post('/appointments', AppointmentController.store);
 // Route for appointments list
 routes.get('/appointments', AppointmentController.index);
 
+// Route for cancel appointments
+routes.delete('/appointments/:id', AppointmentController.delete);
+
 // Route for provider appointments list by filter date
 routes.get('/schedule', ScheduleController.index);
 
