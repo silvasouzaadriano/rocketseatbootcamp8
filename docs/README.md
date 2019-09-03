@@ -223,6 +223,9 @@
           - secure: false,
     - For email templates friendly we'll use the handlebars (https://handlebarsjs.com/), For achieve that its need add libs bellow:
       - yarn add express-handlebars nodemailer-express-handlebars
+    - With redis docker installed, install the queue tool called bee-queue (https://github.com/bee-queue/bee-queue). Another option would be the keu (https://github.com/Automattic/kue), which have less performance but is used when is needed more robustenss (i.e: For control priorities in jobs)
+      - yarn add bee-queue
+
 
 
    
@@ -285,6 +288,12 @@
     - For verify if the mongo is running open the url http://localhost:27017/ . Its expected the following message: 
       - It looks like you are trying to access MongoDB over HTTP on the native driver port.
     - For access the database a good option would be the MongoDB Compass Community (https://www.mongodb.com/download-center/compass)
+
+  ## Docker - Creating the container for Redis (module 3)
+    - docker run --name redisbarber -p 6379:6379 -d -t redis:alpine
+    - For run the queue separetelly create on package.json a script called queue as per bellow:
+      - "queue": "nodemon src/queue.js"
+    
 
 
 
