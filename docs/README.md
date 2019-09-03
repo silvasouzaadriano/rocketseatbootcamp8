@@ -207,6 +207,22 @@
 
   - yarn add date-fns@next (for manipulate dates)
   - yarn add mongoose
+  - yarn add nodemailer
+    - Options for email service:
+      - Amazon SES
+      - Mailgun
+      - Sparkpost
+      - Mandril (use the lib Mailchimp)
+      GMail (does not recommened once have limit of service)
+      - Mailtrap (Dev environment - this one we will use for this application)
+    - Setting mailtrap (https://mailtrap.io/)
+      - Create an account (use free option for an unique Inbox)
+      - Log in the Mailtrap and create an Inbox called GoBarber then access the inbox created for get the credencials which must be used on mail.js fields: host, port, user and pass.
+        - For facilitate you may choose the Integration nodemailer and then copy content from host to pass (including last })
+        - After copy it to mail.js, do not forget to add after filer port the field
+          - secure: false,
+
+
    
 ### Sequelize commands
 
