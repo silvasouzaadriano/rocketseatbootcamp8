@@ -221,6 +221,8 @@
         - For facilitate you may choose the Integration nodemailer and then copy content from host to pass (including last })
         - After copy it to mail.js, do not forget to add after filer port the field
           - secure: false,
+    - For email templates friendly we'll use the handlebars (https://handlebarsjs.com/), For achieve that its need add libs bellow:
+      - yarn add express-handlebars nodemailer-express-handlebars
 
 
    
