@@ -1,3 +1,10 @@
+/**
+ * This import be available a node variable process.env which should be
+ * used to get the environment variables.
+ * i.e: process.env.DB_HOST
+ */
+import 'dotenv/config';
+
 import Queue from './lib/Queue';
 
 /**

@@ -227,6 +227,7 @@
       - yarn add bee-queue
     - yarn add express-async-errors. Note that this is a dependency due to Sentry. For more details, check section Error Monitoring (Module 03)
     - yarn add youch. This lib handler the error message to show it friendly to developer
+    - yarn add dotenv. This lib is necessary for environment variables be able on application by .env file created on root folder
 
    
 ### Sequelize commands
