@@ -225,8 +225,8 @@
       - yarn add express-handlebars nodemailer-express-handlebars
     - With redis docker installed, install the queue tool called bee-queue (https://github.com/bee-queue/bee-queue). Another option would be the keu (https://github.com/Automattic/kue), which have less performance but is used when is needed more robustenss (i.e: For control priorities in jobs)
       - yarn add bee-queue
-
-
+    - yarn add express-async-errors. Note that this is a dependency due to Sentry. For more details, check section Error Monitoring (Module 03)
+    - yarn add youch. This lib handler the error message to show it friendly to developer
 
    
 ### Sequelize commands
@@ -293,6 +293,27 @@
     - docker run --name redisbarber -p 6379:6379 -d -t redis:alpine
     - For run the queue separetelly create on package.json a script called queue as per bellow:
       - "queue": "nodemon src/queue.js"
+
+  ## Error Monitoring (Module 03)
+    - Create an account on Sentry (https://sentry.io/welcome/)
+    - Create a project called GoBarber
+    - Install the Sentry following the instruction:
+      - yarn add @sentry/node@5.6.2
+    - Setup the sentry as per instructions:
+      - Create a sentry config as config/sentry.js then:
+        - Add the dsn on the file: 
+          dsn: 'https://788377438cee486a91ce8900b01ea4f4@sentry.io/1551591' 
+      - Add the line command bellow inside to middlewares method (src/app.js), changing the app.use to this.server.use
+        - app.use(Sentry.Handlers.requestHandler()); which should be
+        - this.server.use(Sentry.Handlers.requestHandler());
+      - Add the line command below inside to routes method(src/app.js), after routes, changing the app.use to this.server.use
+        - app.use(Sentry.Handlers.errorHandler()); which should be
+        - this.server.use(Sentry.Handlers.errorHandler());
+    - On Controllers, when occur errors, by using async the Expres cannot be able to catch it (on this case not sending to Sentry). For that reason its necessary install the lib bellow to mitigate this gap 
+      - yarn add express-async-errors. Note that after install it, its necessary just import the lib on src/app.js as per bellow, but it should be before the routes import to integrate the routes with async errors
+        - import 'express-async-errors';    
+
+
     
 
 
