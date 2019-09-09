@@ -25,13 +25,12 @@ class UserController {
     }
 
     // Create the user
-    const { id, name, email, provider } = await User.create(req.body);
+    const { id, name, email } = await User.create(req.body);
 
     return res.json({
       id,
       name,
       email,
-      provider,
     });
   }
 
@@ -72,13 +71,12 @@ class UserController {
     }
 
     // Updating user information
-    const { id, name, provider } = await user.update(req.body);
+    const { id, name } = await user.update(req.body);
 
     return res.json({
       id,
       name,
       email,
-      provider,
     });
   }
 }

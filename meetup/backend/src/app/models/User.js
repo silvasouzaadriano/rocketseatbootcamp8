@@ -9,7 +9,6 @@ class User extends Model {
         email: Sequelize.STRING,
         password: Sequelize.VIRTUAL, // virtual fields only exist on code side
         password_hash: Sequelize.STRING,
-        provider: Sequelize.BOOLEAN,
       },
       {
         sequelize,

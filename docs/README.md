@@ -223,7 +223,7 @@
           - secure: false,
     - For email templates friendly we'll use the handlebars (https://handlebarsjs.com/), For achieve that its need add libs bellow:
       - yarn add express-handlebars nodemailer-express-handlebars
-    - With redis docker installed, install the queue tool called bee-queue (https://github.com/bee-queue/bee-queue). Another option would be the keu (https://github.com/Automattic/kue), which have less performance but is used when is needed more robustenss (i.e: For control priorities in jobs)
+    - With redis docker installed, install the queue tool called bee-queue (https://github.com/bee-queue/bee-queue). Another option would be the key (https://github.com/Automattic/kue), which have less performance but is used when is needed more robustenss (i.e: For control priorities in jobs)
       - yarn add bee-queue
     - yarn add express-async-errors. Note that this is a dependency due to Sentry. For more details, check section Error Monitoring (Module 03)
     - yarn add youch. This lib handler the error message to show it friendly to developer
@@ -245,6 +245,9 @@
 
       yarn sequelize db:migrate:undo (this one undo the last migration)
       yarn sequelize db:migrate:undo:all (this one undo all migrations)
+
+    - Once have the Model created, do not forget to import it on database/index.js,
+      adding it also on models arrays
 
 
 ### Debbuging on VSCODE
