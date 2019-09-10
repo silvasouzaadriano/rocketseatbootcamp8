@@ -44,7 +44,7 @@ routes.delete('/meetups/:id', MeetupController.delete);
 // Route for get all meetups organized by an user
 routes.get('/organizing', OrganizingController.index);
 
-// Router for get all meetups which user is subscribed
+// Route for get all meetups which user is subscribed
 routes.get('/subscriptions', SubscriptionController.index);
 
 // Route for subscribe meetups

@@ -21,7 +21,7 @@ class MeetupController {
       where,
       include: [User],
       limit: 10,
-      offset: 10 * (page - 10),
+      offset: (page - 1) * 10,
     });
 
     return res.json(meetups);
@@ -76,6 +76,13 @@ class MeetupController {
       return res.status(400).json({ error: 'User not authorized.' });
     }
 
+    /* check for past dates, when new date is before current date */
+    if (isBefore(parseISO(req.body.date), new Date())) {
+      return res
+        .status(400)
+        .json({ error: 'Date informed is before current date.' });
+    }
+
     /* check for past dates */
     if (meetup.past) {
       return res
@@ -90,6 +97,10 @@ class MeetupController {
 
   async delete(req, res) {
     const meetup = await Meetup.findByPk(req.params.id);
+
+    if (!meetup) {
+      return res.status(401).json({ error: 'Meetup does not exists.' });
+    }
 
     if (meetup.user_id !== req.userId) {
       return res.status(401).json({ error: 'User not authorized.' });
