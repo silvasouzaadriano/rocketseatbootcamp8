@@ -72,8 +72,7 @@
 
   6) Ordering property. For responsible layouts usually when occur zoom in/ou the elements might change positions
 
-
-## Twitter project
+## Twitter app
 
 1) For all initial project set the css files with these configurations
 
