@@ -1,3 +1,8 @@
+### Concepts
+
+  The flexbox layouts which came with css3 its a way to create responsives layouts.
+  This technology was adapted from Linear Android
+
 ### Extensions
 
       Install Live Server (current version 5.6.1)
