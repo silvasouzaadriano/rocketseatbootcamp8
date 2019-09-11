@@ -73,6 +73,37 @@
   6) Ordering property. For responsible layouts usually when occur zoom in/ou the elements might change positions
 
 
+## Twitter project
+
+1) For all initial project set the css files with these configurations
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+The margin and padding with 0 will reset the elements in order to it does not have any native spacing, for instance the <p> element.
+
+The box-sizing equal to border-box will not allowing the padding increase the width/height of an element. For example, considerating the element .app bellow
+
+  .app {
+    width: 300px;
+    padding: 20px;
+  }
+
+  Instead of the padding increase the width for 340px (20 in each side), using box-sizing equal to border-box, the padding will be done internally, adequading the width to 260px to keeping the padding with 20px for each side.
+
+1) In order to render the font smoothly (less pixelated), for element body use the properties bellow
+
+   text-rendering: optimizeLegibility !important 
+   -webkit-font-smoothing: antialiased !important;
+
+   Note that the option !important will always subscribe other text rendeing on the screen
+
+
+
+
 
   
 
