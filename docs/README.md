@@ -22,6 +22,7 @@
     - In order to to check if node was installed restart or close/open the terminal and then run the line command bellow:
       - node -v
 
+
 ### Installing node on Windows
 
     - First Install the chocolatey (https://chocolatey.org/)
@@ -33,6 +34,7 @@
 
     - In order to to check if node was installed restart or close/open the terminal and then run the line command bellow:
       - node -v
+
 
 ### Installing yarn
 
@@ -46,6 +48,7 @@
     - In order to to check if yarn was installed restart or close/open the terminal and then run the line command bellow:
       - yarn -v
 
+
 ### Installing Node application cloning the repository from github
 
     - After clone the repository to a local folder
@@ -54,10 +57,12 @@
     - For start the application in manually mode run the command:
       - node <main JS file>. i.e: node index.js
 
+
 ### Installing Insomnia
 
     - For simulate the execution of APIs a good application would the Insomnia.
     - In order to install it access the url https://insomnia.rest/ and follow the instructions
+
 
 ### Installing dependencies for Nodejs - Module01
 
@@ -72,6 +77,7 @@
 
         - For run the script, on terminal use the line command: yarn dev
         - yarn add sucrase -D (This a lib for use the notation import instead of require. i.e: import { Router} from 'express')
+
 
 ### Installing dependencies for Nodejs - Module02
 
@@ -191,6 +197,7 @@
           });
       - yarn add yup (for validation)
 
+
 ### Installing dependencies for Nodejs - Module03
 
   - yarn add multer (upload files multi part form data - another approach once json does not support it)
@@ -258,11 +265,13 @@
     - Add the .vscode folder on .gitignore file
     - So, the IDE is ready for debugging process
 
+
 ### Installing Docker - Linux Mint
 
     - For Linux Minut- Follows the steps on url: https://computingforgeeks.com/install-docker-and-docker-compose-on-linux-mint-19/
     - After installing setup docker to does not user sudo. That might be achieved by
     follow the steps on url: https://docs.docker.com/install/linux/linux-postinstall/
+
 
 ### Docker - Creating the container for last version of Postgresl
 
@@ -286,42 +295,209 @@
     - For start a container, run the command: docker start <container name>
     - For check errors in container run the command docker logs <container name>
 
-  ### Docker - Creating the container for MongoDb (module 3)
 
-    - docker run --name mongobarber -p 27017:27017 -d -t mongo
-    - For verify if the mongo is running open the url http://localhost:27017/ . Its expected the following message: 
-      - It looks like you are trying to access MongoDB over HTTP on the native driver port.
-    - For access the database a good option would be the MongoDB Compass Community (https://www.mongodb.com/download-center/compass)
+### Docker - Creating the container for MongoDb (module 3)
 
-  ## Docker - Creating the container for Redis (module 3)
+  - docker run --name mongobarber -p 27017:27017 -d -t mongo
+  - For verify if the mongo is running open the url http://localhost:27017/ . Its expected the following message: 
+    - It looks like you are trying to access MongoDB over HTTP on the native driver port.
+  - For access the database a good option would be the MongoDB Compass Community (https://www.mongodb.com/download-center/compass)
+
+
+### Docker - Creating the container for Redis (module 3)
+
     - docker run --name redisbarber -p 6379:6379 -d -t redis:alpine
     - For run the queue separetelly create on package.json a script called queue as per bellow:
       - "queue": "nodemon src/queue.js"
 
-  ## Error Monitoring (Module 03)
-    - Create an account on Sentry (https://sentry.io/welcome/)
-    - Create a project called GoBarber
-    - Install the Sentry following the instruction:
-      - yarn add @sentry/node@5.6.2
-    - Setup the sentry as per instructions:
-      - Create a sentry config as config/sentry.js then:
-        - Add the dsn on the file: 
-          dsn: 'https://788377438cee486a91ce8900b01ea4f4@sentry.io/1551591' 
-      - Add the line command bellow inside to middlewares method (src/app.js), changing the app.use to this.server.use
-        - app.use(Sentry.Handlers.requestHandler()); which should be
-        - this.server.use(Sentry.Handlers.requestHandler());
-      - Add the line command below inside to routes method(src/app.js), after routes, changing the app.use to this.server.use
-        - app.use(Sentry.Handlers.errorHandler()); which should be
-        - this.server.use(Sentry.Handlers.errorHandler());
-    - On Controllers, when occur errors, by using async the Expres cannot be able to catch it (on this case not sending to Sentry). For that reason its necessary install the lib bellow to mitigate this gap 
-      - yarn add express-async-errors. Note that after install it, its necessary just import the lib on src/app.js as per bellow, but it should be before the routes import to integrate the routes with async errors
-        - import 'express-async-errors'; 
+
+### Error Monitoring (Module 03)
+
+  - Create an account on Sentry (https://sentry.io/welcome/)
+  - Create a project called GoBarber
+  - Install the Sentry following the instruction:
+    - yarn add @sentry/node@5.6.2
+  - Setup the sentry as per instructions:
+    - Create a sentry config as config/sentry.js then:
+      - Add the dsn on the file: 
+        dsn: 'https://788377438cee486a91ce8900b01ea4f4@sentry.io/1551591' 
+    - Add the line command bellow inside to middlewares method (src/app.js), changing the app.use to this.server.use
+      - app.use(Sentry.Handlers.requestHandler()); which should be
+      - this.server.use(Sentry.Handlers.requestHandler());
+    - Add the line command below inside to routes method(src/app.js), after routes, changing the app.use to this.server.use
+      - app.use(Sentry.Handlers.errorHandler()); which should be
+      - this.server.use(Sentry.Handlers.errorHandler());
+  - On Controllers, when occur errors, by using async the Expres cannot be able to catch it (on this case not sending to Sentry). For that reason its necessary install the lib bellow to mitigate this gap 
+    - yarn add express-async-errors. Note that after install it, its necessary just import the lib on src/app.js as per bellow, but it should be before the routes import to integrate the routes with async errors
+      - import 'express-async-errors'; 
+
 
 ### React - Module 04 - Concepts
 
     React - That is the library which is used for both ReactJS and React Native
     ReactJS - When the react in combination with another libray from DOM, that means ReactJS
     React Native - That is the sum of React + Native elements
+
+
+### React - Module 04 - Structure Configuration
+
+    - For create a new project
+
+      1) Create a folder (i.e: mkdir modulo04)
+      2) Inside to folder created run the command
+      
+          - yarn init -y.
+          
+          Basically this command will create the package.json file
+
+      3) Install the dependencies libraries as per bellow
+
+          - yarn add @babel/core @babel/preset-env @babel/preset-react webpack webpack-cli -D
+
+          Note that all these libraries must be installed as development dependencies. For that reason the attribute -D should be used in the end of line command.
+
+          - yarn add react react-dom
+
+          - yarn add babel-loader -D
+
+          - yarn add webpack-dev-server -D
+
+
+    - Babel Configuration
+
+      With the dependencies libraries installed (step 2 above)
+
+        Inside to root folder of project create a file called babel.config.js and proceed with the following line codes
+
+          module.exports = {
+            presets: [
+              "@babel/preset-env",
+              "@babel/preset-react"
+            ],
+          };
+
+          The library "@babel/preset-env" is responsible for change the functionalities of JaScript which the browser still does not understand, like to:
+
+            1) import/export
+            2) arrow functions
+            3) classes
+
+          The library "@babel/preset-react" basically will transform the react functionalities which the browser does not understand, like to:
+
+            1) JSX
+            2) React specific functionalities
+
+
+    - Webpack Configuration
+
+      With the dependencies libraries installed (step 2 above)
+
+        Inside to root folder of project
+        
+          1) Create a file called webpack.config.js and proceed with the following line codes 
+
+              const path = require('path');
+
+              module.exports = {
+                entry: path.resolve(__dirname, 'src', 'index.js'),
+                output: {
+                  path: path.resolve(__dirname, 'public'),
+                  filename: 'bundle.js'
+                },
+                module: {
+                  rules: [
+                    {
+                      test: /\.js$/,
+                      exclude: /node_modules/,
+                      use: {
+                        loader: 'babel-loader'
+                      }
+                    }
+                  ]
+                }
+              };
+
+              - The entry property is basically the entry file for application
+              - The output property is where the bundle file will be created. It means the JS code transpiled by Webpack
+              - The module property is responsible to manage the rules(loaders) which webpack will utilize during transpiation. For example for JavaScript, the Webpack should utilize the Babel as loader during transpilation.
+
+              There are some notes:
+
+                1) Webpack runs under Node
+                2) The reason for utilize the Node library path its because in Windows OS the usually notation (see bellow) using backslash(/) will not be recognized.
+                3) __dirname it current directory where webpack.config.js is stored.
+
+
+          2) Create a folder called src, which must store all JS code, and inside to src folder created a file called index.js. Basically the index.js will be the starting point of application, it means that everything wll be came from this file
+
+          3) Inside to root folder, create a folder called public, where the webpack will store the bundle file transpiled 
+
+
+      - Application building
+
+        In order to Webpack build the appication, it means proceed with the transpilation of JS generating the bundle.js inside to public folder, its necessary create a script inside to package.json file, properts scripts. For achieve that proceed as per bellow
+
+          1) Open the package.json and after line "license": "MIT", and before "devDependencies": { add the line code bellow to create the script called build
+
+            "scripts": {
+              "build": "webpack --mode production"
+            },
+
+            The option --mode development will create a legible bundle.js, meaning that the developer might check what was done more clearly. However, the file is created more "heavy".
+
+            Now, by using the option --mode production, it will be created a bundle.js minified. It means that all code will be in an single line, so to dificult the undertanding. That approach is used to deploy appliation in production once also create a soft file with a small size.
+
+
+          2) For run the script build created, goes to terminal and run on appllication root folder the line command bellow
+
+            yarn build
+
+        In order to test if the appliation transpiled is working, we might create under public folder a file called inde.html adding the line commands bellow and then oppening it in the browser
+
+              <!DOCTYPE html>
+              <html lang="en">
+                <head>
+                  <meta charset="UTF-8">
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                  <title>ReactJS</title>
+                </head>
+                <body>
+                  <h1>Hello World</h1>
+
+                  <script src="./bundle.js"></script>
+                </body>
+              </html>
+
+
+      - Automatic rebuilding/reloading
+
+        With libray dependency webpack-dev-server installed (see above step 3 from - For create a new project topic), inside to webpack.config.js, before module property,  create a new one called devServer as per bellow             
+
+           devServer: {
+              contentBase: path.resolve(__dirname, 'public'),
+           },
+
+
+        Then inside to package.json, after current script build, add a new one called dev as per bellow
+
+          "dev": "webpack-dev-mode --mode development"
+
+
+        For run the script dev created, goes to terminal and run on appllication root folder the line command bellow
+
+            yarn dev
+
+
+        Observe that after conclude the transpilation, in the beginning of screen will have a line like that:
+
+        ℹ ｢wds｣: Project is running at http://localhost:8080/
+
+        From now one open the application using the url provided that that every time a change has been done in the index.js, will not be necessary rebuild the application and reload it on browser, once it will be done automatically.
+
+
+
+
 
 
     
