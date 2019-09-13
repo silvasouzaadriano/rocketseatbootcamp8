@@ -573,7 +573,7 @@
 
         - style-loader is used to react can import CSS files. It means that on the moment when the application is mounted it transfer the CSS content to inside to main HTML in a tag style.
 
-        - css-loader is used because inside to CSS file might exists other types of imports, including another files. The wasy how webpack understand it is using the css-loader. For example the file Menu.css:
+        - css-loader is used because inside to CSS file might exists other types of imports, including another files. The way how webpack understand it is using the css-loader. For example the file Menu.css:
 
         import Base from './Base.css';
         
@@ -594,5 +594,44 @@
 
       import './App.css';
 
+
+### React - Module 04 - Importing Images
+
+
+    In order to react work with Images proceed with steps bellow
+
+
+      1) Install libraries as development dependency
+
+        yarn add file-loader -D
+
+      2) On webpack.config.js, create another rule as per bellow
+
+        , {
+          test: /.*\.(gif|png|jpe?g)$/i,
+            use: {
+              loader: 'file-loader'
+            }
+        }
+
+        Some explanation about regular expression
+
+        1) // means that the regular expression must be inside it
+        2) .* means all files
+        3) \. means the dot before extension
+        4) (gif|png|jpe?g) means the list of extensions allowed
+        5) The ? after jpe and before letter g means that some files might have the extension jpg
+        6) The letter i after / means that regular expression will ignore case sensitive.
+
+
+      3) Create inside to src folder a folder called assets. For tests store any image over folder created.
+
+      5) On the App.js import the image stored. Note that its necessary give a name for image being imported. The result should be something like that:
+
+        import profile from './assets/profile.jpg';
+
+      6) So, still on the App.js replace the h1 tag for img tag as per bellow
+
+        Note that everytime which is being used a variable inside to HTML tag its necessary add it among brakts {}
 
   
