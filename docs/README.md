@@ -496,10 +496,31 @@
         From now one open the application using the url provided that that every time a change has been done in the index.js, will not be necessary rebuild the application and reload it on browser, once it will be done automatically.
 
 
+### React - Module 04 - Creating root component
 
 
+    In order to work with react its necessary import the libray react. However, for when is also handling with browser its necessary import functions from react-dom. Basically the root library to be imported should be something like that:
 
+    import React from 'react';
+    import { render } from 'react-dom';
 
+    - The function render is responsible for render a react code or react componenet inside to a content in the HTML
+
+    - HTMLs, in order to understand react codes/components should have it called inside it content. The way how that is done is creating a DIV tag on HTML which will represent and receive the component created. For instance:
+    
+      1) On index.html replace the H1 tag for the one bellow.
+
+        <div id="app"></div>
+
+      2) On index.js, after import the libraries react and react-dom, add the render function. That should be something like that
+
+        import React from 'react';
+        import { render } from 'react-dom';
+
+        render(<h1>Hello World</h1>, document.getElementById('app'));
+
+        Note that by viewing the source of HTML generated, the tag DIV will be there, but not the h1. That
+        occur because the React render it content only after the browser render the HTML. In order to check the react content which React generated you might inspect the browser.
     
 
 
