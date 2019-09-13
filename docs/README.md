@@ -315,7 +315,13 @@
         - this.server.use(Sentry.Handlers.errorHandler());
     - On Controllers, when occur errors, by using async the Expres cannot be able to catch it (on this case not sending to Sentry). For that reason its necessary install the lib bellow to mitigate this gap 
       - yarn add express-async-errors. Note that after install it, its necessary just import the lib on src/app.js as per bellow, but it should be before the routes import to integrate the routes with async errors
-        - import 'express-async-errors';    
+        - import 'express-async-errors'; 
+
+### React - Module 04 - Concepts
+
+    React - That is the library which is used for both ReactJS and React Native
+    ReactJS - When the react in combination with another libray from DOM, that means ReactJS
+    React Native - That is the sum of React + Native elements
 
 
     
