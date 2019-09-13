@@ -551,6 +551,48 @@
         render(<App />, document.getElementById('app'));
 
 
+### React - Module 04 - Importing CSS
+
+
+    In order to react work with CSS proceed with steps bellow
+
+
+      1) Install libraries as development dependency
+
+        yarn add style-loader css-loader -D
+
+      2) On webpack.config.js, create another rule as per bellow
+
+        , {
+           test: /\.css$/,
+            use: [
+              { loader: 'style-loader' },
+              { loder: 'css-loader'},
+            ]
+        }
+
+        - style-loader is used to react can import CSS files. It means that on the moment when the application is mounted it transfer the CSS content to inside to main HTML in a tag style.
+
+        - css-loader is used because inside to CSS file might exists other types of imports, including another files. The wasy how webpack understand it is using the css-loader. For example the file Menu.css:
+
+        import Base from './Base.css';
+        
+        body {
+          background: url('/images/teste.png');
+        }
+        
+
+      3) For test the configuration, create inside to src folder a file called App.css and add the following styles
+
+          body {
+            background: #7159c1;
+            color: #fff;
+            font-family: Arial, Helvetica, sans-serif;
+          }
+
+      Then import the file App.css inside to App.js as per bellow. So, when restarting the application (using the yarn dev), it should be working as expected with background color purple and a font sans-serif.
+
+      import './App.css';
 
 
   
