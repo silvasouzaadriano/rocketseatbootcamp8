@@ -522,7 +522,33 @@
         Note that by viewing the source of HTML generated, the tag DIV will be there, but not the h1. That
         occur because the React render it content only after the browser render the HTML. In order to check the react content which React generated you might inspect the browser.
     
+    - In order to work with a component separetelly, using the same approach index.html and index.js, proceed as per bellow:
+    
+    
+      1) Inside to src folder, create another file called App.js with the following content:
 
+
+        import React from 'react';
+
+        function App() {
+          return <h1>Hello Rocketseat</h1>
+        }
+
+        export default App;
+
+        Note that in every code which will be used JSX sintaxe its necessary import react.
+
+      2) On index.js import the App.js
+
+
+        import App from './App';
+
+
+        Note that the ./ is used because its being used a local file insted of library inside to node_modules
+
+      3) Replace the JSX <h1> inside to render function by a call of App. However, note that it should be called like to a tag.
+
+        render(<App />, document.getElementById('app'));
 
 
 
