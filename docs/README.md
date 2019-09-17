@@ -811,6 +811,20 @@
           this.setState({ techs: [...this.state.techs, this.state.newTech] });
 
 
+### React - Module 04 - Removing items from state
+
+
+    When a function which receives a parameter is called in a INPUT type BUTTON, for instance, automatically this function is ran. In order to avoid it, might be used the approach to create a arrow function which will call the function internally. With this approach the function only will be actioned when the user to click in the button. Let's see an example:
+
+      <button onClick={() => this.handleDelete(tech)} type="button">
+
+
+    The best way to generate a new array excluding an element, when using setState, is to use the filter method. On this case, the filter pass as result to array to be recreated, only the elements which are diferents of current one passed as parameter. Let's see an example:
+
+       this.setState({ techs: this.state.techs.filter(t => t !== tech) });
+
+
+
 
 
 
