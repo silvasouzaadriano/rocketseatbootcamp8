@@ -886,5 +886,25 @@
         2) On React anything may be passed as property for a component. It means: function, object, another class, another element or even another component (i.e: icon=<Icon />)
 
 
+### React - Module 04 - Default Props & Proptypes
 
+    In function components default properties may be passed as parameter on signature of function like to example bellow
+
+      function TechItem({ tech = 'default value', onDelete })
+
+    However, in React there is a global form which may be used in both cases, functions and classes components. This ways is called default props.
+
+    Basically, only is needed modify the property defaultprops inside to component. For instance: 
+
+      TechItem.defaultProps = {
+        tech: 'Oculto',
+      };
   
+    On this example, for component TechITem when the property tech was not informed, it default value would 'Oculto'. it means that if we change the TechList class, adding another item manually without any property inside to UL tag, the item 'Oculto' will be created automatically.  
+
+
+    This approach also might be used inside to classes. On this case before the state would be added something like that:
+
+      static defaultProps = {
+        tech: 'Oculto'
+      }
