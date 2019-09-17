@@ -951,3 +951,68 @@
         Note that library prop-types also must be imported on the class.
 
 
+### React - Module 04 - Component life cycle
+
+
+    Thinking in component life cycle in React, basically it means all cycle when a componenet appear in the screen, is changed on modified (it means states or properties), then in some moment it may be removed and destroyed (for instance removing items from a list).
+
+    We also may think about some methods which exist inside to class. The most three importants are:
+
+      1) componentDidMount()
+
+          This method is executed once the component appear in the screen. It means that it migth perform any change/update in JavaScript once the component is loaded in the screen. For instance, if we are using a component which need call data from an external API to manipulate it once the componenet is displayed in the screen, we must proceed with the call of this API by inside to componentDidMount.
+
+      
+      2) componentDidUpdate()
+
+        This method always is called when occur changes in props or states. Also this method may receives the old values of props or states as parameters. It means by using the parameters: prevProps and prevState. i.e:
+
+        componentDidUpdate(prevProps, prevState) {
+          // this.props, this.state
+        }
+
+        Note that when the an argument prevProps or prevState is not being used, in the method signature we may repace the argument by underline _. Let's see an example:
+
+        componentDidUpdate(_, prevState) {
+          // this.props, this.state
+        }
+        
+        In case of occur changes, as usual:
+        
+        a) On props, we may access the new value through of this.props.
+        b) On states, we may access the new value through of this.state.
+
+
+        For compare old and new values, we may compare the new values (this.props or this.state) with old values (prevProps and PreState)
+
+      
+      3) componentWillUnmount()
+
+        This method is executed when the component no longer exists. This component will be used to clear any garbage which stayed due to components. For instance, let's say our application utilize an event listener on JavaScript. So, the event listener is something which stay listenning the user event forever (i.e: mouse action) and it does not is destroyed when the componenet no longer exists. On this case, the componentWillUnamount will clear this garbage related to event listener, destroying it.
+
+
+    In order to understand better the utilization of these three methods we'll proceed store the list of technologies in the browser local storage. For achieve that proceed with following instructions:
+
+      In the TechListjs:
+
+        1) Initialize the state of techs array as an empty array
+
+          techs: []
+
+        2) Create the method componentDidUpdate by suppressing the utlization of prevProps argument (on this case replacing the argument by _ ). Inside this component we'll store technologies in to browser local storage.
+
+          componentDidUpdate(_, prevState) {
+            if (prevState.techs !== this.state.techs) {
+              localStorage.setItem('techs', JSON.stringify(this.state.techs));
+            }
+          }
+
+          Note that the local storage does not accept arrays, for that reason the data being stored must be changed to a JSON file.
+
+        3) Create the method componentDidMount to load the storage created on step 2, once the component initialize.
+
+
+          Note that as the data was stored in JSON format, its necessary perform a parse to transform it in array again.
+
+
+
