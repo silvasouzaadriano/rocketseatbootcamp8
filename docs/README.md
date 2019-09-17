@@ -634,4 +634,48 @@
 
         Note that everytime which is being used a variable inside to HTML tag its necessary add it among brakts {}
 
+
+### React - Module 04 - Class Components
+
+
+    There are severas ways to write a component inside to React. the singley way is by using function format. However, the most common way is by using classes. The basic sintax is this one:
+
+      import React, { Component } from 'react';
+
+      class <class name> extends Component {
+
+        state = {}; // Here are stored all information which may be manipulated by component. It means
+                    // may receives new items, mutations, etc.
+
+        render() {
+          return (
+            <return something>
+          );
+        }
+      }
+
+      export default <class name>;
+
+
+      - Why to use classes instead of functions as components?
+
+        So, until recently was not possible store information/states in React functions, meaning variables which the component will utilize to manipulate (i.e: HTML tags). Basically when a variable needs to be manipulated its called state. In the classes is possible store these states as a class property. Another important thing about classe is that will allow the user understand how React treat life cycle of components.
+
+      - By using the state = {} without a constructor, the Babel cannot identify it In order to solve this gap its necessary install a Babel plugin as per bellow
+
+        yarn add @babel/plugin-proposal-class-properties -D
+
+        Then change the babel.config.js adding the plugin configuration. In the end the file should have the following configuration.
+
+          module.exports = {
+            presets: [
+              "@babel/preset-env",
+              "@babel/preset-react"
+            ],
+            plugins: [
+              '@babel/plugin-proposal-class-properties'
+            ]
+          };
+
+
   
