@@ -1015,4 +1015,9 @@
           Note that as the data was stored in JSON format, its necessary perform a parse to transform it in array again.
 
 
+### React - Module 04 - Debbuging React with DevTools
 
+
+  There is an extension of Google Chrome which is called React DevTools. By installing it, everytime when the browse is showing an application/webpage in React the React logo will be on (that on top of browse - right side).
+
+  So, with extension installed, by inspecting the browser elements, clicking on React or Components tab its allowing  inspect the elements of each component to debbug the application.
