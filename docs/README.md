@@ -888,23 +888,66 @@
 
 ### React - Module 04 - Default Props & Proptypes
 
-    In function components default properties may be passed as parameter on signature of function like to example bellow
+    1) Default Props
+    
+      In function components default properties may be passed as parameter on signature of function like to example bellow
 
-      function TechItem({ tech = 'default value', onDelete })
+        function TechItem({ tech = 'default value', onDelete })
 
-    However, in React there is a global form which may be used in both cases, functions and classes components. This ways is called default props.
+      However, in React there is a global form which may be used in both cases, functions and classes components. This ways is called default props.
 
-    Basically, only is needed modify the property defaultprops inside to component. For instance: 
+      Basically, only is needed modify the property defaultprops inside to component. For instance: 
 
-      TechItem.defaultProps = {
-        tech: 'Oculto',
-      };
-  
-    On this example, for component TechITem when the property tech was not informed, it default value would 'Oculto'. it means that if we change the TechList class, adding another item manually without any property inside to UL tag, the item 'Oculto' will be created automatically.  
+        TechItem.defaultProps = {
+          tech: 'Oculto',
+        };
+    
+      On this example, for component TechITem when the property tech was not informed, it default value would 'Oculto'. it means that if we change the TechList class, adding another item manually without any property inside to UL tag, the item 'Oculto' will be created automatically.  
 
 
-    This approach also might be used inside to classes. On this case before the state would be added something like that:
+      This approach also might be used inside to classes. On this case before the state would be added something like that:
 
-      static defaultProps = {
-        tech: 'Oculto'
-      }
+        static defaultProps = {
+          tech: 'Oculto'
+        }
+
+
+    2) PropTypes
+
+
+      PropTypes its a way of validate the properties which the components receive. For instance, lets say the developer pass a text as property instead of the property itself. The React needs to validate if this is correct or not and way to do it is by PropTypes.
+
+      On this case before anything its necessary install a library called props-types
+
+          yarn add prop-types
+
+      With the library installed, import it on the component to be tested, which for us is the one called TechItem once this one is receiving properties.
+
+          import PropTypes from 'prop-types';
+
+
+      Now add on the code the validations to be done. For instance:
+
+        TechItem.PropTypes = {
+          tech: PropTypes.string,
+          onDelete: PropTypes.func.isRequired,
+        };
+
+      From now one, if on component TechList is created another item on HTML tag ul and the property onDelete was missed, that will generated a warning on console informing that this property is required.
+
+
+        Warning: Failed prop type: The prop `onDelete` is marked as required in `TechItem`, but its value is `undefined`.
+        in TechItem (created by TechList)
+        in TechList (created by App)
+        in App
+
+      This approach also might be used inside to classes. On this case before the state would be added something like that:
+
+        static staticPropTypes = {
+          tech: PropTypes.string,
+          onDelete: PropTypes.func.isRequired,
+        };
+
+        Note that library prop-types also must be imported on the class.
+
+
