@@ -824,8 +824,66 @@
        this.setState({ techs: this.state.techs.filter(t => t !== tech) });
 
 
+### React - Module 04 - React properties
 
 
+    When there is no state utilization in a component. It means no storing will be necessary (i.e: arrays), a component might be created in a function format.
+
+
+    So, one of the most important concepts of React is property. Property is everything which is passed in tags for components as parameter. For instance, on the example bellow the property called tech is passing to component TechItem the variable tech (which contain an array)
+
+        <ul>
+          {this.state.techs.map(tech => <TechItem key={tech} tech={tech} /> )}         
+        </ul>
+
+    Then on the component(function) where is expected the property, a parameter related to tech should be created among brakets {}. In the end the HTML tag li will work with this parameter without any problems, now on.
+    
+
+        function TechItem({ tech }) {
+          return (
+            <li>
+                {tech}
+                <button type="button" onClick={() => this.handleDelete(tech)}>Remover</button>
+            </li>
+          );
+        }
+
+        Some considerations: 
+        
+          Note that the function may have two ways to receives properties:
+
+            1) By using the function props. For instance:
+
+              { props.tech }
+
+            2) By unstructuring. It means the argument among brackets {} on signature on function, inside to parentheses (). For instance the function signature above.
+
+          The properties of a class components are stored inside to this.props. It means inside to a class, by using this.props any properties may be accessed.
+          
+          In other hands, the properties of a function component only are acessed by passing it as parameter of component.
+
+      For action regarding to handleDelete, which must stay at class once only overther exist the arrays which the function utilize, another approach should be used for avoid issues.
+
+        1) On HTML tag TechItem(inside to TechList.js) add a property called onDelete by using the arrow function approach,  as per bellow
+
+            {this.state.techs.map(tech => <TechItem key={tech} tech={tech} onDelete={() => this.handleDelete(tech)} /> )}
+
+        2) On signature of function component add the new property onDelete and then on HTML property onClick, add a call for the property onDelete. Let's a complete example:
+
+            function TechItem({ tech, onDelete }) {
+              return (
+                <li>
+                    {tech}
+                    <button type="button" onClick={onDelete}>Remover</button>
+                </li>
+              );
+            }
+
+      Final considerations:
+
+        1) When a component is created, the function created to manipulate the state needs to be stored in the same place where the state also is stored. For instance, the function handleDelete must be together to class TechList once this function works with state techs (related to technologies).
+
+        2) On React anything may be passed as property for a component. It means: function, object, another class, another element or even another component (i.e: icon=<Icon />)
 
 
 

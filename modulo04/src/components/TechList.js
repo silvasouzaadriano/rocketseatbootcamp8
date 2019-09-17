@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { timingSafeEqual } from 'crypto';
+import TechItem from './TechItem';
 
 class TechList extends Component {
   state = {
@@ -17,10 +17,13 @@ class TechList extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.setState({
-      techs: [...this.state.techs, this.state.newTech],
-      newTech: ''
-    });
+   
+    if (this.state.newTech !== '') {
+      this.setState({
+        techs: [...this.state.techs, this.state.newTech],
+        newTech: ''
+      });
+    }
   }
 
   handleDelete = (tech) => {
@@ -32,10 +35,11 @@ class TechList extends Component {
       <form onSubmit={this.handleSubmit}>
         <ul>
           {this.state.techs.map(tech => (
-            <li key={tech}>
-              {tech}
-              <button type="button" onClick={() => this.handleDelete(tech)}>Remover</button>
-            </li>
+            <TechItem
+              key={tech}
+              tech={tech}
+              onDelete={() => this.handleDelete(tech)}
+            />
           ))}
         </ul>
         <input
