@@ -678,4 +678,141 @@
           };
 
 
+### React - Module 04 - State and Immutability
+
+    In react, in order to use JavaScript iside to HTML its necessary utilize the tags {}. For instance:
+
+      render() {
+        return (
+          <ul>
+            {this.state.techs.map(tech => <li key={tech}>{tech}</li>)}
+          </ul>
+        );
+      }
+
+      Note that for when using map, interation or item list its necessary add a key attribute on list item in order to prevent errors.
+
+      The React cannot allow to have to elements (i.e: Two HTML tags) without a container (DIV) around it. For instance:
+
+        <div>
+          <ul>
+            {this.state.techs.map(tech => <li key={tech}>{tech}</li>)}
+          </ul>
+          <input type="text">
+        </div>
+
+      However, this approach might generate issues once in many cases the developer may need keep all elements inside to main DIV tag due to stylization (CSS). In order to avoid it might be used a React resource called fragmentation, which means to use a tag with no name. For instance:
+
+      <>
+        <ul>
+          {this.state.techs.map(tech => <li key={tech}>{tech}</li>)}
+        </ul>
+        <input type="text">
+      </>
+
+
+      The most common way to capture text typed in TEXT tags is by catching it when the user is typing. That might be achieved by adding on state a new propert will store the value which the user is typing (i.e: newTech). Then its necessary create a new method inside to class to manipulate it (i.e: handleInputChange). With new method created add a call onChange for it on INPUT tag. 
+
+
+          class TechList extends Component {
+            state = {
+              newTech: '',
+              techs: [
+                'Node.js',
+                'ReactJS',
+                'React Native'
+              ]
+            }
+
+            handleInputChange = e => {
+              this.setState({ newTech: e.target.value });
+            }
+
+            render() {
+              return (
+                <>
+                  <ul>
+                    {this.state.techs.map(tech => <li key={tech}>{tech}</li>)}
+                  </ul>
+                  <input
+                    type="text"
+                    onChange={this.handleInputChange}
+                    value={this.state.newTech}
+                  />
+                </>
+              );
+            }
+          }      
+
+
+
+      Some considerations:
+
+        1) When is necessary to have access to variable this, its necessary create arrow fuction instead of regular function.
+
+        2) Due to immutability the React cannot allow to change directly value regarding to state attributes. The state variable cannot be mutated. However, there is another way for achieve it, which is by utilizing the function setState. The function setState create new state coying by default the current values applying only the new ones.
+
+        3) Everytime the state change the render method is ran again.
+
+        4) A good practice for when is manipulating states of INPUT tags is also to inform a value property passing the new state. It means that if the value to change for other reason, the input will also be changed.
+
+      
+      For when its necessary utilize events on HTML, the fragmentation must be replaced the <FORM> tags. 
+
+
+            class TechList extends Component {
+              state = {
+                newTech: '',
+                techs: [
+                  'Node.js',
+                  'ReactJS',
+                  'React Native'
+                ]
+              }
+
+              handleInputChange = e => {
+                this.setState({ newTech: e.target.value });
+              }
+
+              handleSubmit = e => {
+                e.preventDefault();
+                this.setState({
+                  techs: [...this.state.techs, this.state.newTech],
+                  newTech: ''
+                });
+
+              }
+
+              render() {
+                return (
+                  <form onSubmit={this.handleSubmit}>
+                    <ul>
+                      {this.state.techs.map(tech => <li key={tech}>{tech}</li>)}
+                    </ul>
+                    <input
+                      type="text"
+                      onChange={this.handleInputChange}
+                      value={this.state.newTech}
+                    />
+                    <button type="submit">Enviar</button>
+                  </form>
+                );
+              }
+            }      
+
+
+
+        Some considerations:
+
+        1) The standard functionality of a FORM, when is using submit events, is to reload the screen. in order to avoid it the React provide a function called preventDefault().
+
+        2) For when is manipulating arrays on setState function, its necessary always recreate the array. Its means that React cannot allow perform changes on array or even on the object. On this case the spread operator (...) must be used. Basically as first element of new array use the spread to add the current elements and then as second element,  add the new element of array. For instance:
+
+          this.setState({ techs: [...this.state.techs, this.state.newTech] });
+
+
+
+
+
+
   
