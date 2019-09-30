@@ -1040,7 +1040,9 @@
 
   3) On the same package.json its necessary delete the current eslintConfig section once it will be configurated from begging.
 
-  4) For start the application, on application root folder run yarn start.
+  4) For start the application, on application root folder run yarn start. The application will start on 3000 port. For instance:
+
+     http://localhost:3000
 
   5) On index.html, inside to public folder:
 
@@ -1139,4 +1141,66 @@
       }
 
 
+### React - Module 05 - Routes on React
+
+
+  1) Add the library react-router-dom as per bellow
+
+    yarn add react-router-dom
+
+  2) Inside to src folder
+  
+    a) Create a file called routes.js
+    b) Create a folder called pages and inside to pages folder:
+
+      i  - Create a folder called Main and inside to it a file called index.js
+      ii - Create a folder called Repository and inside to it a file called index.js
+
+    Tip: For create more fast the components we might use the Rocketseat snnipts (i.e: rfc)
  
+  3) Some considerations
+
+    a) On routes.js file should have the following imports
+
+      import React from 'react';
+      import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+      Tip: The React is used for everytime we are working with JSX in the files
+
+    b) For each route, the corresponding file also should be imported. For instance:
+
+      import Main from './pages/Main';
+      import Repository from './pages/Repository'; 
+
+    c) The file should have a default export with same name of file. For instance:
+
+      export default function Routes() {
+        return (
+          <BrowserRouter>
+            <Switch>
+              <Route path="/" exact component={Main} />
+              <Route path="/repository" component={Repository} />
+            </Switch>
+          </BrowserRouter>
+        );
+      }
+
+    d) The routes should be embedded by BrowserRouter and Switch tags.
+
+    e) The Switch tags is used to guarantee that only a single route is run per time.
+
+    f) The Route tag represent a page from application, Note that when use need that the route call exacly a route, for instance a main which uses only the "/" as route name, should be added on the Route tag the property "exact"
+
+    g) After define the routes, the routes.js must be imported inside to App.js (the main application component), then the return should have only the tag <Routes />. For instance:
+
+      import React from 'react';
+
+      import Routes from './routes';
+
+      function App() {
+        return <Routes />;
+      }
+
+      export default App;
+
+        
