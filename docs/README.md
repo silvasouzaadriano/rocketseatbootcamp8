@@ -428,7 +428,12 @@
                 3) __dirname it current directory where webpack.config.js is stored.
 
 
-          2) Create a folder called src, which must store all JS code, and inside to src folder created a file called index.js. Basically the index.js will be the starting point of application, it means that everything wll be came from this file
+          2) Create a folder called src, which must store all JS code, and inside to src folder create a file called index.js. Basically the index.js will be the starting point of application, it means that everything wll be came from this file. For instance, this might be the initial content of index.js
+
+            // Initial example just to test the Babel transpilation
+            const soma = (a, b) => a + b;
+            alert(soma(1, 4));
+
 
           3) Inside to root folder, create a folder called public, where the webpack will store the bundle file transpiled 
 
@@ -452,7 +457,7 @@
 
             yarn build
 
-        In order to test if the appliation transpiled is working, we might create under public folder a file called inde.html adding the line commands bellow and then oppening it in the browser
+        In order to test if the appliation transpiled is working, we might create under public folder a file called index.html adding the line commands bellow and then oppening it in the browser
 
               <!DOCTYPE html>
               <html lang="en">
@@ -460,7 +465,7 @@
                   <meta charset="UTF-8">
                   <meta name="viewport" content="width=device-width, initial-scale=1.0">
                   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-                  <title>ReactJS</title>
+                  <title>Desafio 04 - Facebook</title>
                 </head>
                 <body>
                   <h1>Hello World</h1>
@@ -481,7 +486,7 @@
 
         Then inside to package.json, after current script build, add a new one called dev as per bellow
 
-          "dev": "webpack-dev-mode --mode development"
+          "dev": "webpack-dev-server --mode development"
 
 
         For run the script dev created, goes to terminal and run on appllication root folder the line command bellow
