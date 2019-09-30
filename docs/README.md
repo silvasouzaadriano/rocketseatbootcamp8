@@ -1028,8 +1028,9 @@
   So, with extension installed, by inspecting the browser elements, clicking on React or Components tab its allowing  inspect the elements of each component to debbug the application.
 
 
-  ### React - Module 05 - Initial Setup (Basic)
+### React - Module 05 - Initial Setup (Basic)
 
+  
   1) For create a new app without using babel/webpack configuration we may use the line command bellow
 
       yarn create react-app <project name>
@@ -1042,9 +1043,9 @@
   4) For start the application, on application root folder run yarn start.
 
   5) On index.html, inside to public folder:
-  
-     a) Clean up the comments
-     b) Delete the manifest link, once it is exclusivelly for PDA (Progressive Web Apps) creation. Also delete the manifest.json which is on public folder root.
+
+      a) Clean up the comments
+      b) Delete the manifest link, once it is exclusivelly for PDA (Progressive Web Apps) creation. Also delete the manifest.json which is on public folder root.
 
   6) On src folder
 
@@ -1068,6 +1069,74 @@
         - Remove the css import line 
         - Inside to main DIV (className="App"), replace it content for a <h1>Hello World</h1>
               
+
+### React - Module 05 - Setup ESLint, Prettier & EditorConfig              
+
+  
+  1) EditorConfig
+  
+    a) On root folder, click with right mouse button in a blank space and then choose Generate .editorconfig
+
+    b) Change to true value the lines trim_trailing_whitespace = false and insert_final_newline = false
+
+    c) In order to force to use Unix standard, add the line bellow before the current one indent_style
+
+      end_of_line = lf
+
+
+  2) ESLint
+
+    a) Add it as a development dependency as per bellow
+
+      yarn add eslint -D
+
+    b) After add edslint library, initialize it by runnin the command yarn eslint --init, then proceed with configuration as per bellow:
+
+      - On first screen, choose the "to check syntax and find problems" option
+      - On second screen, choose the "JavaScript Modules (import/export)" option
+      - On third screen, choose "React" option
+      - On forth screen, for question "Does your project use TypeScript", choose N
+      - On fifth screen, choose "Browser" option
+      - On sexth screen, choose "Use a popular style guide" option
+      - On seventh screen, choose "Airbnb" option
+      - On eighth screen, choose "JavaScript" option
+      - From now on, choose Yes for questions
+
+    c) After conclude the configuration
+
+      - As the configuration is done using npm, remove the package-lock.json file and then run on root folder the command yarn to update the dependencies inside to yarn.lock
+
+    d) Edit the .eslintrc.js and proceed with the following changes
+
+      - On extends section, add 'prettier' and 'prettier/react'
+      - Before parserOptions section, add a new section as per bellow:
+
+          parser: 'babel-eslint',
+
+      - On plugins section, add 'prettier'
+
+      - On rules section, add the following rules:
+
+        i - 'prettier/prettier': 'error',
+        ii - 'react/jsx-filename-extension': [
+                'warn',
+                { extensions: ['.jsx','.js'] }
+              ],
+        iii - 'import/prefer-default-export',
+
+
+  3) Prettier
+
+    a) Add it as a development dependency as per bellow
+
+      yarn add prettier eslint-config-prettier eslint-plugin-prettier babel-eslint -D
+
+    b) On root folder, create a file called .prettierrc and proceed with the following configurations:
+
+      {
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
 
 
  
