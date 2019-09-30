@@ -1026,3 +1026,48 @@
   There is an extension of Google Chrome which is called React DevTools. By installing it, everytime when the browse is showing an application/webpage in React the React logo will be on (that on top of browse - right side).
 
   So, with extension installed, by inspecting the browser elements, clicking on React or Components tab its allowing  inspect the elements of each component to debbug the application.
+
+
+  ### React - Module 05 - Initial Setup (Basic)
+
+  1) For create a new app without using babel/webpack configuration we may use the line command bellow
+
+      yarn create react-app <project name>
+      i.e: yarn create react-app modulo05
+
+  2) The option eject, section scripts,  on package.json created is used for setup manually webpack/babel case necessary. The other options are self understandable
+
+  3) On the same package.json its necessary delete the current eslintConfig section once it will be configurated from begging.
+
+  4) For start the application, on application root folder run yarn start.
+
+  5) On index.html, inside to public folder:
+  
+     a) Clean up the comments
+     b) Delete the manifest link, once it is exclusivelly for PDA (Progressive Web Apps) creation. Also delete the manifest.json which is on public folder root.
+
+  6) On src folder
+
+    a) Delete the files
+
+        - App.css
+        - App.text.js
+        - index.css
+        - logo.svg
+        - serviceWorker.js (which is exclusive for PDA)
+
+    b) On index.js, remove:
+
+        - The comments and the line serviceWorker.unregister();
+        - The serviceWorker import line
+        - The css import line
+
+    b) On App.js: 
+
+        - Remove the logo import line
+        - Remove the css import line 
+        - Inside to main DIV (className="App"), replace it content for a <h1>Hello World</h1>
+              
+
+
+ 
