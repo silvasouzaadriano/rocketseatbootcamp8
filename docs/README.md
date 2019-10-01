@@ -1742,3 +1742,112 @@
       }).isRequired,
     };
 
+### React - Module 05 - Showing repositories
+
+  1) Create on Repository folder a file styles.js
+
+    Tip: The snnipet styled-react create automatically a styled structure
+
+  2) Inside to styles.js create the styled component as per bellow
+
+    export const Loading = styled.div`
+      color: #fff;
+      font-size: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    `;
+
+  3) Also inside to same styles.js, create the styled component Owner as per bellow
+
+    export const Owner = styled.header`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    a {
+      color: #7159c1;
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    img {
+      width: 120px;
+      border-radius: 50%;
+      margin-top: 20px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-top: 10px;
+    }
+
+    p {
+      margin-top: 5px;
+      font-size: 14px;
+      color: #666;
+      line-height: 1.4;
+      text-align: center;
+      max-width: 400px;
+    }
+  `;
+
+  4) On src folder
+
+    a) Create a folder called components
+
+    b) Create inside to components a folder called Container
+
+    c) Create inside to Container a file called index.js
+
+    d) From Main Router styled component cut the Container component and add it to new file about step c, as per bellow
+
+      import styled from 'styled-components';
+
+      export const Loading = styled.div`
+        color: #fff;
+        font-size: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      `;
+
+      export default Container;
+
+    e) Import the new styles component on Main and Repository Router
+
+      import Container from '../../components/Container';
+
+
+  5) On Repository Router
+  
+    a) Import the Link from react-router-dom, in order to be used as <a href>
+
+      import { Link } from 'react-router-dom';
+
+    b) Import the the styles.js with Loading styled component
+
+      import { Loading } from './styles';
+
+    c) Inside to render, create a decision (if) to return the Loading component
+
+      if (loading) {
+        return <Loading>Carregando</Loading>;
+      }
+
+    d) Replace the current h1 tag by the styled Container, as per bellow
+
+      <Container>
+        <Owner>
+          <Link to="/">Voltar aos repositórios</Link>
+          <img src={repository.owner.avatar_url} alt={repository.owner.login} />
+          <h1>{repository.name}</h1>
+          <p>{repository.description}</p>
+        </Owner>
+      </Container>
+
+
+  
+
