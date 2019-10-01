@@ -1567,6 +1567,58 @@
         `;
 
 
+### React - Module 05 - Listing repositories
+
+  1) On Main route
+
+    a) Inside to class, add a new state called repositories
+       state = {
+        newRepo: '',
+        repositories: [],
+        loading: false,
+      };
+
+    b) Inside to render, add the repositories on const
+
+      const { newRepo, repositories, loading } = this.state;
+    
+    c) Create a new component tag called List to interate the repositories
+
+        <List>
+          {repositories.map(repository => (
+            <li key={repository.name}>
+              <span>{repository.name}</span>
+              <a href="">Detalhes</a>
+            </li>
+          ))}
+        </List>
+
+  2) On styles.js
+
+    a) Create the styled component List as per bellow
+
+        export const List = styled.ul`
+          list-style: none;
+          margin-top: 30px;
+
+          li {
+            padding: 15px 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+
+            & + li {
+              border-top: 1px solid #eee;
+            }
+
+            a {
+              color: #7159c1;
+              text-decoration: none;
+            }
+          }
+        `;
+
 
 
 
