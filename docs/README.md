@@ -1377,6 +1377,98 @@
       }
 
 
+### React - Module 05 - Styles on main page
+
+
+  1) Add the library react-icons
+
+    yarn add react-icons
+
+
+  2) Once have the item 1 installed, on src/Main/index.js
+
+    a) import the FaGitAlt from react-icons/fa (fa - means fonts awesome)
+
+      import { FaGithubAlt, FaPlus } from 'react-icons/fa';
+
+    b) Add a styled component called Container around h1 tag
+
+      <Container>
+        <h1>
+          Repositórios
+        </h1>
+      </Container>
+
+    c) Add the FaGithubAlt as tag inside to h1 tag 
+
+      <Container>
+        <h1>
+          <FaGithubAlt />
+          Repositórios
+        </h1>
+      </Container>
+
+    d) Add a new tag styled component called Form
+
+      <Container>
+        <h1>
+          <FaGithubAlt />
+          Repositórios
+        </h1>
+
+        <Form onSubmit={() => {}}>
+          <input type="text" placeholder="Adicionar repositório" />
+        </Form>
+      </Container>
+
+    e) Inside to styled component Form,  add a new one called SubmitButton with disabled property. The reason for created a new component is because once using button, to manipulate properties/attributes will not be possible to be accessed.
+
+      i - Also import the component FaPlus
+
+          import { FaGithubAlt, FaPlus } from 'react-icons/fa';
+
+      ii - Add the FaPlus inside to SubmitButton Component
+
+            <Container>
+              <h1>
+                <FaGithubAlt />
+                Repositórios
+              </h1>
+
+              <Form onSubmit={() => {}}>
+                <input type="text" placeholder="Adicionar repositório" />
+
+                <SubmitButton disabled>
+                  <FaPlus color="#fff" size={14} />
+                </SubmitButton>
+              </Form>
+            </Container>
+
+
+
+  3) Some considerations      
+
+   a) When the component have more than two levels of chaining, its better create a new style component.
+
+   b) In order to manipulate attributes of a styled component, uses the property attrs. For instance: lets say that we need define a button as submit, using the attrs on css we would have it as per bellow
+
+    export const SubmitButton = styled.button.attrs({
+      type: 'submit',
+    })`
+      background: #7159c1;
+      border: 0;
+      padding: 0 15px;
+      margin-left: 10px;
+      border-radius: 4px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    `;
+
+      
+
+
 
 
 
