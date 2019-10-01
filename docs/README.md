@@ -1645,6 +1645,34 @@
         }
       }
 
+### React - Module 05 - Routes Navigation
+
+
+  1) On Main route
+
+    a) Import the component Link from react-router-dom
+
+      import { Link } from 'react-router-dom';
+
+    b) Replace the current <a href="">Detalhes</a> by: 
+
+      <Link to={`/repository/${encodeURIComponent(repository.name)}`}>
+
+  
+  2) On routes.js
+
+    a) On path of repository Route, add a parameter to identify the repository being called
+
+      <Route path="/repository/:repository" component={Repository} />
+
+    b) In order to test it, it means showing the parameter value from url,  on Repository Route (index.js):
+
+      i - Add a props called match as per bellow
+
+      export default function Repository({ match }) {
+        return <h1>Repository: {decodeURIComponent(match.params.repository)}</h1>;
+      }
+
 
 
 
