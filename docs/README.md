@@ -1466,6 +1466,114 @@
       align-items: center;
     `;
 
+
+### React - Module 05 - Adding repositories
+
+  1) Add axios library (to use API Rest in React)
+
+    yarn add axios
+
+  2) Inside to src
+
+    a) Create a folder called services
+    
+    b) Inside to folder, create a file called api.js with the following content:
+
+        import axios from 'axios';
+
+        const api = axios.create({
+          baseURL: 'https://api.github.com',
+        });
+
+        export default api;
+
+    c) On Main route import the api.js
+
+        import api from '../../services/api';        
+  
+  2) On Main route, in order to have state in the componenent Main its necessary import  a class component, which in this case is the: component
+
+    a) import React, { Component } from 'react';
+
+    b) replace the current export default function for class components
+
+        from: export default function Main()
+        to: export default class Main extends Component
+
+    c) all return should be added inside to render method
+
+  3) Working to loading, on Main route
+
+    a) Import from react-icons/fa the component FaSpinner
+
+      import { FaGithubAlt, FaPlus, FaSpinner } from 'react-icons/fa';
+
+    b) Add a conditional rendering as conditional ternary on SubmitButton as per bellow
+
+      <SubmitButton loading={loading}>
+          {loading ? (
+            <FaSpinner color="#fff" size={14} />
+          ) : (
+            <FaPlus color="#fff" size={14} />
+          )}
+        </SubmitButton>
+
+    b) In order to have the FaSpinner icon animated, on styles.js proceed as per bellow
+
+      i - Import from styled-components twot properties: keyframes and css
+
+        import styled, { keyframes, css} from 'styled-components';
+
+      ii - Before current css SubmitButton, add the css animated as per bellow
+
+        const rotate = keyframes`
+          from {
+            transform: rotate(0deg);
+          }
+
+          to {
+            transform: rotate(360deg);
+          }
+        `;
+
+      iii - Change the current SubmitButton to contemplate a props disabled(based on loading props from index.js ) and a props loading, as per bellow
+
+        export const SubmitButton = styled.button.attrs(props => ({
+          type: 'submit',
+          disabled: props.loading,
+        }))`
+          background: #7159c1;
+          border: 0;
+          padding: 0 15px;
+          margin-left: 10px;
+          border-radius: 4px;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          &[disabled] {
+            cursor: not-allowed;
+            opacity: 0.6;
+          }
+
+          ${props =>
+            props.loading &&
+            css`
+              svg {
+                animation: ${rotate} 2s linear infinite;
+              }
+            `}
+        `;
+
+
+
+
+
+
+
+
+
       
 
 
