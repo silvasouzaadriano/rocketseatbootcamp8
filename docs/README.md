@@ -1203,4 +1203,117 @@
 
       export default App;
 
+
+### React - Module 05 - Styled Components
+
+  1) Add the library styled-components. This libray change the way how the CSS is written in React and React Native
+
+    yarn add styled-components
+
+  2) Assure to have installed on VSCode the extension vscode-styled-components
+
+  3) Example using the Main page
+
+    a) On main root folder, create a file called styles.js
+
+      i - Import the styled component as per bellow
+
+        import styled from 'styled-components';
+
+      ii - create a style for h1 tag as per bellow
+
+        export const Title = styled.h1`
+          font-size: 24px;
+          color: #7159c1;
+          font-family: Arial, Helvetica, sans-serif;
+        `;
+
+    b) On index.js
+
+        i - Import the styles.css created as per bellow
+
+          import { Title } from './styles';
+
+        ii - Replace the tag h1 by Title as per bellow
+
+          export default function Main() {
+            return <Title>Main</Title>;
+          }
+
+
+  3) Some considerations
+
+    a) Unless the developer setup it, all CSS done for a component will not be shared to other components.
+
+    b) The styles configuration is done for each tag
+    
+      i -  By using:  export const <Tag Name> = styled.<html tag>. For instance: 
+      
+          export const Title = styled.h1`
+              font-size: 24px;
+              color: #7159c1;
+              font-family: Arial, Helvetica, sans-serif;
+            `;
+
+      ii - The content of css must be among ``
+
+    c) It`s not necessary create new tags to perfom styles inside to current one. For instance: lets say we need add a tag small inside to Title one defined on item ii above. On this case we use the functionality styles chaining, which means add the tag small on index.js and then change the tag Title on styles.js to also contemplate the small configuration. In the end we would have something like that:
+
+      i - index.js
+
+        export default function Main() {
+          return (
+            <Title>
+              Main
+              <small> small</small>
+            </Title>
+          );
+        }
+
+      ii - styles.css
+
+        export const Title = styled.h1`
+          font-size: 24px;
+          color: #7159c1;
+          font-family: Arial, Helvetica, sans-serif;
+
+          small {
+            font-size: 14px;
+            color: #333;
+          }
+        `;
+
+    d) We may access properties from tags created in components. For instance: lets say that the Tag Title is associated to a certain application form and then when occur an error in the form we would like that the Title tag change to red color.
+    On this scenario we may:
+    
+      i  - On index.js pass an error property on Title tag
+
+        export default function Main() {
+          return (
+            <Title error>
+              Main
+              <small> small</small>
+            </Title>
+          );
+        }
+
+      ii - On styles.js, color configuration we may add a decision to change the color to red when the property error is true
+
+        import styled from 'styled-components';
+
+        export const Title = styled.h1`
+          font-size: 24px;
+          color: ${props => (props.error ? 'red' : '#7159c1')};
+          font-family: Arial, Helvetica, sans-serif;
+
+          small {
+            font-size: 14px;
+            color: #333;
+          }
+        `;
+
+
+
+
+
         
