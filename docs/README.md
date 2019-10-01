@@ -1255,7 +1255,7 @@
               font-family: Arial, Helvetica, sans-serif;
             `;
 
-      ii - The content of css must be among ``
+      ii - The content of css must be among apostrophes ``
 
     c) It`s not necessary create new tags to perfom styles inside to current one. For instance: lets say we need add a tag small inside to Title one defined on item ii above. On this case we use the functionality styles chaining, which means add the tag small on index.js and then change the tag Title on styles.js to also contemplate the small configuration. In the end we would have something like that:
 
@@ -1311,6 +1311,80 @@
             color: #333;
           }
         `;
+
+
+### React - Module 05 - Global Styles
+
+  The reason for using Global Styles is because all Css defined as Global Styles will be shared for all application. For achieve that proceed with the following configurations
+
+  1) On src folder
+  
+    a) Create a folder called styles
+    b) Inside to folder created, create a file called global.js
+
+
+  2) Inside to global.js created
+
+    a) import from style-component the propert createGlobalStyle, as per bellow
+
+      import { createGlobalStyle } from 'styled-components';
+
+    b) Export by default the createGlobalStyle among apostrophes ``, then add the CSS configuration.
+
+      export default createGlobalStyle`
+        * {
+          margin: 0;
+          padding: 0;
+          outline: 0;
+          box-sizing: border-box;
+        }
+
+        html, body, #root {
+          min-height: 100%;
+        }
+
+        body {
+          background: #7159c1;
+          -webkit-font-smoothing: antialiased !important;
+        }
+
+        body, input, butoon {
+          color: #222;
+          font-size: 14px;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+
+        button {
+          cursor: pointer;
+        }
+      `;
+
+  3) On App.js (main file)
+  
+    a) Import the global style created
+
+      import GlobalStyle from './styles/global';
+
+    b) Add the import on return of App function as a React fragment (<></>)
+
+      function App() {
+        return (
+          <>
+            <Routes />
+            <GlobalStyle />
+          </>
+        );
+      }
+
+
+
+
+
+
+
+
+
+
 
 
 

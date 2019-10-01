@@ -3,10 +3,5 @@ import React from 'react';
 import { Title } from './styles';
 
 export default function Main() {
-  return (
-    <Title error={false}>
-      Main
-      <small> small</small>
-    </Title>
-  );
+  return <Title>Hello World - Main</Title>;
 }

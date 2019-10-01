@@ -1,7 +1,7 @@
 import React from 'react';
 
-// import { Container } from './styles';
+import { Title } from './styles';
 
 export default function Repository() {
-  return <h1>Repository</h1>;
+  return <Title>Hello World - Repository</Title>;
 }
