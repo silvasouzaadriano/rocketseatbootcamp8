@@ -1620,6 +1620,32 @@
         `;
 
 
+### React - Module 05 - Using LocalStorage
+
+
+  1) On Main route
+
+    a) Create the method componentDidMount to load LocalStorage data
+
+      componentDidMount() {
+        const repositories = localStorage.getItem('repositories');
+
+        if (repositories) {
+          this.setState({ repositories: JSON.parse(repositories) });
+        }
+      }
+
+    b) Create the method componentDidUpdate to save the LocalStorage data
+
+      componentDidUpdate(_, prevState) {
+        const { repositories } = this.state;
+
+        if (prevState.repositories !== repositories) {
+          localStorage.setItem('repositories', JSON.stringify(repositories));
+        }
+      }
+
+
 
 
 
