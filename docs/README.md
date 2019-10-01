@@ -1124,7 +1124,8 @@
                 'warn',
                 { extensions: ['.jsx','.js'] }
               ],
-        iii - 'import/prefer-default-export',
+        iii - 'import/prefer-default-export': 'off',
+        iv - 'react/state-in-constructor': [0, "always"],
 
 
   3) Prettier
@@ -1719,29 +1720,25 @@
     }
 
 
+### React - Module 05 - Defining PropTypes
 
+  In order to validate the props its used the prop-types libray.
 
+  1) Add the libray prop-types
 
+    yarn add prop-types
 
+  2) On Repository Router import the prop-types
 
+    import PropTypes from 'prop-types';
 
+  3) Add on class the ProTypes as static
 
+    static staticpropTypes = {
+      match: PropTypes.shape({
+        params: PropTypes.shape({
+          repository: PropTypes.string,
+        }),
+      }).isRequired,
+    };
 
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
