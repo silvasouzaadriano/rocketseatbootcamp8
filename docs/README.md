@@ -1094,7 +1094,7 @@
 
     b) After add edslint library, initialize it by runnin the command yarn eslint --init, then proceed with configuration as per bellow:
 
-      - On first screen, choose the "to check syntax and find problems" option
+      - On first screen, choose the "to check syntax, find problems, and enforce code style" option
       - On second screen, choose the "JavaScript Modules (import/export)" option
       - On third screen, choose "React" option
       - On forth screen, for question "Does your project use TypeScript", choose N
@@ -1974,7 +1974,9 @@
 
     c) Case the bundle tab on terminal did not open, run the command bellow to start the project on emulator
 
-      react-native start
+      react-native start or
+      
+      react-native start --reset-cache
 
   4) Active the Live Reloading or Fast Refreshing (by acessing Ctrl-M)
   
@@ -2009,4 +2011,76 @@
       });
 
 
-    
+
+### React Native - Module 06 - Setup ESLint, Prettier & EditorConfig              
+
+  
+  1) EditorConfig
+  
+    a) On root folder, click with right mouse button in a blank space and then choose Generate .editorconfig
+
+    b) Change to true value the lines trim_trailing_whitespace = false and insert_final_newline = false
+
+    c) In order to force to use Unix standard, add the line bellow before the current one indent_style
+
+      end_of_line = lf
+
+
+  2) ESLint
+
+    a) Delete the current .eslintrc.js file, if it already exists
+
+    b) Add it as a development dependency as per bellow
+
+      yarn add eslint -D
+
+    c) After add edslint library, initialize it by runnin the command yarn eslint --init, then proceed with configuration as per bellow:
+
+      - On first screen, choose the "to check syntax, find problems, and enforce code style" option
+      - On second screen, choose the "JavaScript Modules (import/export)" option
+      - On third screen, choose "React" option
+      - On forth screen, for question "Does your project use TypeScript", choose N
+      - On fifth screen, press space bar to unmark all option once we are using React Native
+      - On sexth screen, choose "Use a popular style guide" option
+      - On seventh screen, choose "Airbnb" option
+      - On eighth screen, choose "JavaScript" option
+      - From now on, choose Yes for questions
+
+    d) After conclude the configuration
+
+      - As the configuration is done using npm, remove the package-lock.json file and then run on root folder the command yarn to update the dependencies inside to yarn.lock
+
+    e) Edit the .eslintrc.js and proceed with the following changes
+
+      - On extends section, add 'prettier' and 'prettier/react'
+      - Before parserOptions section, add a new section as per bellow:
+
+          parser: 'babel-eslint',
+
+      - On plugins section, add 'prettier'
+
+      - On rules section, add the following rules:
+
+        i - 'prettier/prettier': 'error',
+        ii - 'react/jsx-filename-extension': [
+                'warn',
+                { extensions: ['.jsx','.js'] }
+              ],
+        iii - 'import/prefer-default-export': 'off',
+        iv - 'react/state-in-constructor': [0, "always"],
+        v - 'react/static-property-placement': ['off', 'property assignment'],
+        vi - 'react/jsx-props-no-spreading': ['off', 'property assignment'],
+
+
+  3) Prettier
+
+    a) Add it as a development dependency as per bellow
+
+      yarn add prettier eslint-config-prettier eslint-plugin-prettier babel-eslint -D
+
+    b) On root folder, create a file called .prettierrc and proceed with the following configurations:
+
+      {
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }

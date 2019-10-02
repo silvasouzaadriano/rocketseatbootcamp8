@@ -1,15 +1,5 @@
-import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-
-export default class App extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-      </View>
-    );
-  }
-}
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,3 +14,11 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
+
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.welcome}>Welcome to React Native!</Text>
+    </View>
+  );
+}
