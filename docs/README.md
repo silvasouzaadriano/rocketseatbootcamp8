@@ -2071,6 +2071,12 @@
         v - 'react/static-property-placement': ['off', 'property assignment'],
         vi - 'react/jsx-props-no-spreading': ['off', 'property assignment'],
 
+      - On globals section, add the line bellow:
+
+        i - __DEV__: 'readonly',
+
+        This line is due to utilization of ReactotronConfig.js (see section Reactotron setup)
+
 
   3) Prettier
 
@@ -2084,3 +2090,93 @@
         "singleQuote": true,
         "trailingComma": "es5"
       }
+
+
+### React Native - Module 06 - Reactotron setup
+
+  Functionality for proceed with debug.
+
+  1) Add libray reactotron-react-native
+
+    yarn add reactotron-react-native
+  
+  2) Guide for setup in https://github.com/infinitered/reactotron
+
+  3) On Link above
+
+    a) Click on "Quick start for React Native"
+
+    b) Click on "download the desktop app"
+
+      i - Click on "Releases" to choose according to OS
+
+      ii - On this case I'll choose reactotron-app_2.17.1_amd64.deb and proceed with installation after download it
+
+  4) Once have it installed, open it (Reactotron)
+
+  5) Create on root, a folder called src
+  
+     a) Create a file called index.js
+
+     b) Copy the content from App.js to index.js and then delete the App.js
+
+     c) On index.js which on root, replace the import about App.js to src\index.js
+
+  6) Stop the debug on emulator
+
+  7) Inside to src folder, create a folder called config and inside to config, create a file called ReactotronConfig.js and proceed with the follwing configuration on the file:
+
+    import Reactotron from 'reactotron-react-native';
+
+    if (__DEV__) {
+      const tron = Reactotron.configure()
+        .useReactNative()
+        .connect();
+
+      console.tron = tron;
+
+      tron.clear();
+    }
+
+
+  8) Inside to src/index.js, import the ReactotronConfig file
+
+    import './config/ReactotronConfig';
+
+  9) From this part on, the Reactotron should show something in it timeline. However, if you are using Android, somes steps should be done:
+
+    a) In case running using USB, add your IP on signature of Reactotron.configure(), in the ReactotronConfig.js. For instance:
+
+
+      if (__DEV__) {
+        const tron = Reactotron.configure({ host: '189.4.72.223' })
+          .useReactNative()
+          .connect();
+
+        console.tron = tron;
+
+        tron.clear();
+      }
+
+    b) if using an Android device or emulator run the following command to make sure it can connect to Reactotron 
+
+      i - adb reverse tcp:9090 tcp:9090
+
+        Note that the adb should be in the path to can run. However, if not, you may alternativelly goes to you Android path to run it. For instance:
+
+        ~/Android/sdk/platform-tools/adb reverse tcp:9090 tcp:9090
+
+      ii - Refresh your app (or start it up react-native start) and have a look at Reactotron now. Do you see the CONNECTION line?
+
+
+  10) From now, every time we use the command bellow inside to a file which imported the ReactotronConfig.js, a log will be added on Timeline of Reactotron
+
+    console.tron.log(<message>). For instance: console.tron.log('Hello World')
+
+    console.tron.warn(<message>). For instance: console.tron.warn('Warning World')
+      
+
+      
+
+
+
