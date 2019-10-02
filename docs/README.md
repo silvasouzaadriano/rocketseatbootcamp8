@@ -1947,3 +1947,7 @@
 
   By the concept of transpilation, the React Native add a dependency inside to mobile, called JavaScript Core. This funcionality provide the possibility of mobile understand JavaScript as native code (Android or IOS).
 
+### React Native - Module 06 - Environment configuration  
+
+  1) On the address https://docs.rocketseat.dev/ there is a guide for install the environment.
+
