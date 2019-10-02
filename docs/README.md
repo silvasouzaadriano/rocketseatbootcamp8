@@ -1947,7 +1947,66 @@
 
   By the concept of transpilation, the React Native add a dependency inside to mobile, called JavaScript Core. This funcionality provide the possibility of mobile understand JavaScript as native code (Android or IOS).
 
+
 ### React Native - Module 06 - Environment configuration  
 
   1) On the address https://docs.rocketseat.dev/ there is a guide for install the environment.
 
+
+### React Native - Module 06 - Creating project
+
+  1) Guide for create project = https://github.com/react-native-community/cli
+
+  2) For create project utilize the command:
+
+    npx react-native init <project name>
+
+  3) With project created goes to it folder
+
+    a) On Linux/Windows
+    
+      i  - First open the Android emulator
+      ii - Run the line command: react-native run-android
+
+    b) On IOS
+
+      i - Just run the line command: react-native-run-ios
+
+    c) Case the bundle tab on terminal did not open, run the command bellow to start the project on emulator
+
+      react-native start
+
+  4) Active the Live Reloading or Fast Refreshing (by acessing Ctrl-M)
+  
+  5) In order to test if the changes are being applied, open the App.js which is on root folder and proceed with changes to be done something like that:
+
+
+      import React, {Component} from 'react';
+      import {StyleSheet, Text, View} from 'react-native';
+
+      export default class App extends Component {
+        render() {
+          return (
+            <View style={styles.container}>
+              <Text style={styles.welcome}>Welcome to React Native!</Text>
+            </View>
+          );
+        }
+      }
+
+      const styles = StyleSheet.create({
+        container: {
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#F5FCFF',
+        },
+        welcome: {
+          fontSize: 20,
+          textAlign: 'center',
+          margin: 10,
+        },
+      });
+
+
+    
