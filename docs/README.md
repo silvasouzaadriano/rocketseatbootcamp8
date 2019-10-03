@@ -2094,6 +2094,7 @@
 
 ### React Native - Module 06 - Reactotron setup
 
+
   Functionality for proceed with debug.
 
   1) Add libray reactotron-react-native
@@ -2176,7 +2177,157 @@
     console.tron.warn(<message>). For instance: console.tron.warn('Warning World')
       
 
+### React Native - Module 06 - React Navigation
+
+
+  1) First all, let make a start for our project. For that, clean up the src/index.js. In the end the initial file should have something like that
+
+    import React from 'react';
+    import { View } from 'react-native';
+
+    import './config/ReactotronConfig';
+
+    export default function App() {
+      return <View />;
+    }
+
+  2) Lets proceed with component creation. For achieve that, on src folder:
+
+    a) Create a folder called pages
+
+    b) Create a folder called Main
+
+      i - Create a file called index.js
+
+    c) Create a folder called User
+
+      i - Create a file called index.js 
+
+    d) As a tip, for any React Native component file in JS, we may use the Rocketseat snippet rnfc (React Native Function Component)
+
+    e) Add on both index.js files created the import regarding Reactotron
+
+         import '../../config/ReactotronConfig';
+
+    f) On src root create a file called routes.js
+
+
+  3) Lets proceed with libraries installation. For achieve that add the libraries as per bellow
+
+    a) yarn add react-navigation react-native-gesture-handler react-native-reanimated react-navigation-stack react-navigation-tabs react-navigation-drawer
+
+    b) For Android, also its necessary some steps in order to proceed with utilization  of libraries installed on step a. 
+
+      i - First acces the site: https://kmagiera.github.io/react-native-gesture-handler/docs/getting-started.html
+
+      ii - In Installation/Android, there are some imports and code blocks which must be added on MainActivity.java file. Proceed as per bellow
+
+        a) The imports must be added after last one on current file
+
+          import com.facebook.react.ReactActivityDelegate;
+          import com.facebook.react.ReactRootView;
+          import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
+
+        b) The code bellow must be added before the last bracket
+
+
+            @Override
+            protected ReactActivityDelegate createReactActivityDelegate() {
+              return new ReactActivityDelegate(this, getMainComponentName()) {
+                @Override
+                protected ReactRootView createRootView() {
+                 return new RNGestureHandlerEnabledRootView(MainActivity.this);
+                }
+              };
+            }
+
+    c) Now its necessary rerun the react native to reinstall the native dependencies. For achieve that, stop the server and then:
+    
+    
+      i - For Android run the command bellow
+
+          yarn react-native run-android
+
+      ii - For IOS, goes to ios folder and run the command bellow
+
+          pod install
+
+          Note: Case the pod install does run as expected. You may access the site https://cocoapods.org to get the command which will install it. Nowadays the command is:
+           
+             sudo gem install cocoapods
+
+      iii - After conclude the steps above, restart the application by running the command 
+
+            yarn start
+
+
+  4) On routes.js created, proceed with the following configuration
+
+
+      import { createAppContainer } from 'react-navigation';
+      import { createStackNavigator } from 'react-navigation-stack';
+
+      import Main from './pages/Main';
+      import User from './pages/User';
+
+      const Routes = createAppContainer(
+        createStackNavigator(
+          {
+            Main,
+            User,
+          },
+          {
+            headerLayoutPreset: 'center',
+            headerBackTitleVisible: false,
+            defaultNavigationOptions: {
+              headerStyle: {
+                backgroundColor: '#7159c1',
+              },
+              headerTintColor: '#FFF',
+            },
+          }
+        )
+      );
+
+      export default Routes;
+
+      Some considerations:
+
+        a) Its possible to set global styles for routes, which should be done after liste of routes configured. The list of styles used for the initial configuration have some explanations:
+
+          i - headerLayoutPreset: 'center' - By default on Android the title/text is not aligned to center(actually that is aligned to left). This property allows to align the text as desired (left, right and center)
+
+          ii - headerBackTitleVisible: false - By default in IOS usualy a text "back" is set on header. This property avoid it.
+
+          iii - headerTintColor - Refers to text color
+
+        b) createAppContainer - Contain the configuration for route can be run. Also, despite any routes we are using this functionality must be set around all routes.
+
+        c) createStackNavigator - Contain a type of route configuration. For demonstrate it, proceed as per bellow
+
+          i - On src/index.js import the routes
+
+            import Routes from './routes';
+
+          ii - On return of App, replace the current <View /> to <Routes />
+
+            export default function App() {
+              return <Routes />;
+            }
+
+            After the application reload its expected a header on screen
+
+  5) In order to start some title visualization, on Main/index.js
+
+    a) After export default function Main(), add:
+
+      Main.navigationOptions = {
+        title: 'Usuários',
+      };
+
+
+      Note tha the navigationOptions is a property which the reaction navigation search in each route to set some configurations
+
+    
+
       
-
-
-
