@@ -2348,4 +2348,56 @@
         );
       }
 
+### React Native - Module 06 - Styled Components
+
+
+  1) Add the libray styled-components
+
+    yarn add styled-components
+
+
+  2) On Main folder
+  
+    a) Create a file called styles.js
+
+    b) On the file use the snippet styles-rn to create a standard structure for React Native
+        
+    c) Then, proceed with the following configurations
+
+      import styled from 'styled-components/native';
+
+      export const Container = styled.View`
+        flex: 1;
+        padding: 30px;
+      `;
+
+
+    d) On Main/index.js import the Container from styles.js and replacing the View as well. In the end the content will ve something like that
+
+      import React from 'react';
+      import { Container } from './styles';
+
+      export default function Main() {
+        return <Container />;
+      }
+
+      Main.navigationOptions = {
+        title: 'Usuários',
+      };
+
+  
+  3) Some considerations
+
+    a) Styled Components also is used on React Native because the CSS may be used exacly as on React JS (Web), except for some points which will be described on item b.
+
+    b) Functionalities not allowed
+    
+      i - Chaining. For instance: let's say we would like to chain a Text tag, that will not be possible. It means that the Text should be done separately. In other words, for each stylization, a new configuration should be done separately.
+
+      ii - Global Styles - It's not possible set a configuration which apply in all elements at once.On this case, should be create a component (in a folder for instance), then share it to other components.
+
+      iii - It's not possible perform styles directly on elements once it does not have IDs or classes
+
+    
+
       
