@@ -2399,5 +2399,80 @@
       iii - It's not possible perform styles directly on elements once it does not have IDs or classes
 
     
+### React Native - Module 06 - Form styling
+
+  1) Add the libray react-nactive-vector-icons 
+
+    a) yarn add react-nactive-vector-icons
+
+    b) After that, proceed with link of new library to native components
+
+      react-native link react-native-vector-icons
+
+    c) Then run again the react-native run-android
+
+      yarn react-native run-android
+
+    Tip: As reference to know which icons to use refers to site https://oblador.github.io/react-native-vector-icons/
+  
+  2) On Main/index.js proceed with following changes
+
+    a) Import the component Icon from react-native-vector-icons/MaterialIcons
+
+      import Icon from 'react-native-vector-icons/MaterialIcons';
+
+    b) Import Form, Input and SubmitButton from styles.js
+
+      import { Container, Form, Input, SubmitButton } from './styles';
+
+    c) Inside to Container, add the Tags Form, Input and SubmitButton as per bellow
+
+      <Container>
+        <Form>
+          <Input
+            autoCorrect={false}
+            autoCapitalize="none"
+            placeholder="Adicionar usuário"
+          />
+          <SubmitButton>
+            <Icon name="add" size={20} color="#FFF" />
+          </SubmitButton>
+        </Form>
+      </Container>
+
+  3) On Main/styles.js proceed with following changes:
+
+    a) Import RectButton from 'react-native-gesture-handler'
+
+      import { RectButton } from 'react-native-gesture-handler';
+
+    b) Add the styled for Form, Input and SubmitButton
+
+      export const Form = styled.View`
+        flex-direction: row;
+        padding-bottom: 20px;
+        border-bottom-width: 1px;
+        border-color: #eee;
+      `;
+
+      export const Input = styled.TextInput.attrs({
+        placeholderTextColor: '#999',
+      })`
+        flex: 1;
+        height: 40px;
+        background: #eee;
+        border-radius: 4px;
+        padding: 0 15px;
+        border: 1px solid #eee;
+      `;
+
+      export const SubmitButton = styled(RectButton)`
+        justify-content: center;
+        align-items: center;
+        background: #7159c1;
+        border-radius: 4px;
+        margin-left: 10px;
+        padding: 0 12px;
+      `;
 
       
