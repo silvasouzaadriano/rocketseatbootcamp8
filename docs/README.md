@@ -2328,6 +2328,24 @@
 
       Note tha the navigationOptions is a property which the reaction navigation search in each route to set some configurations
 
-    
+
+### React Native - Module 06 - Statusbar configuration
+
+  1) On src/index.js
+
+    a) Import the StatusBar from react-native
+
+      import { StatusBar } from 'react-native';
+
+    b) On return of export default function App proceed with the following configuations
+
+      export default function App() {
+        return (
+          <>
+            <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
+            <Routes />
+          </>
+        );
+      }
 
       
