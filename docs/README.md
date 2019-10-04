@@ -2401,6 +2401,7 @@
     
 ### React Native - Module 06 - Form styling
 
+
   1) Add the libray react-nactive-vector-icons 
 
     a) yarn add react-nactive-vector-icons
@@ -2475,4 +2476,108 @@
         padding: 0 12px;
       `;
 
+### React Native - Module 06 - Acessing Github API
       
+  1) Add the library axios in order to be able to call APIs
+
+    a) yarn add axios
+
+    b) On src, create a folder called services and inside a file called api.js
+
+    c) On api.js proceed with the following configuration
+
+      import axios from 'axios';
+
+      const api = axios.create({
+        baseURL: 'https://api.github.com',
+      });
+
+      export default api;
+
+
+  2) As on Main/index.js will be required states to store the data which will be get from Github API, proceed with the following changes on the code
+
+    a) Import Component from react
+
+      import React, { Component } from 'react'
+
+    b) Replace the current export function to use class and then add it content inside to render method
+
+    c) In order to dismiss the Keybord after click on Add button, Import the Keyboard from react-native
+
+      import { Keyboard } from 'react-native';
+  
+    d) Import the api.js
+
+      import { Keyboard } from 'react-native';
+
+    e) Proceed with state configuration related to users and newUsers
+
+    f) On class, create a method called handleAddUser, which should be acessed when occur an OnPress button. This method, based on user informed, will call the Github API.
+
+    g) Proceed with changes on Input and SubmitButton, regarding to states and handleAddUser method
+
+    h) In the end the code should have something like that
+
+      import React, { Component } from 'react';
+      import { Keyboard } from 'react-native';
+      import Icon from 'react-native-vector-icons/MaterialIcons';
+      import api from '../../services/api';
+
+      import { Container, Form, Input, SubmitButton } from './styles';
+
+      export default class Main extends Component {
+        state = {
+          newUser: '',
+          users: [],
+        };
+
+        handleAddUser = async () => {
+          const { users, newUser } = this.state;
+
+          const response = await api.get(`/users/${newUser}`);
+
+          const data = {
+            name: response.data.name,
+            login: response.data.login,
+            bio: response.data.bio,
+            avatar: response.data.avatar_url,
+          };
+
+          this.setState({
+            users: [...users, data],
+            newUser: '',
+          });
+
+          Keyboard.dismiss();
+        };
+
+        render() {
+          const { users, newUser } = this.state;
+
+          return (
+            <Container>
+              <Form>
+                <Input
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  placeholder="Adicionar usuário"
+                  value={newUser}
+                  onChangeText={text => this.setState({ newUser: text })}
+                  returnKeyType="send"
+                  onSubmitEditing={this.handleAddUser}
+                />
+                <SubmitButton onPress={this.handleAddUser}>
+                  <Icon name="add" size={20} color="#FFF" />
+                </SubmitButton>
+              </Form>
+            </Container>
+          );
+        }
+      }
+
+      Main.navigationOptions = {
+        title: 'Usuários',
+      };
+
+
