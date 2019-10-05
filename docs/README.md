@@ -2476,7 +2476,9 @@
         padding: 0 12px;
       `;
 
+
 ### React Native - Module 06 - Acessing Github API
+
       
   1) Add the library axios in order to be able to call APIs
 
@@ -2581,3 +2583,92 @@
       };
 
 
+### React Native - Module 06 - List styling
+
+  1) On Main/styles.js
+
+    a) Create the component List, User, Avatar, Name, Bio, ProfileButton, ProfileButtonText as per bellow
+
+      export const List = styled.FlatList.attrs({
+        showsVerticalScrollIndicator: false,
+      })`
+        margin-top: 20px;
+      `;
+
+      export const User = styled.View`
+        align-items: center;
+        margin: 0 20px 30px;
+      `;
+
+      export const Avatar = styled.Image`
+        width: 64px;
+        height: 64px;
+        border-radius: 32px;
+        background: #eee;
+      `;
+
+      export const Name = styled.Text`
+        font-size: 14px;
+        color: #333;
+        font-weight: bold;
+        margin-top: 4px;
+        text-align: center;
+      `;
+
+      export const Bio = styled.Text.attrs({
+        numberOfLines: 2,
+      })`
+        font-size: 13px;
+        line-height: 18px;
+        color: #999;
+        margin-top: 5px;
+        text-align: center;
+      `;
+
+      export const ProfileButton = styled(RectButton)`
+        margin-top: 10px;
+        align-self: stretch;
+        border-radius: 4px;
+        background: #7159c1;
+        justify-content: center;
+        align-items: center;
+        height: 36px;
+      `;
+
+      export const ProfileButtonText = styled.Text`
+        font-size: 14px;
+        font-weight: bold;
+        color: #fff;
+        text-transform: uppercase;
+      `;
+
+
+  2) On Main/index.js
+
+    a) Import the components List, User, Avatar, Name, Bio, ProfileButton, ProfileButtonText (created on item 1-a above) 
+      
+      import { Container, Form, Input, SubmitButton, List, User, Avatar, Name, Bio, ProfileButton, ProfileButtonText } from './styles';
+
+    b) Create under Form component the new ones called List User, Avatar, Name, Bio, ProfileButton, ProfileButtonText as per bellow
+
+      <List
+          data={users}
+          keyExtractor={user => user.login}
+          renderItem={({ item }) => (
+            <User>
+              <Avatar source={{ uri: item.avatar }} />
+              <Name>{item.name}</Name>
+              <Bio>{item.bio}</Bio>
+
+              <ProfileButton onPress={() => {}}>
+                <ProfileButtonText>Ver perfil</ProfileButtonText>
+              </ProfileButton>
+            </User>
+          )}
+        />
+
+      Some considerations:
+
+      a) On react native we do not use the map to interate items. That is achived by using the data={<component data>} and then the renderItem
+
+      b) Also, regarding to key (similar to ReactJs), its used the attribute KeyExtractor
