@@ -2770,6 +2770,7 @@
 
 ### React Native - Module 06 - Navigation
 
+
   On React Native there is no Link component like to ReactJS. On React Native its necessary create a JavaScript function which cames as standard in all appliction pages. This function will use the navigate props basically.
 
   1) On Main/index.js
@@ -2832,5 +2833,104 @@
           }).isRequired,
         };
 
-      
+
+### React Native - Module 06 - Searching data from API
+
+
+  1) On User/index.js
+
+    a) Transform the current function in a class as per bellow
+
+      import React, { Component } from 'react';
+      import { View } from 'react-native';
+
+      import { Container } from './styles';
+
+      export default class User extends Component {
+        render() {
+          return <View />;
+        }
+      }
+
+    b) Crete a componentDidMount as per bellow
+
+      i - As will be necessary acces again the API to get the user repositories which was gave stars, import the api from services/api
+
+      ii - create a state called starts
+
+        state = {
+          stars: [],
+        };
+
+      iii - Proceed witht the following code for componentDidMount
+
+    c) Create a static navigationOptions as per bellow
+
+      static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('user').name,
+      });
+
+      Note that as that is static, will not works by add this.props.navigation.getParam('user').name. In order to achieve it, is necessary transform the navigationOptions in a function which should return an object to be used. It means that a way to access the atributes is using a function to navigationOptions
+
+    d) In order to resolve the ESLINT regarding to propTypes for component validation proceed as per bellow
+
+      i - Import the PropTypes from 'prop-types'
+
+        import PropTypes from 'prop-types';
+
+      ii - Create a static PropTypes as per bellow
+
+        static propTypes = {
+          navigation: PropTypes.shape({
+            getParam: PropTypes.func,
+          }).isRequired,
+        };
+
+        Note that by using shape on PropTypes means that is an object, for that reason is used shape. 
+
+    e) In order to resolve the ESLINT regarding to variable stars disrupt it inside to render as pe bellow
+
+      const { stars } = this.state;
+
+    f) In the end the entire code should be something like that
+
+      import React, { Component } from 'react';
+      import PropTypes from 'prop-types';
+      import { View } from 'react-native';
+      import api from '../../services/api';
+
+      // import { Container } from './styles';
+
+      export default class User extends Component {
+        static navigationOptions = ({ navigation }) => ({
+          title: navigation.getParam('user').name,
+        });
+
+        static propTypes = {
+          navigation: PropTypes.shape({
+            getParam: PropTypes.func,
+          }).isRequired,
+        };
+
+        state = {
+          stars: [],
+        };
+
+        async componentDidMount() {
+          const { navigation } = this.props;
+          const user = navigation.getParam('user');
+
+          const response = await api.get(`/users/${user.login}/starred`);
+
+          this.setState({ stars: response.data });
+        }
+
+        render() {
+          const { stars } = this.state;
+
+          return <View />;
+        }
+      }
+
+
 
