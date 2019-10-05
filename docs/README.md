@@ -2722,3 +2722,47 @@
 
     f) Inside to SubmitButton, in order to define the loading process (color, etct), create a ternary IF as per bellow. Note that the current Icon will be moved to Else condition (:)
 
+      <SubmitButton loading={loading ? 1 : 0} onPress={this.handleAddUser}>
+        {loading ? (
+          <ActivityIndicator color="#FFF" />
+        ) : (
+          <Icon name="add" size={20} color="#FFF" />
+        )}
+      </SubmitButton>
+
+
+### React Native - Module 06 - Saving into Storage
+
+  1) As standard the React Native does not have a Local Storage (like ReactJS), for that reason its necessry add the library bellow
+
+    yarn add @react-native-community/async-storage
+
+    Note that for Android its necessary run again the yarn react-native run-android or for IOS, access the folder ios and run pod install to reinstall all native dependencies and run yarn react-native run-ios again.
+
+  2) On Main/index.js
+
+    a) Import the component AsyncStorage from @react-native-community/async-storage
+
+    b) Before handleAddUser, create the methods componentDidMount and componentDidUpdate as per bellow
+
+      async componentDidMount() {
+        const users = await AsyncStorage.getItem('users');
+
+        if (users) {
+          this.setState({ users: JSON.parse(users) });
+        }
+      }
+
+      componentDidUpdate(_, prevState) {
+        const { users } = this.state;
+
+        if (prevState.users !== users) {
+          AsyncStorage.setItem('users', JSON.stringify(users));
+        }
+      }
+
+      Some considerations:
+      
+      a) It was not used await on componentDidUpdate once there is nothing after run the AsyncStorage.setItem. For instance on componentDidMount, after run AsyncStorage.getitem its necessary check if the object is not empty in order to set the users variable with data from storage.
+
+      b) There is no limit to store data on storage mobile. It means that the storage depends of mobile capacity
