@@ -2933,4 +2933,160 @@
       }
 
 
+### React Native - Module 06 - Listing favorites
+
+  1) On User/index.js
+
+    a) Import from User/styles.js the components Bio, Stars, Starred, OwnerAvatar, Info, Title, Author,Loading
+
+      import {
+        Container,
+        Header,
+        Avatar,
+        Name,
+        Bio,
+        Stars,
+        Starred,
+        OwnerAvatar,
+        Info,
+        Title,
+        Author,
+        Loading,
+      } from './styles';
+
+    b) Add on state a variable called loading
+
+      state = {
+        stars: [],
+        loading: true,
+      };
+
+    c) On componentDidMount set to false the loading variable
+
+      this.setState({
+        stars: response.data,
+        loading: false,
+      });
+
+    d) On render proceed with the following screen components
+
+      const { navigation } = this.props;
+      const { stars, loading } = this.state;
+
+      const user = navigation.getParam('user');
+
+      return (
+        <Container>
+          <Header>
+            <Avatar source={{ uri: user.avatar }} />
+            <Name>{user.name}</Name>
+            <Bio>{user.bio}</Bio>
+          </Header>
+
+          {loading ? (
+            <Loading />
+          ) : (
+            <Stars
+              data={stars}
+              keyExtractor={star => String(star.id)}
+              renderItem={({ item }) => (
+                <Starred>
+                  <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
+                  <Info>
+                    <Title>{item.name}</Title>
+                    <Author>{item.owner.login}</Author>
+                  </Info>
+                </Starred>
+              )}
+            />
+          )}
+        </Container>
+      );
+
+  2) On User/styles.js proceed with the styles components
+
+    export const Header = styled.View`
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom-width: 1px;
+      border-color: #eee;
+    `;
+
+    export const Avatar = styled.Image`
+      width: 100px;
+      height: 100px;
+      border-radius: 50px;
+      background: #eee;
+    `;
+
+    export const Name = styled.Text`
+      font-size: 20px;
+      color: #333;
+      font-weight: bold;
+      margin-top: 10px;
+      text-align: center;
+    `;
+
+    export const Bio = styled.Text`
+      font-size: 14px;
+      line-height: 18px;
+      color: #999;
+      margin-top: 5px;
+      text-align: center;
+    `;
+
+    export const Loading = styled.ActivityIndicator.attrs({
+      color: '#7159c1',
+      size: 50,
+    })`
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    `;
+
+    export const Stars = styled.FlatList.attrs({
+      showsVerticalScrollIndicator: false,
+    })`
+      margin-top: 20px;
+    `;
+
+    export const Starred = styled.View`
+      background: #f5f5f5;
+      border-radius: 4px;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+      flex-direction: row;
+      align-items: center;
+    `;
+
+    export const OwnerAvatar = styled.Image`
+      height: 42px;
+      width: 42px;
+      border-radius: 21px;
+      background: #eee;
+    `;
+
+    export const Info = styled.View`
+      margin-left: 10px;
+      flex: 1;
+    `;
+
+    export const Title = styled.Text.attrs({
+      numberOfLines: 1,
+    })`
+      font-size: 15px;
+      font-weight: bold;
+      color: #333;
+    `;
+
+    export const Author = styled.Text`
+      font-size: 13px;
+      color: #666;
+      margin-top: 2px;
+    `;
+
+
+
+
 
