@@ -2766,3 +2766,71 @@
       a) It was not used await on componentDidUpdate once there is nothing after run the AsyncStorage.setItem. For instance on componentDidMount, after run AsyncStorage.getitem its necessary check if the object is not empty in order to set the users variable with data from storage.
 
       b) There is no limit to store data on storage mobile. It means that the storage depends of mobile capacity
+
+
+### React Native - Module 06 - Navigation
+
+  On React Native there is no Link component like to ReactJS. On React Native its necessary create a JavaScript function which cames as standard in all appliction pages. This function will use the navigate props basically.
+
+  1) On Main/index.js
+
+    a) After handleAddUser create a new method called handleNavigate as per bellow. Note that cannot be an async method
+
+    b) On ProfileButton, onPress replace the current function call to
+
+      <ProfileButton onPress={() => this.handleNavigate(item)}>
+        <ProfileButtonText>Ver perfil</ProfileButtonText>
+      </ProfileButton>
+
+      Note that was used an arrow function to pass the parameter item (which contains the user data). It was necessary once if we just left the function, the JavaScript runs the function and not pass it as parameter (which we desires on this situation)
+
+
+  2) On User/index.js
+
+
+    a) Update the function user according to props (on this case the user which is being passing as parameter on handleNavigate method in the Main/inde.js). In the end the code should be something like that
+
+      export default function User({ navigation }) {
+        console.tron.log(navigation.getParam('user'));
+
+        return <View />;
+      }
+
+    
+    Note that if we analyze the Reactotron, by perform a console.tron.log on props, we will see that there is under the navigation the props getParam. By using this props we may get from navigation/state the user data which cames from state/params.
+
+  
+  3) In order to validate the properties and avoid that eslint complain about its necessary add the library prop-types
+
+    a) yarn add prop-types
+
+    b) On Main/index.js
+
+      i - Import the PropTypes from prop-types
+
+        import ProTypes from 'prop-types'
+
+      ii - As the component is on classes format the navigation option might be exluded from begging on file and added as static inside to class after handleNavigation method
+
+        from:
+
+          Main.navigationOptions = {
+            title: 'Usuários',
+          };
+
+        to:
+
+          static navigationOptions = {
+            title: 'Usuários',
+          };
+
+      iii - Create a static propTypes for navigation validation as per bellow
+
+        static propTypes = {
+          navigation: PropTypes.shape({
+            navigate: PropTypes.func,
+          }).isRequired,
+        };
+
+      
+
