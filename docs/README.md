@@ -2672,3 +2672,53 @@
       a) On react native we do not use the map to interate items. That is achived by using the data={<component data>} and then the renderItem
 
       b) Also, regarding to key (similar to ReactJs), its used the attribute KeyExtractor
+
+
+### React Native - Module 06 - Loading and Disable
+
+  1) On Main/styles.js
+
+    a) As on Rect Native there is no disable property, on SubmitButton add a property opacity as per bellow
+
+      export const SubmitButton = styled(RectButton)`
+        justify-content: center;
+        align-items: center;
+        background: #7159c1;
+        border-radius: 4px;
+        margin-left: 10px;
+        padding: 0 12px;
+        opacity: ${props => (props.loading ? 0.7 : 1)};
+      `;
+
+  2) On Main/index.js
+
+    a) Import the component ActivityIndicator from react-native
+
+      import { Keyboard, ActivityIndicator } from 'react-native';
+
+    b) On state create a variable called loading with initial value equal to false
+
+      state = {
+        newUser: '',
+        users: [],
+        loading: false,
+      };
+
+    c) Before call the API set the variable to true
+
+      this.setState({ loading: true });
+
+    d) After the call and get the data set the variable to false
+
+      this.setState({
+        users: [...users, data],
+        newUser: '',
+        loading: false,
+      });
+
+    e) Inside to render add the loadgin variable on const
+
+      const { users, newUser, loading } = this.state;
+
+    f) Inside to SubmitButton, in order to define the loading process (color, etct), create a ternary IF as per bellow. Note that the current Icon will be moved to Else condition (:)
+
