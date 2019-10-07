@@ -3550,7 +3550,6 @@
 
 ### Flex Architecture - Module 07 - Cart stylization
 
-
   
    1) On src/pages/Card
 
@@ -3723,3 +3722,39 @@
           </Container>
         );
       }
+
+
+### Flex Architecture - Module 07 - API configuration
+
+  We'll use the json-server to simulate api (reference on site https://github.com/typicode/json-server). It means create a fake API meanwhile our project is under development. Basically this is the utilization of json-server.
+
+  1) Setup the jason server as global running the command bellow
+
+    yarn global add json-server or npm install -g json-server
+
+  2) Add the library axio
+
+    yarn add axios
+
+  3) Create on root application a file called server.json and copy the content of file available for download.
+
+
+  3) On src folder
+
+    a) Create a folder called services
+
+      i - Create a file called api.js with the following configuration
+
+        import axios from 'axios';
+
+        const api = axios.create({
+          baseURL: 'http://localhost:3333',
+        });
+
+        export default api;
+
+  4) In order to run the fake API, run the following command on terminal
+
+    json-server <json file name> -p <port> -w (to watch for any changes on file)
+
+    i.e: json-server server.json -p 3333 -w
