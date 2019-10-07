@@ -3097,3 +3097,13 @@
 
   2) Proceed with implementation according to README.md
 
+
+
+### Flex architecture - Module 07 - Redux Concepts
+
+
+  1) Global states are the one which does not have a specific owner
+
+
+
+
