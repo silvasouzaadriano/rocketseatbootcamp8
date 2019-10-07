@@ -3190,5 +3190,71 @@
         a) The BrowserRouter was added on App.js instead of routes.js once there will be a Header which will be used for routes. Also the Header needs to have acces on navigation functionalities. It means
 
 
+### Flex architecture - Module 07 - Global Styles
+
+  1) Add the libray styled-components
+
+    yarn add styled-components
+
+  2) On src create a folder called assets, then a folder called images and add the background.svg file wich is available as download on this topic.
+  
+  2) On src create a folder called styles
+
+  3) On src/styles folder created, create a file called global.js and configure it as per bellow
+
+    import { createGlobalStyle } from 'styled-components';
+
+    import background from '../assets/images/background.svg';
+
+    export default createGlobalStyle`
+      @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        outline: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #191920 url(${background})  no-repeat center top;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body, input, button {
+        font: 14px Roboto, sans-serif;
+      }
+
+      #root {
+        max-width: 1020px;
+        margin: 0 auto;
+        padding: 0 20px 50px;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+    `;
+
+
+  4) On src/App.js
+  
+    a) Import the global.js created as GlobalStyle
+
+      import GlobalStyle from './styles/global';
+
+    b) Add it under BrowserRouter after Routes
+
+      function App() {
+        return (
+          <BrowserRouter>
+            {/* <Header /> */}
+            <Routes />
+            <GlobalStyle />
+          </BrowserRouter>
+        );
+      }
+
 
 
