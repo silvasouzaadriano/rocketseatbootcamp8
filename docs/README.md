@@ -3341,15 +3341,209 @@
           }
         `;
 
-
   
   3) On src/App.js
 
     a) Import the Header
 
+      import Header from './components/Header';
+
     b) Add Header inside to BrowserRouter
 
+      function App() {
+        return (
+          <BrowserRouter>
+            <Header />
+            <Routes />
+            <GlobalStyle />
+          </BrowserRouter>
+        );
+      }
 
 
+### Flex Architecture - Module 07 - Home stylization
+
+  1) Add the library polished. This library handle colors on JavaScript. It means that it can make a color dark, lighten or even add a transparency.
+
+    yarn add polished 
+
+  2) On src/pages/Home
+
+    a) Crete a file called styles.js and configure it as per bellow
+
+      import styled from 'styled-components';
+      import { darken } from 'polished';
+
+      export const ProductList = styled.ul`
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 20px;
+        list-style: none;
+
+        li {
+          display: flex;
+          flex-direction: column;
+          background: #fff;
+          border-radius: 4px;
+          padding: 20px;
+
+          img {
+            align-self: center;
+            max-width: 250px;
+          }
+
+          > strong {
+            font-size: 16px;
+            line-height: 20px;
+            color: #333;
+            margin-top: 5px;
+          }
+
+          > span {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 5px 0 20px;
+          }
+
+          button {
+            background: #7159c1;
+            color: #fff;
+            border: 0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: auto;
+
+            display: flex;
+            align-items: center;
+            transition: background 0.2s;
+
+            &:hover {
+              background: ${darken(0.03, '#7159c1')};
+            }
+
+            div {
+              display: flex;
+              align-items: center;
+              padding: 12px;
+              background: rgba(0, 0, 0, 0.1);
+
+              svg {
+                margin-right: 5px;
+              }
+            }
+
+            span {
+              flex: 1;
+              text-align: center;
+              font-weight: bold;
+            }
+          }
+        }
+      `;
+
+
+    b) Configure the index.js as per bellow
+
+      import React from 'react';
+      import { MdAddShoppingCart } from 'react-icons/md';
+
+      import { ProductList } from './styles';
+
+      export default function Home() {
+        return (
+          <ProductList>
+            <li>
+              <img
+                src="https://static.netshoes.com.br/produtos/tenis-kappa-impact-masculino/02/D24-1738-002/D24-1738-002_zoom1.jpg?ims=544x"
+                alt="Tênis"
+              />
+              <strong>Tênis muito legal</strong>
+              <span>R$129,90</span>
+
+              <button type="button">
+                <div>
+                  <MdAddShoppingCart size={16} color="#FFF" /> 3
+                </div>
+                <span>ADICIONAR AO CARRINHO</span>
+              </button>
+            </li>
+            <li>
+              <img
+                src="https://static.netshoes.com.br/produtos/tenis-kappa-impact-masculino/02/D24-1738-002/D24-1738-002_zoom1.jpg?ims=544x"
+                alt="Tênis"
+              />
+              <strong>Tênis muito legal</strong>
+              <span>R$129,90</span>
+
+              <button type="button">
+                <div>
+                  <MdAddShoppingCart size={16} color="#FFF" /> 3
+                </div>
+                <span>ADICIONAR AO CARRINHO</span>
+              </button>
+            </li>
+            <li>
+              <img
+                src="https://static.netshoes.com.br/produtos/tenis-kappa-impact-masculino/02/D24-1738-002/D24-1738-002_zoom1.jpg?ims=544x"
+                alt="Tênis"
+              />
+              <strong>Tênis muito legal</strong>
+              <span>R$129,90</span>
+
+              <button type="button">
+                <div>
+                  <MdAddShoppingCart size={16} color="#FFF" /> 3
+                </div>
+                <span>ADICIONAR AO CARRINHO</span>
+              </button>
+            </li>
+            <li>
+              <img
+                src="https://static.netshoes.com.br/produtos/tenis-kappa-impact-masculino/02/D24-1738-002/D24-1738-002_zoom1.jpg?ims=544x"
+                alt="Tênis"
+              />
+              <strong>Tênis muito legal</strong>
+              <span>R$129,90</span>
+
+              <button type="button">
+                <div>
+                  <MdAddShoppingCart size={16} color="#FFF" /> 3
+                </div>
+                <span>ADICIONAR AO CARRINHO</span>
+              </button>
+            </li>
+            <li>
+              <img
+                src="https://static.netshoes.com.br/produtos/tenis-kappa-impact-masculino/02/D24-1738-002/D24-1738-002_zoom1.jpg?ims=544x"
+                alt="Tênis"
+              />
+              <strong>Tênis muito legal</strong>
+              <span>R$129,90</span>
+
+              <button type="button">
+                <div>
+                  <MdAddShoppingCart size={16} color="#FFF" /> 3
+                </div>
+                <span>ADICIONAR AO CARRINHO</span>
+              </button>
+            </li>
+            <li>
+              <img
+                src="https://static.netshoes.com.br/produtos/tenis-kappa-impact-masculino/02/D24-1738-002/D24-1738-002_zoom1.jpg?ims=544x"
+                alt="Tênis"
+              />
+              <strong>Tênis muito legal</strong>
+              <span>R$129,90</span>
+
+              <button type="button">
+                <div>
+                  <MdAddShoppingCart size={16} color="#FFF" /> 3
+                </div>
+                <span>ADICIONAR AO CARRINHO</span>
+              </button>
+            </li>
+          </ProductList>
+        );
+      }
 
 
