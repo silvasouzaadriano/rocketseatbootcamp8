@@ -3099,19 +3099,19 @@
 
 
 
-### Flex architecture - Module 07 - Redux Concepts
+### Flex Architecture - Module 07 - Redux Concepts
 
 
   1) Global states are the one which does not have a specific owner
 
 
-### Flex architecture - Module 07 - Project structure  
+### Flex Architecture - Module 07 - Project structure  
 
 
   1) Createa of  a basic project configurating prettier and eslint (based on module 05)
 
 
-### Flex architecture - Module 07 - Routes configuration
+### Flex Architecture - Module 07 - Routes configuration
 
 
   1) Add the library react-router-dom
@@ -3190,7 +3190,8 @@
         a) The BrowserRouter was added on App.js instead of routes.js once there will be a Header which will be used for routes. Also the Header needs to have acces on navigation functionalities. It means
 
 
-### Flex architecture - Module 07 - Global Styles
+### Flex Architecture - Module 07 - Global Styles
+
 
   1) Add the libray styled-components
 
@@ -3255,6 +3256,100 @@
           </BrowserRouter>
         );
       }
+
+
+### Flex Architecture - Module 07 - Header creation
+
+
+  1) Add the library react-icons
+
+    yarn add react-icons
+  
+  2) Create under src folder
+  
+    a) A folder called components
+
+    b) Under components a folder called Header
+
+    c) Under Header
+    
+      i - Create a file called index.js with the following configuration
+
+        import React from 'react';
+        import { Link } from 'react-router-dom';
+
+        import { MdShoppingBasket } from 'react-icons/md';
+
+        import { Container, Cart } from './styles';
+
+        import logo from '../../assets/images/logo.svg';
+
+        export default function Header() {
+          return (
+            <Container>
+              <Link to="/">
+                <img src={logo} alt="Rocketshoes" />
+              </Link>
+
+              <Cart to="/cart">
+                <div>
+                  <strong>Meu carrinho</strong>
+                  <span>3 itens</span>
+                </div>
+                <MdShoppingBasket size={36} color="#FFF" />
+              </Cart>
+            </Container>
+          );
+        }
+
+
+      ii - Crate a file called styles.js with the following configuration
+
+        import styled from 'styled-components';
+        import { Link } from 'react-router-dom';
+
+        export const Container = styled.header`
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin: 50px 0;
+        `;
+
+        export const Cart = styled(Link)`
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          transition: opacity 0.2s;
+
+          &:hover {
+            opacity: 0.7;
+          }
+
+          div {
+            text-align: right;
+            margin-right: 10px;
+
+            strong {
+              display: block;
+              color: #fff;
+            }
+
+            span {
+              font-size: 12px;
+              color: #999;
+            }
+          }
+        `;
+
+
+  
+  3) On src/App.js
+
+    a) Import the Header
+
+    b) Add Header inside to BrowserRouter
+
+
 
 
 
