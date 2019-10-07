@@ -3726,13 +3726,14 @@
 
 ### Flex Architecture - Module 07 - API configuration
 
+
   We'll use the json-server to simulate api (reference on site https://github.com/typicode/json-server). It means create a fake API meanwhile our project is under development. Basically this is the utilization of json-server.
 
   1) Setup the jason server as global running the command bellow
 
     yarn global add json-server or npm install -g json-server
 
-  2) Add the library axio
+  2) Add the library axios
 
     yarn add axios
 
@@ -3758,3 +3759,71 @@
     json-server <json file name> -p <port> -w (to watch for any changes on file)
 
     i.e: json-server server.json -p 3333 -w
+
+
+### Flex Architecture - Module 07 - Searching products on API
+
+  1) On src create a folder called util, then
+
+    a) Inside to util, create a file called format.js with the following configuration
+
+      export const { format: formatPrice } = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      });
+
+  2) On Home/index.js
+
+    a) Extend the Component on current import from react
+
+      import React, { Component } from 'react';
+    
+    a) import the src/util/format.js as per bellow
+
+      import formatPrice from '../../util/format';
+
+    c) Import the api.js
+
+      import api from '../../services/api';
+
+    b) Transform the current function Home in a class component with the following configuration
+
+      export default class Home extends Component {
+      state = {
+        products: [],
+      };
+
+      async componentDidMount() {
+        const response = await api.get('products');
+
+        const data = response.data.map(product => ({
+          ...product,
+          priceFormatted: formatPrice(product.price),
+        }));
+
+        this.setState({ products: data });
+      }
+
+      render() {
+        const { products } = this.state;
+
+        return (
+          <ProductList>
+            {products.map(product => (
+              <li key={product.id}>
+                <img src={product.image} alt={product.title} />
+                <strong>{product.title}</strong>
+                <span>{product.priceFormatted}</span>
+
+                <button type="button">
+                  <div>
+                    <MdAddShoppingCart size={16} color="#FFF" /> 3
+                  </div>
+                  <span>ADICIONAR AO CARRINHO</span>
+                </button>
+              </li>
+            ))}
+          </ProductList>
+        );
+      }
+    }
