@@ -3088,5 +3088,12 @@
 
 
 
+### React Native - Module 06 - Desafio 06
 
+
+  1) Add the library react-native-webview
+
+    yarn add react-native-webview
+
+  2) Proceed with implementation according to README.md
 
