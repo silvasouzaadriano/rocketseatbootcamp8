@@ -3105,5 +3105,8 @@
   1) Global states are the one which does not have a specific owner
 
 
+### Flex architecture - Module 07 - Project structure  
 
+
+  1) Createa of  a basic project configurating prettier and eslint (based on module 05)
 
