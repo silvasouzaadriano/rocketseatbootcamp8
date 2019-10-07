@@ -3110,3 +3110,85 @@
 
   1) Createa of  a basic project configurating prettier and eslint (based on module 05)
 
+
+### Flex architecture - Module 07 - Routes configuration
+
+
+  1) Add the library react-router-dom
+
+  2) Create under src folder a file called routes.js and configure it as per bellow
+
+    import React from 'react';
+    import { Switch, Route } from 'react-router-dom';
+
+    import Home from './pages/Home';
+    import Cart from './pages/Cart';
+
+    export default function Routes() {
+      return (
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/cart" component={Cart} />
+        </Switch>
+      );
+    }
+
+
+  3) On src folder
+
+    a) Create a folder called pages
+
+    b) Under pages create a folder called Cart
+
+      i - Create file called index.js and configure it as per bellow
+
+        import React from 'react';
+
+        // import { Container } from './styles';
+
+        export default function Cart() {
+          return <h1>Carrinho</h1>;
+        }
+
+
+    c) Under pages create a folder called Home
+
+      i - Create a file called index.js and configure it as per bellow
+
+        import React from 'react';
+
+        // import { Container } from './styles';
+
+        export default function Home() {
+          return <h1>Home</h1>;
+        }
+
+
+    d) On App.js
+
+      i - Import the BrowserRouter from 'react-router-dom';
+
+        import { BrowserRouter } from 'react-router-dom';
+
+      ii - Import the routes
+
+        import Routes from './routes';
+
+      ii - Inside to return add the BrowserRouter as per bellow
+
+        function App() {
+          return (
+            <BrowserRouter>
+              {/* <Header /> */}
+              <Routes />
+            </BrowserRouter>
+          );
+        }
+
+      Some considerations:
+
+        a) The BrowserRouter was added on App.js instead of routes.js once there will be a Header which will be used for routes. Also the Header needs to have acces on navigation functionalities. It means
+
+
+
+
