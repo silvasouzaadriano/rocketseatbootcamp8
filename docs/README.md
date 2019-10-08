@@ -4175,7 +4175,7 @@ export default connect(state => ({
       }
 
 
-   2) On cart/reducer.js proceed with the following configuration to set new information relatedt to amount(quantity of products being stored)
+   2) On cart/reducer.js proceed with the following configuration to set new information related to amount(quantity of products being stored)
 
     export default function cart(state = [], action) {
       switch (action.type) {
@@ -4191,3 +4191,44 @@ export default connect(state => ({
           return state;
       }
     }
+
+### Flex Architecture - Module 07 - Product duplicated
+
+  
+  1) In order to facilitate the utilization of objects and arrays which are immutable inside to JavaScript/React/Redux, we'll use the tool immer (reference on site: https://github.com/immerjs/immer). A brief explanation about how immer works: Nowadays we need return all new state copying the previous state with the new changes. Basically we are applying the concept of immutability on the fly. It means se alway create another state instead of change the previously; With immer its possible to have the immutability and also the mutability. It means that its possible catch the current state, perform changes in a draft and then apply these changes on main state. Said that, in order to use this functionality add the library immer as per bellow
+
+    yarn add immer
+
+  2) On cart/reducer.js proceed with the following configuration to avoid product duplicated on cart. Basically when the user to click on the same product twice the application will increment the quantity instead of duplication the product. Note that also will be used the concepts of immer explained on item 1
+
+    import produce from 'immer';
+
+    export default function cart(state = [], action) {
+      switch (action.type) {
+        case 'ADD_TO_CART':
+          return produce(state, draft => {
+            const productIndex = draft.findIndex(p => p.id === action.product.id);
+
+            if (productIndex >= 0) {
+              draft[productIndex].amount += 1;
+            } else {
+              draft.push({
+                ...action.product,
+                amount: 1,
+              });
+            }
+          });
+        default:
+          return state;
+      }
+    }
+
+
+
+  3) By default the ESLint does allow to change parameter received in functions. In order to allow it, on .eslintrc.js, section rules add the the following line
+
+      'no-param-reassign': 'off',
+
+
+
+      
