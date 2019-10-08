@@ -4285,6 +4285,104 @@ export default connect(state => ({
     }
 
 
+### Flex Architecture - Module 07 - Action refactoring
+
+
+  1) On cart create a file called actions.js and proceed with the following configuration
+    
+    export function addToCart(product) {
+      return {
+        type: '@cart/ADD',
+        product,
+      };
+    }
+
+    export function removeFromCart(id) {
+      return {
+        type: '@cart/REMOVE',
+        id,
+      };
+    }
+
+
+  2) On cart/reducer.js
+
+    a) Replace ADD_TO_CART to @cart/ADD
+
+    b) Replace REMOVE_FROM_CART to @cart/REMOVE
+
+
+  2) On Home/index.js
+
+    a) Import the actions from item 1
+
+      import * as CartActions from '../../store/modules/cart/actions';
+
+    c) Import from redux the function called bindActionCreators 
+
+      import { bindActionCreators } from 'redux';
+
+    d) On end of file create a function called mapDispatchToProps as per bellow. This function basically converts actions from redux in properties of components. Using that the actions (addToCart and removeFromCart) may be accessed directly as component properts
+
+      const mapDispatchToProps = dispatch =>
+        bindActionCreators(CartActions, dispatch);
+
+    e) Change the signature of connect as per bellow
+
+      export default connect(
+        null,
+        mapDispatchToProps
+      )(Home);
+
+
+    f) Replace the dispatch call on handleAddProduct as per bellow. Note that now due to configuration about item d, the addToCart might be accessed as a property  
+
+      handleAddProduct = product => {
+      const { addToCart } = this.props;
+
+      addToCart(product);
+      };
+
+
+  3) On Cart/index.js
+
+      a) Import the actions from item 1
+
+        import * as CartActions from '../../store/modules/cart/actions';
+
+      c) Import from redux the function called bindActionCreators 
+
+        import { bindActionCreators } from 'redux';
+
+      d) On end of file create a function called mapDispatchToProps as per bellow. This function basically converts actions from redux in properties of components. Using that the actions (addToCart and removeFromCart) may be accessed directly as component properts
+
+        const mapDispatchToProps = dispatch =>
+          bindActionCreators(CartActions, dispatch);
+
+      e) Change the signature of connect as per bellow
+
+        export default connect(
+          mapStateToProps,
+          mapDispatchToProps
+        )(Cart);
+
+
+      f) On signature of function Cart replace the dispatch to removeFromCart
+
+        function Cart({ cart, removeFromCart })
+
+      g) On remove button replace the current call to
+
+        <td>
+          <button
+            type="button"
+            onClick={() => removeFromCart(product.id)}
+          >
+            <MdDelete size={20} color="#7159c1" />
+          </button>
+        </td>
+      
+    
 
 
       
