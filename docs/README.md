@@ -4450,6 +4450,51 @@ export default connect(state => ({
       }
 
 
+### Flex Architecture - Module 07 - Totals calculation
 
+  
+  1) On Cart/index.js
 
+    a) Import the formatPrice from format
+
+      import { formatPrice } from '../../util/format';
+
+    b) Change the mapStateToProps to contemplate the totals calculations as per bellow
+
+      const mapStateToProps = state => ({
+        cart: state.cart.map(product => ({
+          ...product,
+          subtotal: formatPrice(product.price * product.amount),
+        })),
+        total: formatPrice(
+          state.cart.reduce((total, product) => {
+            return total + product.price * product.amount;
+          }, 0)
+        ),
+      });
+
+      Some considerations:
+      
+        i - Note that by adding the calculation on mapStateToProps is a good practice once it only will be executed if the reducer suffer update. By adding the calculation inside to render means that everytime any state or property to change, the calculation also would changed.
+
+        ii - We are using reduce for Total once it is used when we would like to transform an array in a single value.
+
+    c) Add the product.subtotal on strong related to SubTotal
+
+      <td>
+        <strong>{product.subtotal}</strong>
+      </td>
+
+    d) Add the property total on signature of function Cart
+
+      function Cart({ cart, total, removeFromCart, updateAmount })
+
+    e) Add the total on strong related to TOTAL
+
+      <Total>
+        <span>TOTAL</span>
+        <strong>{total}</strong>
+      </Total>
+
+    
       
