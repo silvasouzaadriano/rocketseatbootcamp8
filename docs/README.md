@@ -4094,3 +4094,100 @@ export default connect(state => ({
 
     e) On section snapshoot its possible make a copy of current state. That is very important to does not loose the state when occur a refresh on the application and we would like to keep using the state until at that moment. By achieve it click in Add Backup, reload the application, then click in upload on item, then the state will be added again to application.
 
+
+### Flex Architecture - Module 07 - Listing at cart
+
+  1) On Cart/index.js
+
+    a) In order to connect the component with redux state, import from 'react-redux' the connect
+
+      import { connect } from 'react-redux';
+
+    b) On the end of file create the function mapStateToProps as per bellow. This basically catch information from state and map as properties to component.
+
+      const mapStateToProps = state => ({
+        cart: state.cart,
+      }); 
+
+    c) Extract the export default from function Cart and move it to bottom of file as per bellow. Note that for this partilar case as we will need catch information from state as properties its necessary call as parameter the mapStateToPros defined on item b.
+
+      export default connect(mapStateToProps)(Cart);
+
+    d) Note that with mapStateToProps passed as parameter, from now on the call Cart have access information called cart. Said that add the cart variable as parameter to call Cart and then proceed with the following configuration on the function Cart
+
+      function Cart({ cart }) {
+        return (
+          <Container>
+            <ProductTable>
+              <thead>
+                <tr>
+                  <th />
+                  <th>PRODUTO</th>
+                  <th>QTD</th>
+                  <th>SUBTOTAL</th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                {cart.map(product => (
+                  <tr>
+                    <td>
+                      <img src={product.image} alt={product.title} />
+                    </td>
+                    <td>
+                      <strong>{product.title}</strong>
+                      <span>{product.priceFormatted}</span>
+                    </td>
+                    <td>
+                      <div>
+                        <button type="button">
+                          <MdRemoveCircleOutline size={20} color="#7159c1" />
+                        </button>
+                        <input type="number" readOnly value={product.amount} />
+                        <button type="button">
+                          <MdAddCircleOutline size={20} color="#7159c1" />
+                        </button>
+                      </div>
+                    </td>
+                    <td>
+                      <strong>R$259,80</strong>
+                    </td>
+                    <td>
+                      <button type="button">
+                        <MdDelete size={20} color="#7159c1" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </ProductTable>
+
+            <footer>
+              <button type="button">Finalizar pedido</button>
+
+              <Total>
+                <span>TOTAL</span>
+                <strong>R$259,80</strong>
+              </Total>
+            </footer>
+          </Container>
+        );
+      }
+
+
+   2) On cart/reducer.js proceed with the following configuration to set new information relatedt to amount(quantity of products being stored)
+
+    export default function cart(state = [], action) {
+      switch (action.type) {
+        case 'ADD_TO_CART':
+          return [
+            ...state,
+            {
+              ...action.product,
+              amount: 1,
+            },
+          ];
+        default:
+          return state;
+      }
+    }
