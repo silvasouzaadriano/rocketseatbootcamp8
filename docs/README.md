@@ -4030,3 +4030,67 @@ export default connect(state => ({
     d) The Redux warns all components that need the new information to update with it.
           
       
+### Flex Architecture - Module 07 - Reactotron & Redux
+
+
+  1) Add the libraries reactotron-react-js and reatotron-redux
+
+    yarn add reactotron-react-js reactotron-redux
+
+  2) On src
+
+    a) Create a folder called config
+
+    b) Inside to folder config, create a file called ReactotronConfig.js with the following configuration
+
+      import Reactotron from 'reactotron-react-js';
+      import { reactotronRedux } from 'reactotron-redux';
+
+      if (process.env.NODE_ENV === 'development') {
+        const tron = Reactotron.configure()
+          .use(reactotronRedux())
+          .connect();
+
+        tron.clear();
+
+        console.tron = tron;
+      }
+
+
+  3) On .eslintrc.js
+
+    a) Enable the utilization of property tron inside to console by adding on rules section the rule bellow
+
+      'no-console': ["error", { allow: ["tron"] }],
+
+
+  4) On src/App.js import the ReactotronConfig.js. Note that this import must be done before the import of store.
+
+
+    import './config/ReactotronConfig';
+
+
+  5) On store/index.js, in order to enable the utilization of tron on Redux
+
+    a) create a variable called enhancer as per bellow
+
+      const enhancer =
+        process.env.NODE_ENV === 'development' ? console.tron.createEnhancer() : null;
+
+    b) Pass the variable as parameter to createStore
+
+      const store = createStore(rootReducer, enhancer);
+
+
+  5) Some considerations about Reactotron with Redux
+
+    a) For each action performed on application, it will be logged to Reactotron
+
+    b) Its possible repeat an action on Reactotron by clicking on symbol -> <- (next to <>)
+
+    c) As Reactotron has total integration with Redux its possible edit and action and change it (by clicking on symbol <>) then dispatching it again.
+
+    d) On section State its possible create a subscription. Basically its passed a reducer name during it creation. Also its possible pass more levels using dot on reducer (i.e: cart[1].title). For everytime when occurr a change on state, it will also reflect to subscription
+
+    e) On section snapshoot its possible make a copy of current state. That is very important to does not loose the state when occur a refresh on the application and we would like to keep using the state until at that moment. By achieve it click in Add Backup, reload the application, then click in upload on item, then the state will be added again to application.
+
