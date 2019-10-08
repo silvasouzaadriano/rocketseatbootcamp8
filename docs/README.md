@@ -3897,4 +3897,136 @@
       }
 
 
+### Flex Architecture - Module 07 - Adding to cart
+
+
+  1) On Home/index.js proceed as per bellow
+
+    a) In order to connect the component with redux state, import from 'react-redux' the connect
+
+      import { connect } from 'react-redux';
+
+    b) Extract the export default from class and move it to bottom of file as per bellow
+
+      export default connect()(Home);
+
+    c) Inside to class
     
+      i - Create a function called handleAddProduct
+
+        handleAddProduct = product => {
+          const { dispatch } = this.props;
+
+          dispatch({
+            type: 'ADD_TO_CART',
+            product,
+          });
+        };
+
+        Note that all component which connect to Redux receives a property called dispatch. This property is responsible for trigger an action to Redux
+
+      ii - Add a call to this function on button passing the product as parameter
+
+        <button
+          type="button"
+          onClick={() => this.handleAddProduct(product)}
+        >
+          <div>
+            <MdAddShoppingCart size={16} color="#FFF" /> 3
+          </div>
+          <span>ADICIONAR AO CARRINHO</span>
+        </button>
+
+  2) On cart/reducer.js proceed as per bellow
+
+    export default function cart(state = [], action) {
+      switch (action.type) {
+        case 'ADD_TO_CART':
+          return [...state, action.product];
+        default:
+          return state;
+      }
+    }
+
+
+    Some considerations:
+    
+    a) All reducer receives by standard two variables: state and action. The action variable is exacly the action being dispatched. The state variable is the previous state of change which will be done at the moment. It means that on the case on cart, the state is an empty array which needed to be fed with a new product.
+    
+    b) As the redux state is immutable, all reducer should have a "face" using swtich with an action in order to decide when an action will be done or not. For example, for ADD_TO_CART, we may return  the state modified as per our requirement. Also its necessary add a default option, returning the previous state without any changes. In other words, every time which a dispatch occur in a component,all reducers are called. However, there is no sense when for instance a reducer ADD_TO_CART is dispatched, the other reducers also being dispatched. The role of swtich on reducer is basically avoid dispatch reducers unnecessarily. It means that the switch will watch the action ADD_TO_CARD, changing it accordingly, but keeping the others actions with the same state (using the default option).
+
+
+  3) On Header/index.js proceed as per bellow
+
+    a) In order to connect the component with redux state, import from 'react-redux' the connect
+
+      import { connect } from 'react-redux';
+
+    b) Extract the export default from class and move it to bottom of file as per bellow
+
+      export default connect(state => ({
+        cartSize: state.cart.length,
+      }))(Header);
+
+      Some considerations:
+
+      a) The connect may receives parameters. The first parameter which it may receives is a function whih
+
+        i - Receives a state which should return the information to be accessed from the component. Usually that is returning in object format
+
+        ii - So, everytime is used the connect in a component and the state changes, the component will also render the component from begging showing the new information existing on redux state.
+
+    b) Add on signature of Header the parameter cardSize
+
+      function Header({ cartSize }) 
+
+    c) Add the variable cartSize on span related to itens
+
+      <span>{cartSize} itens</span>
+
+    d) In the end the entire code must be something like that
+
+      import React from 'react';
+      import { Link } from 'react-router-dom';
+      import { connect } from 'react-redux';
+
+      import { MdShoppingBasket } from 'react-icons/md';
+
+      import { Container, Cart } from './styles';
+
+      import logo from '../../assets/images/logo.svg';
+
+      function Header({ cartSize }) {
+        return (
+          <Container>
+            <Link to="/">
+              <img src={logo} alt="Rocketshoes" />
+            </Link>
+
+            <Cart to="/cart">
+              <div>
+                <strong>Meu carrinho</strong>
+                <span>{cartSize} itens</span>
+              </div>
+              <MdShoppingBasket size={36} color="#FFF" />
+            </Cart>
+          </Container>
+        );
+      }
+
+export default connect(state => ({
+  cartSize: state.cart.length,
+}))(Header);
+
+
+  4) Briefly, the flux is:
+
+    a) The component dispatch an action
+
+    b) The action warns the reducer about this dispatch
+
+    c) The reducer performs the changes needed
+
+    d) The Redux warns all components that need the new information to update with it.
+          
+      
