@@ -4224,10 +4224,66 @@ export default connect(state => ({
     }
 
 
-
   3) By default the ESLint does allow to change parameter received in functions. In order to allow it, on .eslintrc.js, section rules add the the following line
 
       'no-param-reassign': 'off',
+
+
+### Flex Architecture - Module 07 - Removing products
+
+
+  1) On Cart/index.js. In order to remove a product from cart its necessary create a function to handle it. Said that proceed with following changes on the current code
+
+    a) On signature of function ad as parameter the property dispatch
+
+      function Cart({ cart, dispatch })
+
+    b) On Remove button add a call as per bellow
+
+      <td>
+        <button
+          type="button"
+          onClick={() =>
+            dispatch({ type: 'REMOVE_FROM_CART', id: product.id })
+          }
+        >
+          <MdDelete size={20} color="#7159c1" />
+        </button>
+      </td>
+
+  2) On cart/reducer.js proceed with the following configuration to set deletion products
+
+
+    import produce from 'immer';
+
+    export default function cart(state = [], action) {
+      switch (action.type) {
+        case 'ADD_TO_CART':
+          return produce(state, draft => {
+            const productIndex = draft.findIndex(p => p.id === action.product.id);
+
+            if (productIndex >= 0) {
+              draft[productIndex].amount += 1;
+            } else {
+              draft.push({
+                ...action.product,
+                amount: 1,
+              });
+            }
+          });
+        case 'REMOVE_FROM_CART':
+          return produce(state, draft => {
+            const productIndex = draft.findIndex(p => p.id === action.id);
+
+            if (productIndex >= 0) {
+              draft.splice(productIndex, 1);
+            }
+          });
+        default:
+          return state;
+      }
+    }
+
 
 
 
