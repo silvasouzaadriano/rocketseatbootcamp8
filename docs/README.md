@@ -3763,6 +3763,7 @@
 
 ### Flex Architecture - Module 07 - Searching products on API
 
+
   1) On src create a folder called util, then
 
     a) Inside to util, create a file called format.js with the following configuration
@@ -3827,3 +3828,73 @@
         );
       }
     }
+
+
+### Flex Architecture - Module 07 - Redux Configuration
+
+  1) Add the libraries redux and react-redux
+
+    yarn add redux react-redux
+
+  2) On src
+  
+    a) Create a folder called store, then
+
+      i - Create a file called index.js with the following configuration
+
+        import { createStore } from 'redux';
+
+        import rootReducer from './modules/rootreducer';
+
+        const store = createStore(rootReducer);
+
+        export default store;
+
+
+    b) Inside to store create a folder called modules, then
+
+      i - Create a file called rootReducer.js with the following configuration
+
+        import { combineReducers } from 'redux';
+
+        import cart from './cart/reducer';
+
+        export default combineReducers({
+          cart,
+        });
+
+
+    c) Inside to modules create a folder called cart, then
+
+      i - Create a file called reducer.js with the following configuration
+
+        export default function cart() {
+          return [];
+        }
+    
+  3) On src/App.js
+
+    a) Import the Provider from react-redux. This Provider will left the store set on store/index.js available for all components.
+
+      import { Provider } from 'react-redux';
+
+    b) Import the store from store/index.js
+
+      import store from './store';
+   
+    b) Add the Provier around all components of application. Also pass the store (item b) as parameter to Provider
+
+      function App() {
+        return (
+          <Provider store={store}>
+            <BrowserRouter>
+              <Header />
+              <Routes />
+              <GlobalStyle />
+            </BrowserRouter>
+          </Provider>
+        );
+      }
+
+
+    
