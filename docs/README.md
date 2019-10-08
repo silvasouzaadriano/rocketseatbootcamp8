@@ -4496,5 +4496,37 @@ export default connect(state => ({
         <strong>{total}</strong>
       </Total>
 
-    
+### Flex Architecture - Module 07 - Showing quantities
+
+  1) On Home/index.js
+
+    a) Create a mapStateToProps as per bellow
+
+      const mapStateToProps = state => ({
+        amount: state.cart.reduce((amount, product) => {
+          amount[product.id] = product.amount;
+
+          return amount;
+        }, {}),
+      });
+
+    b) Add the mapStateToProps on connect
+
+      export default connect(
+        mapStateToProps,
+        mapDispatchToProps
+      )(Home);
+
+    c) Inside to render create a property called amount as per bellow 
+
+      const { amount } = this.props;
+
+    d) Add the property amount to DIV which contain the amount information
+
+      <div>
+        <MdAddShoppingCart size={16} color="#FFF" />{' '}
+        {amount[product.id] || 0}
+      </div>
+      
+
       
