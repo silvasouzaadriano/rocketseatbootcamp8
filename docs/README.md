@@ -4382,7 +4382,74 @@ export default connect(state => ({
           </button>
         </td>
       
+
+### Flex Architecture - Module 07 - Changing quantity
+
+
+  1) On cart/actions.js
+
+    a) Create a function called updateAmout as per bellow
+
+      export function updateAmount(id, amount) {
+        return {
+          type: '@cart/UPDATE_AMOUNT',
+          id,
+          amount,
+        };
+      }
+
+  2) On Cart/index.js
+
+    a) Add to signature of function Cart the updateAmount as parameter
+
+      function Cart({ cart, removeFromCart, updateAmount })
+
+    b) Inside to function Cart
     
+      i - Create a function called increment as per bellow\
+
+        function increment(product) {
+          updateAmount(product.id, product.amount + 1);
+        }
+
+        1) Update the increment amount button calling the function increment as per bellow
+
+          <button type="button" onClick={() => increment(product)}>
+            <MdAddCircleOutline size={20} color="#7159c1" />
+          </button>
+
+      ii - Create a function called decrement as per bellow
+
+        function decrement(product) {
+          updateAmount(product.id, product.amount - 1);
+        }
+
+        1) Update the decrement amount button calling the function decrement as per bellow
+
+          <button type="button" onClick={() => decrement(product)}>
+            <MdRemoveCircleOutline size={20} color="#7159c1" />
+          </button>
+
+          
+  3) On cart/reducer.js
+
+    a) Create a case called @cart/UPDATE_AMOUNT as per bellow
+
+      case '@cart/UPDATE_AMOUNT': {
+        if (action.amount <= 0) {
+          return state;
+        }
+
+        return produce(state, draft => {
+          const productIndex = draft.findIndex(p => p.id === action.id);
+
+          if (productIndex >= 0) {
+            draft[productIndex].amount = Number(action.amount);
+          }
+        });
+      }
+
+
 
 
       
