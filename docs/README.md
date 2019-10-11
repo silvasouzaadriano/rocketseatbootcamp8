@@ -4723,4 +4723,45 @@ export default connect(state => ({
         sagaMiddleware.run(rootSaga);
 
 
+### Flex Architecture - Module 07 - Reactotron & Saga
+
+
+  1) Add the library reactotron-redux-saga
+
+    yarn add reactotron-redux-saga
+
+  2) On src/config/ReactotronConfig.js
+
+    a) Import the reactotronSaga from reactotron-redux-saga
+
+    b) Add an use on const tron as per bellow
+
+      if (process.env.NODE_ENV === 'development') {
+        const tron = Reactotron.configure()
+          .use(reactotronRedux())
+          .use(reactotronSaga())
+          .connect();
+
+        tron.clear();
+
+        console.tron = tron;
+      }
+
+  3) On src/store/index.js
+
+    a) Before the constant sagaMiddleware, create a new one called sagaMonitor as per bellow
+
+      const sagaMonitor =
+        process.env.NODE_ENV === 'development'
+          ? console.tron.createSagaMonitor()
+          : null;
+
+    b) Chante the constant sagaMiddleware as per bellow
+    
+        const sagaMiddleware = createSagaMiddleware({
+          sagaMonitor,
+        });
+
+
+
 
