@@ -3844,7 +3844,7 @@
 
         import { createStore } from 'redux';
 
-        import rootReducer from './modules/rootreducer';
+        import rootReducer from './modules/rootReducer';
 
         const store = createStore(rootReducer);
 
@@ -4529,4 +4529,198 @@ export default connect(state => ({
       </div>
       
 
+### Flex Architecture - Module 07 - Redux Saga configuration
+
+  For this section will be configurated a concept related to middleware. Basically the middle is an interception, similato to Node, but instead of intercep application routes the redux middleware can intercep actions. It means that always an action is dispathed a middleware might be also started to initiate a side effect, which might be for instance an async, asynct store, DB acces or even an API call. This functionality ise used in Redux to complement detailes related to application.
+
+
+
+  1) Add the library redux-saga
+
+    yarn add redux-saga
+
+  2) On src/store/modules/cart
+
+    a) Create a file called sagas.js as per bellow
+
+      import { call, put, all, takeLatest } from 'redux-saga/effects';
+
+      import api from '../../../services/api';
+
+      import { addToCartSuccess } from './actions';
+
+      function* addToCart({ id }) {
+        const response = yield call(api.get, `/products/${id}`);
+
+        yield put(addToCartSuccess(response.data));
+      }
+
+      export default all([takeLatest('@cart/ADD_REQUEST', addToCart)]);
+
+
+    Some considerations:
+
+      i - The function being created is responsible to access the API, search for the detailed information about product and add to cart. Nowadays this functionality is done by directlu byt Redux. Basically is dispatched an action, the cart reducer watch this acton and then add it to cart. Now with this function will be done an additional step: a) When the user to click in a product to add to cart, will be dispatched the action add to cart; b) Who will watch the action will not be directly the reducer, but this function; c) It will search on API the details and then call the reducer to add to cart
+
+      ii - The * on the function means generator (similar to async). The generator is more powerfull than async/await.
+
+      iii - The yield means the the await of * (generator)
+
+
+    b) change the actions.js as per bellow
+
+      export function addToCartRequest(id) {
+        return {
+          type: '@cart/ADD_REQUEST',
+          id,
+        };
+      }
+
+      export function addToCartSuccess(product) {
+        return {
+          type: '@cart/ADD_SUCCESS',
+          product,
+        };
+      }
+
+      export function removeFromCart(id) {
+        return {
+          type: '@cart/REMOVE',
+          id,
+        };
+      }
+
+      export function updateAmount(id, amount) {
+        return {
+          type: '@cart/UPDATE_AMOUNT',
+          id,
+          amount,
+        };
+      }
+
+    c) change the reducer.js as per bellow
+
+      import produce from 'immer';
+
+      export default function cart(state = [], action) {
+        switch (action.type) {
+          case '@cart/ADD_SUCCESS':
+            return produce(state, draft => {
+              const productIndex = draft.findIndex(p => p.id === action.product.id);
+
+              if (productIndex >= 0) {
+                draft[productIndex].amount += 1;
+              } else {
+                draft.push({
+                  ...action.product,
+                  amount: 1,
+                });
+              }
+            });
+          case '@cart/REMOVE':
+            return produce(state, draft => {
+              const productIndex = draft.findIndex(p => p.id === action.id);
+
+              if (productIndex >= 0) {
+                draft.splice(productIndex, 1);
+              }
+            });
+          case '@cart/UPDATE_AMOUNT': {
+            if (action.amount <= 0) {
+              return state;
+            }
+
+            return produce(state, draft => {
+              const productIndex = draft.findIndex(p => p.id === action.id);
+
+              if (productIndex >= 0) {
+                draft[productIndex].amount = Number(action.amount);
+              }
+            });
+          }
+          default:
+            return state;
+        }
+      }
+
+
+  
+  3) On src/pages/Home/index.js
+
+    a) On handleAddProduct method and where is used this method, change to use only the id instead of entire product
+
+      handleAddProduct = id => {
+        const { addToCartRequest } = this.props;
+
+        addToCartRequest(id);
+      };
+
+      <button
+        type="button"
+        onClick={() => this.handleAddProduct(product.id)}
+      >
+        <div>
+          <MdAddShoppingCart size={16} color="#FFF" />{' '}
+          {amount[product.id] || 0}
+        </div>
+        <span>ADICIONAR AO CARRINHO</span>
+      </button>
+
+
+  4) On src/store/modules
+
+    a) Create a file called rootSaga.js as per bellow
+
+      import { all } from 'redux-saga/effects';
+
+      import cart from './cart/sagas';
+
+      export default function* rootSaga() {
+        return yield all([cart]);
+      }
+
+
+  5) On src/store
+
+    a) Change the index.js as per bellow
+
       
+      i - Import from redux the functions applyMiddleware and compose
+
+        import { createStore, applyMiddleware, compose } from 'redux';
+
+        Note that the componse perform a merge among configurations
+
+      
+      ii - Import the function createSagaMiddleware from redux-saga
+
+        import createSagaMiddleware from 'redux-saga';
+
+      
+      iii - Import the rootSaga file
+
+        import rootSaga from './modules/rootSaga';
+
+      
+      iv - Create a constant called sagaMiddeware as per bellow
+
+        const sagaMiddleware = createSagaMiddleware();
+
+      
+      v - Inside to enhancer proceed with changes as per bellow
+
+        const enhancer =
+          process.env.NODE_ENV === 'development'
+            ? compose(
+                console.tron.createEnhancer(),
+                applyMiddleware(sagaMiddleware)
+              )
+            : applyMiddleware(sagaMiddleware);
+
+      
+      vi - After constant store add a call to rootSaga as per bellow
+
+        sagaMiddleware.run(rootSaga);
+
+
+
