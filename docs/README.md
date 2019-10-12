@@ -4890,7 +4890,7 @@ export default connect(state => ({
       export default all([takeLatest('@cart/ADD_REQUEST', addToCart)]);
 
 
-### Flex Architecture - Module 07 - React Toastify
+### Flex Architecture - Module 07 - React ToastifyReact Toastify
 
 
   1) Add the libray react-toastify. This lib is used to show friendly messages.
@@ -5019,6 +5019,264 @@ export default connect(state => ({
 
       export default all([takeLatest('@cart/ADD_REQUEST', addToCart)]);
 
+
+### Flex Architecture - Module 07 - Stock during changing quantities
+
+  
+  1) On src/store/modules/cart
+  
+    a) Change the actions.js as per bellow
+
+      export function addToCartRequest(id) {
+        return {
+          type: '@cart/ADD_REQUEST',
+          id,
+        };
+      }
+
+      export function addToCartSuccess(product) {
+        return {
+          type: '@cart/ADD_SUCCESS',
+          product,
+        };
+      }
+
+      export function removeFromCart(id) {
+        return {
+          type: '@cart/REMOVE',
+          id,
+        };
+      }
+
+      export function updateAmountRequest(id, amount) {
+        return {
+          type: '@cart/UPDATE_AMOUNT_REQUEST',
+          id,
+          amount,
+        };
+      }
+
+      export function updateAmountSuccess(id, amount) {
+        return {
+          type: '@cart/UPDATE_AMOUNT_SUCCESS',
+          id,
+          amount,
+        };
+      }
+
+
+
+  2) On src/pages/Cart
+  
+    a) Change index.js as per bellow
+
+      import React from 'react';
+      import { connect } from 'react-redux';
+      import { bindActionCreators } from 'redux';
+      import {
+        MdRemoveCircleOutline,
+        MdAddCircleOutline,
+        MdDelete,
+      } from 'react-icons/md';
+
+      import { formatPrice } from '../../util/format';
+
+      import * as CartActions from '../../store/modules/cart/actions';
+
+      import { Container, ProductTable, Total } from './styles';
+
+      function Cart({ cart, total, removeFromCart, updateAmountRequest }) {
+        function increment(product) {
+          updateAmountRequest(product.id, product.amount + 1);
+        }
+
+        function decrement(product) {
+          updateAmountRequest(product.id, product.amount - 1);
+        }
+
+        return (
+          <Container>
+            <ProductTable>
+              <thead>
+                <tr>
+                  <th />
+                  <th>PRODUTO</th>
+                  <th>QTD</th>
+                  <th>SUBTOTAL</th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                {cart.map(product => (
+                  <tr>
+                    <td>
+                      <img src={product.image} alt={product.title} />
+                    </td>
+                    <td>
+                      <strong>{product.title}</strong>
+                      <span>{product.priceFormatted}</span>
+                    </td>
+                    <td>
+                      <div>
+                        <button type="button" onClick={() => decrement(product)}>
+                          <MdRemoveCircleOutline size={20} color="#7159c1" />
+                        </button>
+                        <input type="number" readOnly value={product.amount} />
+                        <button type="button" onClick={() => increment(product)}>
+                          <MdAddCircleOutline size={20} color="#7159c1" />
+                        </button>
+                      </div>
+                    </td>
+                    <td>
+                      <strong>{product.subtotal}</strong>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        onClick={() => removeFromCart(product.id)}
+                      >
+                        <MdDelete size={20} color="#7159c1" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </ProductTable>
+
+            <footer>
+              <button type="button">Finalizar pedido</button>
+
+              <Total>
+                <span>TOTAL</span>
+                <strong>{total}</strong>
+              </Total>
+            </footer>
+          </Container>
+        );
+      }
+
+      const mapStateToProps = state => ({
+        cart: state.cart.map(product => ({
+          ...product,
+          subtotal: formatPrice(product.price * product.amount),
+        })),
+        total: formatPrice(
+          state.cart.reduce((total, product) => {
+            return total + product.price * product.amount;
+          }, 0)
+        ),
+      });
+
+      const mapDispatchToProps = dispatch =>
+        bindActionCreators(CartActions, dispatch);
+
+      export default connect(
+        mapStateToProps,
+        mapDispatchToProps
+      )(Cart);
+      
+
+  
+  3) On src/store/modules/cart
+  
+    a) Change the sagas.js as per bellow
+
+      import { call, select, put, all, takeLatest } from 'redux-saga/effects';
+      import { toast } from 'react-toastify';
+
+      import api from '../../../services/api';
+      import { formatPrice } from '../../../util/format';
+
+      import { addToCartSuccess, updateAmountSuccess } from './actions';
+
+      function* addToCart({ id }) {
+        const productExists = yield select(state =>
+          state.cart.find(p => p.id === id)
+        );
+
+        const stock = yield call(api.get, `/stock/${id}`);
+
+        const stockAmount = stock.data.amount;
+        const currentAmount = productExists ? productExists.amount : 0;
+
+        const amount = currentAmount + 1;
+
+        if (amount > stockAmount) {
+          toast.error('Quantidade solicitada fora do estoque');
+          return;
+        }
+
+        if (productExists) {
+          yield put(updateAmountSuccess(id, amount));
+        } else {
+          const response = yield call(api.get, `/products/${id}`);
+
+          const data = {
+            ...response.data,
+            amount: 1,
+            priceFormatted: formatPrice(response.data.price),
+          };
+
+          yield put(addToCartSuccess(data));
+        }
+      }
+
+function* updateAmount({ id, amount }) {
+  if (amount <= 0) return;
+
+  const stock = yield call(api.get, `/stock/${id}`);
+  const stockAmount = stock.data.amount;
+
+  if (amount > stockAmount) {
+    toast.error('Quantidade solicitada fora do estoque');
+    return;
+  }
+
+  yield put(updateAmountSuccess(id, amount));
+}
+
+export default all([
+  takeLatest('@cart/ADD_REQUEST', addToCart),
+  takeLatest('@cart/UPDATE_AMOUNT_REQUEST', updateAmount),
+]);
+
+
+  
+  4) On src/store/modules/cart
+  
+    a) Change the reducer.js as per bellow
+
+      import produce from 'immer';
+
+      export default function cart(state = [], action) {
+        switch (action.type) {
+          case '@cart/ADD_SUCCESS':
+            return produce(state, draft => {
+              const { product } = action;
+
+              draft.push(product);
+            });
+          case '@cart/REMOVE':
+            return produce(state, draft => {
+              const productIndex = draft.findIndex(p => p.id === action.id);
+
+              if (productIndex >= 0) {
+                draft.splice(productIndex, 1);
+              }
+            });
+          case '@cart/UPDATE_AMOUNT_SUCCESS': {
+            return produce(state, draft => {
+              const productIndex = draft.findIndex(p => p.id === action.id);
+
+              if (productIndex >= 0) {
+                draft[productIndex].amount = Number(action.amount);
+              }
+            });
+          }
+          default:
+            return state;
+        }
+      }
 
 
 
