@@ -4888,3 +4888,137 @@ export default connect(state => ({
       }
 
       export default all([takeLatest('@cart/ADD_REQUEST', addToCart)]);
+
+
+### Flex Architecture - Module 07 - React Toastify
+
+
+  1) Add the libray react-toastify. This lib is used to show friendly messages.
+
+    yarn add react-toastify 
+
+
+  2) On src
+  
+    a) Change the App.js as per bellow
+
+      import React from 'react';
+      import { BrowserRouter } from 'react-router-dom';
+      import { Provider } from 'react-redux';
+      import { ToastContainer } from 'react-toastify';
+
+      import './config/ReactotronConfig';
+
+      import GlobalStyle from './styles/global';
+      import Header from './components/Header';
+      import Routes from './routes';
+
+      import store from './store';
+
+      function App() {
+        return (
+          <Provider store={store}>
+            <BrowserRouter>
+              <Header />
+              <Routes />
+              <GlobalStyle />
+              <ToastContainer autoClose={3000} />
+            </BrowserRouter>
+          </Provider>
+        );
+      }
+
+      export default App;
+
+
+  3) On src/styles
+  
+    a) Change the global.js as per bellow
+
+      import { createGlobalStyle } from 'styled-components';
+
+      import 'react-toastify/dist/ReactToastify.css';
+      import background from '../assets/images/background.svg';
+
+      export default createGlobalStyle`
+        @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+        * {
+          margin: 0;
+          padding: 0;
+          outline: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          background: #191920 url(${background})  no-repeat center top;
+          -webkit-font-smoothing: antialiased;
+        }
+
+        body, input, button {
+          font: 14px Roboto, sans-serif;
+        }
+
+        #root {
+          max-width: 1020px;
+          margin: 0 auto;
+          padding: 0 20px 50px;
+        }
+
+        button {
+          cursor: pointer;
+        }
+
+      `;
+
+
+  
+  4) On src/store/modules/cart
+  
+    a) Change the sagas.js as per bellow
+
+      import { call, select, put, all, takeLatest } from 'redux-saga/effects';
+      import { toast } from 'react-toastify';
+
+      import api from '../../../services/api';
+      import { formatPrice } from '../../../util/format';
+
+      import { addToCartSuccess, updateAmount } from './actions';
+
+      function* addToCart({ id }) {
+        const productExists = yield select(state =>
+          state.cart.find(p => p.id === id)
+        );
+
+        const stock = yield call(api.get, `/stock/${id}`);
+
+        const stockAmount = stock.data.amount;
+        const currentAmount = productExists ? productExists.amount : 0;
+
+        const amount = currentAmount + 1;
+
+        if (amount > stockAmount) {
+          toast.error('Quantidade solicitada fora do estoque');
+          return;
+        }
+
+        if (productExists) {
+          yield put(updateAmount(id, amount));
+        } else {
+          const response = yield call(api.get, `/products/${id}`);
+
+          const data = {
+            ...response.data,
+            amount: 1,
+            priceFormatted: formatPrice(response.data.price),
+          };
+
+          yield put(addToCartSuccess(data));
+        }
+      }
+
+      export default all([takeLatest('@cart/ADD_REQUEST', addToCart)]);
+
+
+
+
