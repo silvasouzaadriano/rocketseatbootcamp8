@@ -5279,4 +5279,132 @@ export default all([
       }
 
 
+### Flex Architecture - Module 07 - Navigating on Saga
+
+
+  1) Add the libray history. This lib control the history API from browser, which means the routes that the reacto router dom uses
+
+    yarn add history
+
+  
+  2) On src/services
+
+    a) Create a file history.js as per bellow
+
+      import { createBrowserHistory } from 'history';
+
+      const history = createBrowserHistory();
+
+      export default history;
+
+
+  3) On src
+  
+    a) Change the App.js as per bellow
+
+      import React from 'react';
+      import { Router } from 'react-router-dom';
+      import { Provider } from 'react-redux';
+      import { ToastContainer } from 'react-toastify';
+
+      import './config/ReactotronConfig';
+
+      import GlobalStyle from './styles/global';
+      import Header from './components/Header';
+      import Routes from './routes';
+
+      import history from './services/history';
+      import store from './store';
+
+      function App() {
+        return (
+          <Provider store={store}>
+            <Router history={history}>
+              <Header />
+              <Routes />
+              <GlobalStyle />
+              <ToastContainer autoClose={3000} />
+            </Router>
+          </Provider>
+        );
+      }
+
+      export default App;
+
+
+
+  4) On src/store/modules/cart
+  
+    a) Change the sagas.js as per bellow
+
+      import { call, select, put, all, takeLatest } from 'redux-saga/effects';
+      import { toast } from 'react-toastify';
+
+      import api from '../../../services/api';
+      import history from '../../../services/history';
+      import { formatPrice } from '../../../util/format';
+
+      import { addToCartSuccess, updateAmountSuccess } from './actions';
+
+      function* addToCart({ id }) {
+        const productExists = yield select(state =>
+          state.cart.find(p => p.id === id)
+        );
+
+        const stock = yield call(api.get, `/stock/${id}`);
+
+        const stockAmount = stock.data.amount;
+        const currentAmount = productExists ? productExists.amount : 0;
+
+        const amount = currentAmount + 1;
+
+        if (amount > stockAmount) {
+          toast.error('Quantidade solicitada fora do estoque');
+          return;
+        }
+
+        if (productExists) {
+          yield put(updateAmountSuccess(id, amount));
+        } else {
+          const response = yield call(api.get, `/products/${id}`);
+
+          const data = {
+            ...response.data,
+            amount: 1,
+            priceFormatted: formatPrice(response.data.price),
+          };
+
+          yield put(addToCartSuccess(data));
+
+          history.push('/cart');
+        }
+      }
+
+      function* updateAmount({ id, amount }) {
+        if (amount <= 0) return;
+
+        const stock = yield call(api.get, `/stock/${id}`);
+        const stockAmount = stock.data.amount;
+
+        if (amount > stockAmount) {
+          toast.error('Quantidade solicitada fora do estoque');
+          return;
+        }
+
+        yield put(updateAmountSuccess(id, amount));
+      }
+
+      export default all([
+        takeLatest('@cart/ADD_REQUEST', addToCart),
+        takeLatest('@cart/UPDATE_AMOUNT_REQUEST', updateAmount),
+      ]);
+
+
+
+  5) In order to test it might be added the property -d on in order to start a delay during API call. For instance on the example bellow we are adding a delay of 2 seconds
+
+    json-server server.json -p 3333 -w -d 2000
+
+
+
 
