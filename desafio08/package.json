@@ -1,5 +1,5 @@
 {
-  "name": "desafio07",
+  "name": "desafio08",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -16,7 +16,7 @@
     "polished": "^3.4.1",
     "prop-types": "^15.7.2",
     "react": "16.9.0",
-    "react-native": "^0.61.2",
+    "react-native": "0.61.2",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-intl": "^1.0.0",
     "react-native-vector-icons": "^6.6.0",
@@ -28,7 +28,6 @@
     "reactotron-redux-saga": "^4.2.2",
     "redux": "^4.0.4",
     "redux-saga": "^1.1.1",
-    "start": "^5.1.0",
     "styled-components": "^4.4.0"
   },
   "devDependencies": {
