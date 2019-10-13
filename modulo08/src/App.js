@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 
 function App() {
   const [tech, setTech] = useState([]);
   const [newTech, setNewTech] = useState('');
 
-  function handleAdd() {
+  const handleAdd = useCallback(() => {
     setTech([...tech, newTech]);
     setNewTech(''); // clean up the input text
-  }
+  }, [newTech, tech]);
 
   // This hook is being run at once. That one replace the componentDidMount
   useEffect(() => {

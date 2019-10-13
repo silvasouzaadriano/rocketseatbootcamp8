@@ -5631,3 +5631,58 @@ export default all([
     }
 
     export default App;
+
+
+### React Hooks - Module 08 - Hook useCallback
+
+
+  The useCallback is similar to useMemo. However instead of return a single value it returns a function. This hook is used to avoid run function unnecessarily. For instance the function handleAdd
+  only will be called once newTech and tech variables changed. The sintaxe of current function must be changed to became a arrow function. The useCallback is usually used in function which handle states, component properties of any type of variable inside.
+
+  1) Change the App.js in order to have the following code:
+
+    import React, { useState, useEffect, useMemo, useCallback } from 'react';
+
+    function App() {
+      const [tech, setTech] = useState([]);
+      const [newTech, setNewTech] = useState('');
+
+      const handleAdd = useCallback(() => {
+        setTech([...tech, newTech]);
+        setNewTech(''); // clean up the input text
+      }, [newTech, tech]);
+
+      // This hook is being run at once. That one replace the componentDidMount
+      useEffect(() => {
+        const storageTech = localStorage.getItem('tech');
+
+        if (storageTech) {
+          setTech(JSON.parse(storageTech));
+        }
+      }, []);
+
+      // This hook replace the componentDidUpdate
+      useEffect(() => {
+        localStorage.setItem('tech', JSON.stringify(tech));
+      }, [tech]);
+
+      const techSize = useMemo(() => tech.length, [tech]);
+
+      return (
+        <>
+          <ul>
+            {tech.map(t => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+          <strong>Você tem {techSize} tecnologias</strong>
+          <br />
+          <input value={newTech} onChange={e => setNewTech(e.target.value)} />
+          <button type="button" onClick={handleAdd}>
+            Adicionar
+          </button>
+        </>
+      );
+    }
+
+    export default App;
