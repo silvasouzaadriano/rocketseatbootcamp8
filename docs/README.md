@@ -2404,7 +2404,7 @@
 
   1) Add the libray react-nactive-vector-icons 
 
-    a) yarn add react-nactive-vector-icons
+    a) yarn add react-native-vector-icons
 
     b) After that, proceed with link of new library to native components
 
@@ -5404,7 +5404,4 @@ export default all([
   5) In order to test it might be added the property -d on in order to start a delay during API call. For instance on the example bellow we are adding a delay of 2 seconds
 
     json-server server.json -p 3333 -w -d 2000
-
-
-
 
