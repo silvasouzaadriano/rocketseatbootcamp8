@@ -5487,4 +5487,94 @@ export default all([
       g) On the old way we had the this.setState which was used to update all states at once. With hooks we use a single function by state in order to update only the state which is necessary. 
 
 
+### React Hooks - Module 08 - Hook useEffect
 
+  The useEffect is a hook which ovelap the previous application methods: componentDidMount, componentDidUpdate and componentWillUnmount.
+
+  1) Change the App.js in order to have the following code:
+
+
+    import React, { useState, useEffect } from 'react';
+
+    function App() {
+      const [tech, setTech] = useState([]);
+      const [newTech, setNewTech] = useState('');
+
+      function handleAdd() {
+        setTech([...tech, newTech]);
+        setNewTech(''); // clean up the input text
+      }
+
+      // This hook is being run at once. That one replace the componentDidMount
+      useEffect(() => {
+        const storageTech = localStorage.getItem('tech');
+
+        if (storageTech) {
+          setTech(JSON.parse(storageTech));
+        }
+      }, []);
+
+      // This hook replace the componentDidUpdate
+      useEffect(() => {
+        localStorage.setItem('tech', JSON.stringify(tech));
+      }, [tech]);
+
+      return (
+        <>
+          <ul>
+            {tech.map(t => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+          <input value={newTech} onChange={e => setNewTech(e.target.value)} />
+          <button type="button" onClick={handleAdd}>
+            Adicionar
+          </button>
+        </>
+      );
+    }
+
+    export default App;
+
+
+
+    Some considerations:
+
+
+      a) componentDidUpdate
+
+        Previously if we would like to store information on local storage whenever a state changed, we had to use the componentDidUpdate, compare the previous with current state then perform a local store setItem to add a new value to current one.
+
+        Using the hook useEffect this process is more simple once its necessary create a call similar that: useEffect(() => <{function to be run}>, <when run the function>)
+
+            useEffect(() => {
+              localStorage.setItem('tech', JSON.stringify(tech));
+            }, [tech]);
+
+          i - The fist parameter is the function to be run
+
+          ii - The second parameter is when the function will be run. It also is an array of dependencies which stay monitoring changes in certain variables. For instance, lets say I would like to monitor the variable tech. The hook will manage it to run the function of first parameter whenever the variable tech changed.
+
+      
+      b) componentDidMount
+
+        In order to run the useEffect at once, similar to componentDidMount, we have to use almost the same sintax of item a. The variable for the second parameter must be ommited, It means that the array of dependencies regarding to "when it should be run" must be empty.
+
+            useEffect(() => {
+              const storageTech = localStorage.getItem('tech');
+
+              if (storageTech) {
+                setTech(JSON.parse(storageTech));
+              }
+            }, []);
+
+
+      c) componentWillUnmount
+
+        Although there will be few cases on this situation, in order to perform a function as soon as the component is no longer mounted its necessary only return a function from the useEffect components, However, basically that is done when is done for instance an event listener on the useEffect. It means that if we would like to remove that event listener on the moment of the componet no long exists we have to return a function similar to bellow
+
+          return () => {
+            document.removeEventListener()
+          };
+      
+        
