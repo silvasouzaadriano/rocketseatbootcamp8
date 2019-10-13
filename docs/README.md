@@ -5783,3 +5783,217 @@ export default all([
           mapStateToProps,
           mapDispatchToProps
         )(Home);
+
+
+### React Hooks - Module 08 - Hooks with Redux
+
+
+  1) On src/components/Header/index.js proceed with changes in order to have the code bellow
+
+    import React from 'react';
+    import { Link } from 'react-router-dom';
+    import { useSelector } from 'react-redux';
+
+    import { MdShoppingBasket } from 'react-icons/md';
+
+    import { Container, Cart } from './styles';
+
+    import logo from '../../assets/images/logo.svg';
+
+    export default function Header() {
+      const cartSize = useSelector(state => state.cart.length);
+
+      return (
+        <Container>
+          <Link to="/">
+            <img src={logo} alt="Rocketshoes" />
+          </Link>
+
+          <Cart to="/cart">
+            <div>
+              <strong>Meu carrinho</strong>
+              <span>{cartSize} itens</span>
+            </div>
+            <MdShoppingBasket size={36} color="#FFF" />
+          </Cart>
+        </Container>
+      );
+    }
+
+  2) On src/pages/Home/index.js proceed with changes in order to have the code bellow
+
+    import React, { useState, useEffect } from 'react';
+    import { useDispatch, useSelector } from 'react-redux';
+    import { MdAddShoppingCart } from 'react-icons/md';
+    import { formatPrice } from '../../util/format';
+    import api from '../../services/api';
+
+    import * as CartActions from '../../store/modules/cart/actions';
+
+    import { ProductList } from './styles';
+
+    export default function Home() {
+      const [products, setProducts] = useState([]);
+      const amount = useSelector(state =>
+        state.cart.reduce((sumAmount, product) => {
+          sumAmount[product.id] = product.amount;
+
+          return sumAmount;
+        }, {})
+      );
+
+      const dispatch = useDispatch();
+
+      useEffect(() => {
+        async function loadProducts() {
+          const response = await api.get('products');
+
+          const data = response.data.map(product => ({
+            ...product,
+            priceFormatted: formatPrice(product.price),
+          }));
+
+          setProducts(data);
+        }
+
+        loadProducts();
+      }, []);
+
+      function handleAddProduct(id) {
+        dispatch(CartActions.addToCartRequest(id));
+      }
+
+      return (
+        <ProductList>
+          {products.map(product => (
+            <li key={product.id}>
+              <img src={product.image} alt={product.title} />
+              <strong>{product.title}</strong>
+              <span>{product.priceFormatted}</span>
+
+              <button type="button" onClick={() => handleAddProduct(product.id)}>
+                <div>
+                  <MdAddShoppingCart size={16} color="#FFF" />{' '}
+                  {amount[product.id] || 0}
+                </div>
+                <span>ADICIONAR AO CARRINHO</span>
+              </button>
+            </li>
+          ))}
+        </ProductList>
+      );
+    }
+
+
+  3) On src/pages/Cart/index.js proceed with changes in order to have the code bellow
+
+    import React from 'react';
+    import { useDispatch, useSelector } from 'react-redux';
+    import {
+      MdRemoveCircleOutline,
+      MdAddCircleOutline,
+      MdDelete,
+    } from 'react-icons/md';
+
+    import { formatPrice } from '../../util/format';
+
+    import * as CartActions from '../../store/modules/cart/actions';
+
+    import { Container, ProductTable, Total } from './styles';
+
+    export default function Cart() {
+      const total = useSelector(state =>
+        formatPrice(
+          state.cart.reduce((totalSum, product) => {
+            return totalSum + product.price * product.amount;
+          }, 0)
+        )
+      );
+
+      const cart = useSelector(state =>
+        state.cart.map(product => ({
+          ...product,
+          subtotal: formatPrice(product.price * product.amount),
+        }))
+      );
+
+      const dispatch = useDispatch();
+
+      function increment(product) {
+        dispatch(CartActions.updateAmountRequest(product.id, product.amount + 1));
+      }
+
+      function decrement(product) {
+        dispatch(CartActions.updateAmountRequest(product.id, product.amount - 1));
+      }
+
+      return (
+        <Container>
+          <ProductTable>
+            <thead>
+              <tr>
+                <th />
+                <th>PRODUTO</th>
+                <th>QTD</th>
+                <th>SUBTOTAL</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              {cart.map(product => (
+                <tr>
+                  <td>
+                    <img src={product.image} alt={product.title} />
+                  </td>
+                  <td>
+                    <strong>{product.title}</strong>
+                    <span>{product.priceFormatted}</span>
+                  </td>
+                  <td>
+                    <div>
+                      <button type="button" onClick={() => decrement(product)}>
+                        <MdRemoveCircleOutline size={20} color="#7159c1" />
+                      </button>
+                      <input type="number" readOnly value={product.amount} />
+                      <button type="button" onClick={() => increment(product)}>
+                        <MdAddCircleOutline size={20} color="#7159c1" />
+                      </button>
+                    </div>
+                  </td>
+                  <td>
+                    <strong>{product.subtotal}</strong>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        dispatch(CartActions.removeFromCart(product.id))
+                      }
+                    >
+                      <MdDelete size={20} color="#7159c1" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </ProductTable>
+
+          <footer>
+            <button type="button">Finalizar pedido</button>
+
+            <Total>
+              <span>TOTAL</span>
+              <strong>{total}</strong>
+            </Total>
+          </footer>
+        </Container>
+      );
+    }
+
+
+
+  4) Some considerations
+
+    a) For whenever we need access an information from Redux state, we use the useSelector
+
+    b) For whenever wee need dispatch a Redux action, we use the useDispatch
