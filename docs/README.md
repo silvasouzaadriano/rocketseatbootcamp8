@@ -5578,3 +5578,56 @@ export default all([
           };
       
         
+### React Hooks - Module 08 - Hook useMemo
+
+
+  The useMemo is a hook which is used for when is necessary perform complex calculations for instance that is nedded return a function or value. It means actions which does not need be called whenever the component is rendered. Also, the useMemo returns a single value.
+
+
+  1) Change the App.js in order to have the following code:
+
+    import React, { useState, useEffect, useMemo } from 'react';
+
+    function App() {
+      const [tech, setTech] = useState([]);
+      const [newTech, setNewTech] = useState('');
+
+      function handleAdd() {
+        setTech([...tech, newTech]);
+        setNewTech(''); // clean up the input text
+      }
+
+      // This hook is being run at once. That one replace the componentDidMount
+      useEffect(() => {
+        const storageTech = localStorage.getItem('tech');
+
+        if (storageTech) {
+          setTech(JSON.parse(storageTech));
+        }
+      }, []);
+
+      // This hook replace the componentDidUpdate
+      useEffect(() => {
+        localStorage.setItem('tech', JSON.stringify(tech));
+      }, [tech]);
+
+      const techSize = useMemo(() => tech.length, [tech]);
+
+      return (
+        <>
+          <ul>
+            {tech.map(t => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+          <strong>Você tem {techSize} tecnologias</strong>
+          <br />
+          <input value={newTech} onChange={e => setNewTech(e.target.value)} />
+          <button type="button" onClick={handleAdd}>
+            Adicionar
+          </button>
+        </>
+      );
+    }
+
+    export default App;
