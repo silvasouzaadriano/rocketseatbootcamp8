@@ -5432,3 +5432,59 @@ export default all([
       'react-hooks/exhaustive-deps': 'warn',
 
       Note that the first rule will let us know about hooks errors and the second rule when we to use the hook use effect, it will warn us about pending dependencies. Basically these are the two rules for who is starting with rect hooks.
+
+
+### React Hooks - Module 08 - Hook useState
+
+  The useState is a hook which will belong to a function in order to create states on the function instead of create it in the class format.
+
+
+  1) Change the App.js in order to have the following code:
+
+    import React, { useState } from 'react';
+
+    function App() {
+      const [tech, setTech] = useState(['ReactJS', 'React Native']);
+      const [newTech, setNewTech] = useState('');
+
+      function handleAdd() {
+        setTech([...tech, newTech]);
+        setNewTech(''); // clean up the input text
+      }
+
+      return (
+        <>
+          <ul>
+            {tech.map(t => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+          <input value={newTech} onChange={e => setNewTech(e.target.value)} />
+          <button type="button" onClick={handleAdd}>
+            Adicionar
+          </button>
+        </>
+      );
+    }
+
+    export default App;
+
+  
+    Some considerations:
+
+      a) Note that for this first example will create a functionality about techonologies list.
+      
+      b) Lets say we would like to store the list in a component state to after that add more information or change it.
+      
+      c) On the old way we needed transform the function in a class, define a variable state = {} and then we would access everything through of this.state.
+
+      d) With the React Hooks its possible create states inside to a function.
+
+      e) For each of information we'll need need a single state. On the old way we had a huge state object with all information stored on it.
+
+      f) The useState return an array. On first position it returns the state itself(we have to give an name to it in order to use the state on the code; i.e: tech). On the second position its a function which serves to refresh the state information. On this case we also have to give a function name and then create it (i.e: setTech).
+
+      g) On the old way we had the this.setState which was used to update all states at once. With hooks we use a single function by state in order to update only the state which is necessary. 
+
+
+
