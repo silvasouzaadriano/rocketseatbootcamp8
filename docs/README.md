@@ -6001,6 +6001,7 @@ export default all([
 
 ### GoBarber Web - Module 09 - Configurating structure
 
+
   1) Based on ESLint, Prettier configuration from module 05, create an react app called modulo08
 
   2) Add the library eslint-plugin-react-hooks as development dependency
@@ -6022,4 +6023,121 @@ export default all([
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
 
-      Note that the first rule will let us know about hooks errors and the second rule when we to use the hook use effect, it will warn us about pending dependencies. Basically these are the two rules for who is starting with rect hooks.    
+      Note that the first rule will let us know about hooks errors and the second rule when we to use the hook use effect, it will warn us about pending dependencies. Basically these are the two rules for who is starting with rect hooks.
+
+
+  ### GoBarber Web - Module 09 - API adjustments (module 03)
+
+    Basically the changes which will be done are regarding to avatar. It means return the avatar information in order to be used on web application. Also will be necessary add the library cors to control the API acces by other application.
+
+    1) Add the libray called cors.
+
+      yarn add cors
+
+
+    2) On src/app.js proceed with the following changes
+
+      a) Import the cors after current import for path
+
+        import cors from 'cors';
+
+      b) On middlewares section, before the one for express, add the following line
+
+        this.server.use(cors());
+
+        Some considerations:
+
+          i - For production, inside to cors(), will be necessary add the url of application which will be allowed to access the API. For example this would be a possible configuration for production:
+
+          this.server.use(cors({ origin: 'http://gobarber.com.br' }));
+
+          ii - For now we'll keep the cors() empty, once we are in development mode, meaning that any application might access the API.
+
+
+    3) On src/app/controllers/SessionController.js proceed with following changes
+
+      a) Import the File model
+
+          import File from '../models/File';
+
+      b) On the piece of code when is done the findOne for user, add an include as per bellow
+
+          const user = await User.findOne({
+            where: { email },
+            include: [
+              {
+                model: File,
+                as: 'avatar',
+                attributes: ['id', 'path', 'url'],
+              },
+            ],
+          });
+
+      c) On piece of code which return the information, add the information regarding include (avatar) as per bellow
+
+          const { id, name, avatar, provider } = user;
+          return res.json({
+            user: {
+              id,
+              name,
+              email,
+              provider,
+              avatar,
+            },
+            token: jwt.sign({ id }, authConfig.secret, {
+              expiresIn: authConfig.expiresIn,
+            }),
+          });
+
+
+    4) On src/app/controllers/UserController.js proceed with following changes
+
+      a) Import the file model
+
+        import File from '../models/File';
+
+      b) Replace the piece of code which perform the update and then return the information
+
+        // Updating user information
+        await user.update(req.body);
+
+        const { id, name, avatar } = await User.findByPk(req.userId, {
+          include: [
+            {
+              model: File,
+              as: 'avatar',
+              attributes: ['id', 'path', 'url'],
+            },
+          ],
+        });
+
+        return res.json({
+          id,
+          name,
+          email,
+          avatar,
+        });
+
+    
+    5) On src/app/controllers/ScheduleController.js proceed with following changes
+
+
+        a) On piece of code regarding to findAll add an include as per bellow in order to return the user name
+
+          const appointments = await Appointment.findAll({
+            where: {
+              provider_id: req.userId,
+              canceled_at: null,
+              date: {
+                [Op.between]: [startOfDay(parsedDate), endOfDay(parsedDate)],
+              },
+            },
+            include: [
+              {
+                model: User,
+                as: 'user',
+                attributes: ['name'],
+              },
+            ],
+            order: ['date'],
+          });
