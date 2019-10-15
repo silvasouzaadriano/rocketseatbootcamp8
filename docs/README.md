@@ -5997,3 +5997,29 @@ export default all([
     a) For whenever we need access an information from Redux state, we use the useSelector
 
     b) For whenever wee need dispatch a Redux action, we use the useDispatch
+
+
+### GoBarber Web - Module 09 - Configurating structure
+
+  1) Based on ESLint, Prettier configuration from module 05, create an react app called modulo08
+
+  2) Add the library eslint-plugin-react-hooks as development dependency
+
+    yarn add eslint-plugin-react-hooks -D
+
+  3) On .eslintrc.js
+
+    a) On the plugins section, after prettier, add the react-hooks plugin as per bellow
+
+      plugins: [
+        'react',
+        'prettier',
+        'react-hooks',
+      ],
+
+    b) On the rules section, add the new rules as per bellow
+
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+
+      Note that the first rule will let us know about hooks errors and the second rule when we to use the hook use effect, it will warn us about pending dependencies. Basically these are the two rules for who is starting with rect hooks.    
