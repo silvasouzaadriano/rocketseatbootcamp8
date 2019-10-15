@@ -6026,7 +6026,7 @@ export default all([
       Note that the first rule will let us know about hooks errors and the second rule when we to use the hook use effect, it will warn us about pending dependencies. Basically these are the two rules for who is starting with rect hooks.
 
 
-  ### GoBarber Web - Module 09 - API adjustments (module 03)
+### GoBarber Web - Module 09 - API adjustments (module 03)
 
     Basically the changes which will be done are regarding to avatar. It means return the avatar information in order to be used on web application. Also will be necessary add the library cors to control the API acces by other application.
 
@@ -6141,3 +6141,122 @@ export default all([
             ],
             order: ['date'],
           });
+
+
+### GoBarber Web - Module 09 - Routes configuration
+
+
+  1) Add the libraries bellow
+
+    yarn add react-router-dom
+    yarn add history
+
+
+  2) On src folder
+
+    a) Create a folder called routes
+
+      i - Inside to routes folder create a file called index.js as per bellow
+
+        import React from 'react';
+        import { Switch, Route } from 'react-router-dom';
+
+        import SignIn from '../pages/SignIn';
+        import SignUp from '../pages/SignUp';
+
+        import Dashboard from '../pages/Dashboard';
+        import Profile from '../pages/Profile';
+
+        export default function Routes() {
+          return (
+            <Switch>
+              <Route path="/" exact component={SignIn} />
+              <Route path="/register" component={SignUp} />
+
+              <Route path="/dashboard" component={Dashboard} />
+              <Route path="/profile" component={Profile} />
+            </Switch>
+          );
+        }
+
+
+    b) Create a folder called pages and the folders/files as per bellow
+
+      i - Dashboard and file index.js with the following code
+
+        import React from 'react';
+
+        // import { Container } from './styles';
+
+        export default function Dashboard() {
+          return <div />;
+        }
+
+      ii - Profile and file index.js with the following code
+
+        import React from 'react';
+
+        // import { Container } from './styles';
+
+        export default function Profile() {
+          return <div />;
+        }
+
+
+      iii - SignIn and file index.js with the following code
+
+        import React from 'react';
+
+        // import { Container } from './styles';
+
+        export default function SignIn() {
+          return <div />;
+        }
+
+      iv - SignUp and file index.js with the following code
+
+        import React from 'react';
+
+        // import { Container } from './styles';
+
+        export default function SignUp() {
+          return <div />;
+        }
+
+
+    c) Create a folder called services
+
+      i - Inside to services folder create a file called history.js as per bellow
+
+      
+        import { createBrowserHistory } from 'history';
+
+        const history = createBrowserHistory();
+
+        export default history;
+
+
+
+  3) On src/App.js import the routes and history as per bellow
+
+      import React from 'react';
+
+      import { Router } from 'react-router-dom';
+
+      import Routes from './routes';
+
+      import history from './services/history';
+
+      function App() {
+        return (
+          <Router history={history}>
+            <Routes />
+          </Router>
+        );
+      }
+
+      export default App;
+
+
+
+
