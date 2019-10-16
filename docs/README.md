@@ -6258,5 +6258,38 @@ export default all([
       export default App;
 
 
+### GoBarber Web - Module 09 - Reactotron configuration
+
+
+  1) Add the the library reactotron-react-js
+
+    yarn add reactotron-react-js
+
+  2) On src folder
+
+    a) Create a folder called config
+
+      i - Inside to config folder create a file called ReactotronConfig.js as per bellow
+
+          import Reactotron from 'reactotron-react-js';
+
+          if (process.env.NODE_ENV === 'development') {
+            const tron = Reactotron.configure().connect();
+
+            tron.clear();
+
+            console.tron = tron;
+          }
+
+    3) On src/App.js import the ReactotronConfig
+
+      import './config/ReactotronConfig';
+
+
+
+
+
+
+
 
 
