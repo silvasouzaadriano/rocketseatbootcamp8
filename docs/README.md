@@ -6287,7 +6287,68 @@ export default all([
 
 
 
+### GoBarber Web - Module 09 - Private routes
 
+
+  1) In order to proceed with property validation and avoid eslint warn, add the library prop-types
+
+    yarn add prop-types
+
+  2) In order to avoid eslint warn about prop spreading is forbidden, on .eslintrc.js file add on section rule the line bellow
+
+    "react/jsx-props-no-spreading": "off",
+
+  3) On src/routes
+
+    a) Create a route component called Route.js as per bellow. This component will be responsible for manage the private routes.
+
+      import React from 'react';
+      import PropTypes from 'prop-types';
+      import { Route, Redirect } from 'react-router-dom';
+
+      export default function RouteWrapper({
+        component: Component,
+        isPrivate,
+        ...rest
+      }) {
+        const signed = false;
+
+        if (!signed && isPrivate) {
+          return <Redirect to="/" />; // redirect to Login
+        }
+
+        if (signed && !isPrivate) {
+          return <Redirect to="/dashboard" />;
+        }
+
+        return <Route {...rest} component={Component} />;
+      }
+
+RouteWrapper.propTypes = {
+  isPrivate: PropTypes.bool,
+  component: PropTypes.oneOfType([PropTypes.element, PropTypes.func])
+    .isRequired,
+};
+
+RouteWrapper.defaultProps = {
+  isPrivate: false,
+};
+
+
+    b) Change the index.js as per bellow
+
+      i - Exclude the Route from import related to react-router-dom
+
+        import { Switch } from 'react-router-dom';
+
+      ii - Import the Route from Route.js
+
+        import Route from './Route';
+
+      iii - Add on routes dashboard and drofile the property isPrivate
+
+        <Route path="/dashboard" component={Dashboard} isPrivate />
+        <Route path="/profile" component={Profile} isPrivate />
 
 
 
