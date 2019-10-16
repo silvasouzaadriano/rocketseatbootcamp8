@@ -6352,5 +6352,89 @@ RouteWrapper.defaultProps = {
 
 
 
+### GoBarber Web - Module 09 - Layouts by page
+
+  1) Add the libray styled-components
+
+    yarn add styled-components
+  
+  2) On src/pages
+
+    a) Create a folder called _layouts
+
+    b) Inside to folder _layouts
+
+      i - Create a folder called auth and
+      
+        1) Create a file called index.js as per bellow
+
+          import React from 'react';
+          import PropTypes from 'prop-types';
+
+          import { Wrapper } from './styles';
+
+          export default function AuthLayout({ children }) {
+            return <Wrapper>{children}</Wrapper>;
+          }
+
+          AuthLayout.propTypes = {
+            children: PropTypes.element.isRequired,
+          };
 
 
+        2) Create a file styles.js as per bellow
+
+          import styled from 'styled-components';
+
+          export const Wrapper = styled.div`
+            height: 100%;
+            background: linear-gradient(-90deg, #7159c1, #ab59c1);
+          `;
+
+      ii - Create folder called default and
+      
+        1) Create a file called index.js as per bellow
+
+          import React from 'react';
+          import PropTypes from 'prop-types';
+
+          import { Wrapper } from './styles';
+
+          export default function DefaultLayout({ children }) {
+            return <Wrapper>{children}</Wrapper>;
+          }
+
+          DefaultLayout.propTypes = {
+            children: PropTypes.element.isRequired,
+          };
+
+
+        2) Create a file called styles.js as per bellow
+
+          import styled from 'styled-components';
+
+          export const Wrapper = styled.div`
+            height: 100%;
+            background: #333;
+          `;
+
+
+  3) On src/routes/Route.js proceed as per bellow
+
+    a) Import the layouts AuthLayout and DefaultLayout
+
+      import AuthLayout from '../pages/_layouts/auth';
+      import DefaultLayout from '../pages/_layouts/default';
+
+    b) Before define the routes its necessary create a conditional to know which one layout to use and then adapt the return to contemplate it. Said that proceed as per bellow
+
+      return (
+        <Route
+          {...rest}
+          render={props => (
+            <Layout>
+              <Component {...props} />
+            </Layout>
+          )}
+        />
+      );
