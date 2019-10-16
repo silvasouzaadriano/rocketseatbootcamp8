@@ -6438,3 +6438,69 @@ RouteWrapper.defaultProps = {
           )}
         />
       );
+
+
+### GoBarber Web - Module 09 - Global styles
+
+
+  1) Create under src
+  
+    a) Crete a folder called styles and then
+
+      i - Create a file called global.js as per bellow
+
+        import { createGlobalStyle } from 'styled-components';
+
+        export default createGlobalStyle`
+          @import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
+
+          * {
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            box-sizing: border-box;
+          }
+
+          *:focus {
+            outline: 0;
+          }
+
+          html, body, #root {
+            height: 100%;
+          }
+
+          body {
+            -webkit-font-smoothing: antialiased;
+          }
+
+          body, input, button {
+            font: 14px 'Roboto', sans-serif;
+          }
+
+          a {
+            text-decoration: none;
+          }
+
+          ul {
+            list-style: none;
+          }
+
+          button {
+            cursor: pointer;
+          }
+
+        `;
+
+
+    b) On App.js
+
+      i - Import the global.js
+
+        import GlobalStyle from './styles/global';
+
+      ii - Add the GlobalStyle inside to Router. Note that it might be in any place of application. The reason for choice the Router is because here is the start point of routes for application.
+
+        <Router history={history}>
+          <Routes />
+          <GlobalStyle />
+        </Router>
