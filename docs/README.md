@@ -6504,3 +6504,88 @@ RouteWrapper.defaultProps = {
           <Routes />
           <GlobalStyle />
         </Router>
+
+
+### GoBarber Web - Module 09 - Using Root Import
+
+
+  1) Add the libraries bellow. These libs will allow the navigation by files in a simple way without using too many ../ for proceed with imports
+
+    yarn add customize-cra react-app-rewired -D
+    yarn add babel-plugin-root-import -D
+    yarn add eslint-import-resolver-babel-plugin-root-import -D
+
+  
+  2) On .eslintrc.js, after rules section add a new one called settings as per bellow
+
+    settings: {
+      "import/resolver": {
+        "babel-plugin-root-import": {
+          rootPathSuffix: "src"
+        }
+      }
+    }
+
+  3) On root folder create a file called config-overrides.js with the following content
+
+    const { addBabelPlugin, override } = require('customize-cra');
+
+    module.exports = override(
+      addBabelPlugin([
+        'babel-plugin-root-import',
+        {
+          rootPathSuffix: 'src',
+        },
+      ])
+    );
+
+    Some considertions:
+    
+      a) This file is loaded automatically by the library react-app-rewired
+
+      b) The notation used on the file is Node.js
+
+  
+  4) On root folder create a file called jsconfig.json with the following content.
+
+    {
+      "compilerOptions": {
+        "baseUrl": "src",
+        "paths": {
+          "~/*": ["*"]
+        }
+      }
+    }
+
+
+    Note that this file is being created in order to allow the utilizaton of functionality ctrl + left mouse button to open files when the path have the ~ instead of ../
+
+  
+  5) On src folder replace the javascript files as per bellow
+
+
+    from
+
+      ../ or ../../ or ../../../
+
+    to
+
+      ~/
+
+    Note that the ~ means the current src folder
+
+
+  6) On package.json, on scripts section
+
+    a) Replace the lines regarding to start, build and test to use react-app-rewired instead of react-scripts  
+
+       "scripts": {
+        "start": "react-app-rewired start",
+        "build": "react-app-rewired build",
+        "test": "react-app-rewired test",
+        "eject": "react-scripts eject"
+      },  
+
+
+  7) Restart the application by run the yarn start
+
