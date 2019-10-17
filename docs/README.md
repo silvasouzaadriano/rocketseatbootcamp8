@@ -6589,3 +6589,139 @@ RouteWrapper.defaultProps = {
 
   7) Restart the application by run the yarn start
 
+
+### GoBarber Web - Module 09 - Authentication Stylization
+
+  Note that as the styles of siging and signup will be shared, it was choosen to setup it on styles.js from auth folder (which is shared for both one)
+
+  1) Add the library polished
+
+    yarn add polished
+
+  2) On src/pages/_layouts/auth/styles.js proceed with the following configuration
+
+    import styled from 'styled-components';
+    import { darken } from 'polished';
+
+    export const Wrapper = styled.div`
+      height: 100%;
+      background: linear-gradient(-90deg, #7159c1, #ab59c1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    `;
+
+    export const Content = styled.div`
+      width: 100%;
+      max-width: 315px;
+      text-align: center;
+
+      form {
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+
+        input {
+          background: rgba(0, 0, 0, 0.1);
+          border: 0;
+          border-radius: 4px;
+          height: 44px;
+          padding: 0 15px;
+          color: #fff;
+          margin: 0 0 10px;
+
+          &::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+          }
+        }
+
+        button {
+          margin: 5px 0 0;
+          height: 44px;
+          background: #3b9eff;
+          font-weight: bold;
+          color: #fff;
+          border: 0;
+          border-radius: 4px;
+          font-size: 16px;
+          transition: background 0.2s;
+
+          &:hover {
+            background: ${darken(0.03, '#3b9eff')};
+          }
+        }
+
+        a {
+          color: #fff;
+          margin-top: 15px;
+          font-size: 16px;
+          opacity: 0.8;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+    `;
+
+
+  3) On src/pages/_layouts/auth/index.js procee with following configuration
+
+    a) Add the value Content to import from styles file
+
+      import { Wrapper, Content } from './styles';
+
+    b) Add the Content inside to Wrapper and around to children
+
+      <Wrapper>
+        <Content>{children}</Content>
+      </Wrapper>
+
+  4) On src/pages/SignIn/index.js replace the content as per bellow
+
+    import React from 'react';
+    import { Link } from 'react-router-dom';
+
+    import logo from '~/assets/logo.svg';
+
+    export default function SignIn() {
+      return (
+        <>
+          <img src={logo} alt="GoBarber" />
+          <form>
+            <input type="email" placeholder="Seu e-mail" />
+            <input type="password" placeholder="Sua senha secreta" />
+
+            <button type="submit">Acessar</button>
+            <Link to="/register">Criar conta gratuita</Link>
+          </form>
+        </>
+      );
+    }
+
+
+  5) On src/pages/SignUp/index.js replace the content as per bellow
+
+    import React from 'react';
+    import { Link } from 'react-router-dom';
+
+    import logo from '~/assets/logo.svg';
+
+    export default function SignUp() {
+      return (
+        <>
+          <img src={logo} alt="GoBarber" />
+          <form>
+            <input placeholder="Nome completo" />
+            <input type="email" placeholder="Seu e-mail" />
+            <input type="password" placeholder="Sua senha secreta" />
+
+            <button type="submit">Criar conta</button>
+            <Link to="/">Já tenho login</Link>
+          </form>
+        </>
+      );
+    }
+
+
+    
