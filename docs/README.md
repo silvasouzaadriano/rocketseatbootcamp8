@@ -6724,4 +6724,46 @@ RouteWrapper.defaultProps = {
     }
 
 
-    
+### GoBarber Web - Module 09 - Using Unform
+
+  By default on react when we would like to get the information from input, store it and handle it we need create a state for each one and monitor the changes which occur using the onChange method. The Rocketseat created a library to facilidate this process also working on concept of perfomance in the forms. This libray is the one called: @rocketseat/unform. On the next section there will be some steps about how to use it. 
+  
+  
+  1) Add the library bellow
+
+    yarn add @rocketseat/unform
+
+  
+  2) On src/pages/SignIn/index.js and src/pages/SignUp/index.js  proceed with the following configurations
+
+    a) Import the library @rocketseat/unform as per bellow
+
+      import { form, input } from '@rocketseat/unform';
+
+    b) Replace the tags form and input to Form and Input
+
+    c) Add an attribute name in each Input as per bellow
+
+      i - SignIn
+
+        <Input name="email" type="email" placeholder="Seu e-mail" />
+        <Input
+          name="password"
+          type="password"
+          placeholder="Sua senha secreta"
+        />
+
+      ii - SignUp
+
+        <Input name="name" placeholder="Nome completo" />
+        <Input name="email" type="email" placeholder="Seu e-mail" />
+        <Input
+          name="password"
+          type="password"
+          placeholder="Sua senha secreta"
+        />
+
+    d) On Form add the method onSubmit which should call a function called handleSubmit
+
+      <Form onSubmit={handleSubmit}>
+  
