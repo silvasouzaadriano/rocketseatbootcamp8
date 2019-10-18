@@ -7090,3 +7090,63 @@ RouteWrapper.defaultProps = {
     b) Replace the const signed as per bellow
 
       const { signed } = store.getState().auth;
+
+
+### GoBarber Web - Module 09 - Storing profile
+
+
+  1) On src/store/modules create a folder called user then
+
+    a) Create a file called actions.js and keep as empty for now
+
+    b) Create a file called reducer.js as per bellow
+
+      import produce from 'immer';
+
+      const INITIAL_STATE = {
+        profile: null,
+      };
+
+      export default function user(state = INITIAL_STATE, action) {
+        switch (action.type) {
+          case '@auth/SIGN_IN_SUCCESS':
+            return produce(state, draft => {
+              draft.profile = action.payload.user;
+            });
+          default:
+            return state;
+        }
+      }
+
+
+    c) Create a file called sagas.js as per bellow
+
+      import { all } from 'redux-saga/effects';
+
+      export default all([]);
+
+  2) On src/store/modules/rootReducer.js proceed as per bellow
+
+    a) Import the user reducer
+
+      import user from './user/reducer';
+
+    b) Add the user to combineReducers
+
+      export default combineReducers({
+        auth,
+        user,
+      });
+
+  3) On src/store/modules/rootSaga.js proceed as per bellow
+
+    a) Import the user sagas
+
+      import user from './user/sagas';
+
+    b) Add the user to all array
+
+      export default function* rootSaga() {
+        return yield all([auth, user]);
+      }
+
