@@ -6963,3 +6963,130 @@ RouteWrapper.defaultProps = {
             <GlobalStyle />
           </Router>
         </Provider>
+
+
+### GoBarber Web - Module 09 - Authentication
+
+  1) Add the libray axios
+
+    yar add axios
+
+  2) On src/services
+  
+    a) Create a file called api.js as per bellow
+
+      import axios from 'axios';
+
+      const api = axios.create({
+        baseURL: 'http://localhost:3333',
+      });
+
+      export default api;
+
+  3) On src/store/modules/auth/actions.js proceed as per bellow
+
+    export function signInRequest(email, password) {
+      return {
+        type: '@auth/SIGN_IN_REQUEST',
+        payload: { email, password },
+      };
+    }
+
+    export function signInSuccess(token, user) {
+      return {
+        type: '@auth/SIGN_IN_SUCCESS',
+        payload: { token, user },
+      };
+    }
+
+    export function signFailure() {
+      return {
+        type: '@auth/SIGN_FAILURE',
+      };
+    }
+
+
+  4) On src/store/modules/auth/sagas.js proceed as per bellow
+
+    import { takeLatest, call, put, all } from 'redux-saga/effects';
+
+    import history from '~/services/history';
+    import api from '~/services/api';
+
+    import { signInSuccess } from './actions';
+
+    export function* signIn({ payload }) {
+      const { email, password } = payload;
+
+      const response = yield call(api.post, 'sessions', {
+        email,
+        password,
+      });
+
+      const { token, user } = response.data;
+
+      if (!user.provider) {
+        console.tron.error('Usuário não é prestador');
+        return;
+      }
+
+      yield put(signInSuccess(token, user));
+
+      history.push('/dashboard');
+    }
+
+    export default all([takeLatest('@auth/SIGN_IN_REQUEST', signIn)]);
+
+
+  5) On src/pages/SignIn/index.js proceed as per bellow
+
+    a) Import the useDispatch from react-redux
+
+      import { useDispatch } from 'react-redux';
+
+    b) Import the signInRequest from actions
+
+      import { signInRequest } from '~/store/modules/auth/actions';
+
+    c) Before function handleSubmit, add the line bellow
+
+      const dispatch = useDispatch();
+
+    d) Replace the content of function handleSubmit as per bellow
+
+      function handleSubmit({ email, password }) {
+        dispatch(signInRequest(email, password));
+      }
+
+  6) On src/store/modules/auth/reducer.js replace the code as per bellow
+
+    import produce from 'immer';
+
+    const INITIAL_STATE = {
+      token: null,
+      signed: false,
+      loading: false,
+    };
+
+    export default function auth(state = INITIAL_STATE, action) {
+      switch (action.type) {
+        case '@auth/SIGN_IN_SUCCESS':
+          return produce(state, draft => {
+            draft.token = action.payload.token;
+            draft.signed = true;
+          });
+        default:
+          return state;
+      }
+    }
+
+  
+  7) On src/routes/Route.js proceed as per bellow
+
+    a) Import the store
+
+      import store from '~/store';
+
+    b) Replace the const signed as per bellow
+
+      const { signed } = store.getState().auth;
