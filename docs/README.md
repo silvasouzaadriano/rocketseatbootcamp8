@@ -7233,5 +7233,82 @@ RouteWrapper.defaultProps = {
 
 
 
+### GoBarber Web - Module 09 - Authentication loadign
+
+
+  1) On src/store/modules/auth/reducer.js, function auth,  add a SING_IN_REQUEST AND SIGN_FAILURE and add the loading variable on SINGN_IN_SUCCESS as per bellow
+
+    export default function auth(state = INITIAL_STATE, action) {
+      return produce(state, draft => {
+        switch (action.type) {
+          case '@auth/SIGN_IN_REQUEST': {
+            draft.loading = true;
+            break;
+          }
+          case '@auth/SIGN_IN_SUCCESS': {
+            draft.token = action.payload.token;
+            draft.signed = true;
+            draft.loading = false;
+            break;
+          }
+          case '@auth/SIGN_FAILURE': {
+            draft.loading = false;
+            break;
+          }
+          default:
+        }
+      });
+    }
+
+
+  2) On src/pages/SignIn/index.js proceed with changes as per bellow
+
+    a) Import the useSelector from react-redux
+
+      import { useDispatch, useSelector } from 'react-redux';
+
+    b) Inside to SignIn function define a variable called loading as per bellow
+
+      const loading = useSelector(state => state.auth.loading);
+
+    c) On submit button add ternary condition as per bellow
+
+      <button type="submit">{loading ? 'Carregando...' : 'Acessar'}</button>
+
+
+  3) On src/store/modules/auth/sagas.js
+  
+    a) Import the signFailure from actions
+
+      import { signInSuccess, signFailure } from './actions';
+
+    b) On function signIn, add a try/catch as per bellow
+
+      try {
+        const { email, password } = payload;
+
+        const response = yield call(api.post, 'sessions', {
+          email,
+          password,
+        });
+
+        const { token, user } = response.data;
+
+        if (!user.provider) {
+          console.tron.error('Usuário não é prestador');
+          return;
+        }
+
+        yield put(signInSuccess(token, user));
+
+        history.push('/dashboard');
+      } catch (error) {
+        yield put(signFailure());
+      }
+
+  
+
+
+
 
 
