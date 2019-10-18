@@ -6767,3 +6767,55 @@ RouteWrapper.defaultProps = {
 
       <Form onSubmit={handleSubmit}>
   
+  
+  ### GoBarber Web - Module 09 - Validations
+
+
+  1) Add the library yup. This is library is used for validation in both frontend and backend. This uses schema validation through of chaining.
+
+    yarn add yup
+
+
+  2) On src/pages/SignIn/index.js and src/pages/SignUp/index.js proceed with the following configurations
+ 
+    a) Import the yup as per bellow
+
+      import * as Yup from 'yup' 
+
+    b) Before the function SignIn, defines the schema validation as per bellow.
+
+       i - SignIn
+
+        const schema = Yup.object().shape({
+          email: Yup.string()
+            .email('Insira um e-mail válido')
+            .required('O e-email é obrigatório'),
+          password: Yup.string().required('A senha é obrigatória'),
+        });
+
+      ii - SignUp
+
+        const schema = Yup.object().shape({
+          name: Yup.string().required('O nome é obrigatório'),
+          email: Yup.string()
+            .email('Insira um e-mail válido')
+            .required('O e-email é obrigatório'),
+          password: Yup.string()
+            .min(6, 'A senha precisa ter no mínimo 6 caracteres')
+            .required('A senha é obrigatória'),
+        });
+
+    c) Pass the schema defined on item b to property called also schema inside to form.
+
+      <Form schema={schema} onSubmit={handleSubmit}>
+
+  3) On src/pages/_layouts/auth/styles.js proceed with following configuration
+
+    a) Inside to form, between input and button,  add a span styles as per bellow
+
+      span {
+        color: #fb6f91;
+        align-self: flex-start;
+        margin: 0 0 10px;
+        font-weight: bold;
+      }
