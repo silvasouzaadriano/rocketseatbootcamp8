@@ -7307,6 +7307,48 @@ RouteWrapper.defaultProps = {
       }
 
   
+### GoBarber Web - Module 09 - Showing messages using toasts
+
+
+  In order to have the warning/error messages more friendly, the library toasts was used.
+
+    
+    1) Add the library react-tostify
+
+      yar add react-tostify
+
+    2) On src/App.js
+
+      a) Import from react-tostify the method ToastContainer
+
+        import { ToastContainer } from 'react-toastify';
+
+      b) Add the ToasContainer after GlobalStyle as per bellow
+
+        <ToastContainer autoClose={3000} />
+
+    3) On src/styles/global.js proceed with the following changes
+
+      a) Import the react toastify styles
+
+
+    4) On src/store/modules/auth/sagas.js
+
+      a) Import the toast from react-toastify
+
+        import { toast } from 'react-toastify';
+
+      b) Replace the console.tron.error by toast.error
+
+        toast.error('Usuário não é prestador');
+
+      c) Add on cath error the message bellow
+
+        toast.error('Falha na autenticação, verifique seus dados!');
+
+      d) On user provider validation, before the return, add the line bellow
+
+         yield put(signFailure());
 
 
 
