@@ -7150,3 +7150,88 @@ RouteWrapper.defaultProps = {
         return yield all([auth, user]);
       }
 
+
+### GoBarber Web - Module 09 - Persisting Authentication
+
+
+  1) Add the library called redux-persist
+
+    yar add redux-persist
+
+
+  2) On src/store create a file called persistReducers.js as per bellow
+
+    import storage from 'redux-persist/lib/storage';
+    import { persistReducer } from 'redux-persist';
+
+    export default reducers => {
+      const persistedReducer = persistReducer(
+        {
+          key: 'gobarber',
+          storage,
+          whitelist: ['auth', 'user'],
+        },
+        reducers
+      );
+
+      return persistedReducer;
+    };
+
+
+  3) On src/store/index.js proceed with changes as per bellow
+
+    a) Import the method called persistStore from redux-persist
+
+      import { persistStore } from 'redux-persist';
+
+    b) Import the function persistReducers
+
+      import persistReducers from './persistReducers';
+
+    c) Change the constant store as per bellow
+
+      const store = createStore(persistReducers(rootReducer), middlewares);
+
+    d) After constant store create a new one called persistor as per bellow
+
+      const persistor = persistStore(store);
+
+    e) Change the export default store as per bellow
+
+      export { store, persistor };
+
+
+  4) On src/App.js proceed with the following changes
+
+    a) As per bellow replace the current import:  import store from './store';
+
+      import { store, persistor } from './store';
+
+    b) After curret import regarding to react import PersistGate as per bellow
+
+      import { PersistGate } from 'redux-persist/integration/react';
+
+    c) Add the PersistGate around to Router as per bellow
+
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <Router history={history}>
+            <Routes />
+            <GlobalStyle />
+          </Router>
+        </PersistGate>
+      </Provider>
+
+      A brief explanation about PersistGate on this application. It basically will render the content of routes only after get the information from application storage.
+
+
+  5) On src/routes/Route.js proceed with following changes
+
+    a) As per bellow replace the current import: import store from '~/store';
+
+      import { store } from '~/store';
+
+
+
+
+
