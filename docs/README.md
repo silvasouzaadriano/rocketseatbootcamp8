@@ -7351,6 +7351,78 @@ RouteWrapper.defaultProps = {
          yield put(signFailure());
 
 
+### GoBarber Web - Module 09 - SignUp on application
+
+
+  1) On src/store/modules/auth/actions.js proceed as per bellow
+
+    a) Create a function called signUpRequest
+
+      export function signUpRequest(name, email, password) {
+        return {
+          type: '@auth/SIGN_UP_REQUEST',
+          payload: { name, email, password },
+        };
+      }
+
+  
+  2) On src/pages/SignUp/index.js proceed as per bellow
+
+    a) Import the useDispatch from react-redux
+
+      import { useDispatch } from 'react-redux';
+
+    b)  Import the signUpRequest from actions
+
+      import { signUpRequest } from '~/store/modules/auth/actions';
+
+    c) Inside to SignUp function
+
+      i - Create a variable called dispatch as per bellow
+
+        const dispatch = useDispatch();
+
+      ii - Change the signature of handleSubmit to use the name, email and password
+
+        function handleSubmit({ name, email, password })
+
+      iii - Replace the console.tron.log(data);, inside to handlSubmit, as per bellow
+
+        dispatch(signUpRequest(name, email, password));
+
+
+  3) On src/store/modules/auth/sagas.js proceed as per bellow
+
+    a) Create a function called signUp as per bellow
+
+      export function* signUp({ payload }) {
+      try {
+          const { name, email, password } = payload;
+
+          yield call(api.post, 'users', {
+            name,
+            email,
+            password,
+            provider: true,
+          });
+
+          history.push('/');
+        } catch (error) {
+          toast.error('Falha no cadastro, verifique seus dados!');
+
+          yield put(signFailure());
+        }
+      }
+
+
+    b) Add on export default all a new takeLatest as per bellow
+
+      export default all([
+        takeLatest('@auth/SIGN_IN_REQUEST', signIn),
+        takeLatest('@auth/SIGN_UP_REQUEST', signUp),
+      ]);
+
+    
 
 
 
