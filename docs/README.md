@@ -6819,3 +6819,147 @@ RouteWrapper.defaultProps = {
         margin: 0 0 10px;
         font-weight: bold;
       }
+
+
+### GoBarber Web - Module 09 - Configuration store
+
+  As the session information and the use information might be acessed for several parts of application we'll store it by using redux. Said that on next steps will be cofigured all backstage for application works with redux.
+
+  1) Add the libraries bellow
+
+    yarn add redux redux-saga react-redux reactotron-redux reactotron-redux-saga immer
+
+  2) On src
+
+    a) Create a folder called store, then
+
+       i - Create a file called index.js as per bellow
+
+          import createSagaMiddleware from 'redux-saga';
+          import createStore from './createStore';
+
+          import rootReducer from './modules/rootReducer';
+          import rootSaga from './modules/rootSaga';
+
+          const sagaMonitor =
+            process.env.NODE_ENV === 'development'
+              ? console.tron.createSagaMonitor()
+              : null;
+
+          const sagaMiddleware = createSagaMiddleware({ sagaMonitor });
+
+          const middlewares = [sagaMiddleware];
+
+          const store = createStore(rootReducer, middlewares);
+
+          sagaMiddleware.run(rootSaga);
+
+          export default store;
+
+
+       ii - Create a file called createStore as per bellow
+
+          import { createStore, compose, applyMiddleware } from 'redux';
+
+          export default (reducers, middlewares) => {
+            const enhancer =
+              process.env.NODE_ENV === 'development'
+                ? compose(
+                    console.tron.createEnhancer(),
+                    applyMiddleware(...middlewares)
+                  )
+                : applyMiddleware(...middlewares);
+
+            return createStore(reducers, enhancer);
+          };
+
+
+       iii - Create a folder called modules
+
+        1) Create a folder called auth, then
+        
+          a) Create a file called actions.js and keep it empty for now.
+
+
+          b) Create a file called sagas.js as per bellow
+
+            import { all } from 'redux-saga/effects';
+
+            export default all([]);
+
+
+          c) Create a file called reducer.js as per bellow
+
+            const INITIAL_STATE = {};
+
+            export default function auth(state = INITIAL_STATE, action) {
+              switch (action.type) {
+                default:
+                  return state;
+              }
+            }
+
+
+        2) Create a file called rootReducer.js as per bellow 
+
+          import { combineReducers } from 'redux';
+
+          import auth from './auth/reducer';
+
+          export default combineReducers({
+            auth,
+          });
+
+
+        3) Create a file called rootSaga.js as per bellow
+
+          import { all } from 'redux-saga/effects';
+
+          import auth from './auth/sagas';
+
+          export default function* rootSaga() {
+            return yield all([auth]);
+          }
+
+
+    b) On config/ReactotronConfig.js proceed as per bellow
+
+      i - Import the reactotronRedux and reactotronSaga
+
+        import { reactotronRedux } from 'reactotron-redux';
+        import reactotronSaga from 'reactotron-redux-saga';
+
+      ii - Change the variable tron as per bellow
+
+        const tron = Reactotron.configure()
+          .use(reactotronRedux())
+          .use(reactotronSaga())
+          .connect();
+
+    c) On App.js proceed with the following changes
+
+      i - Import the Provider from react-redux
+
+        import { Provider } from 'react-redux';
+
+      ii - Add the Provider around application
+
+        <Provider>
+          <Router history={history}>
+            <Routes />
+            <GlobalStyle />
+          </Router>
+        </Provider>
+
+      iii - Import store from store folder. Note that it must be after import of ReactotronConfig in order to have access to functionalities about sagaMonitor or createEnhancer
+
+        import store from './store';
+
+      iv - Pass the store variable to Provider
+
+        <Provider store={store}>
+          <Router history={history}>
+            <Routes />
+            <GlobalStyle />
+          </Router>
+        </Provider>
