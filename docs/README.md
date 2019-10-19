@@ -7469,3 +7469,135 @@ RouteWrapper.defaultProps = {
 
       api.get('appointments');
 
+
+### GoBarber Web - Module 09 - Header configuration
+
+
+  1) Change the src/pages/_layouts/default/styles.js replacing the current background configuration to
+
+    background: linear-gradient(-90deg, #7159c1, #ab59c1);
+
+  2) On src folder
+
+    a) Create a folder called components, then
+
+      i - Create a folder called Header, then 
+
+        1) Create a file called styles.js as per bellow
+
+          import styled from 'styled-components';
+
+          export const Container = styled.div`
+            background: #fff;
+            padding: 0 30px;
+          `;
+
+          export const Content = styled.div`
+            height: 64px;
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            nav {
+              display: flex;
+              align-items: center;
+
+              img {
+                margin-right: 20px;
+                padding-right: 20px;
+                border-right: 1px solid #eee;
+              }
+
+              a {
+                font-weight: bold;
+                color: #7159c1;
+              }
+            }
+
+            aside {
+              display: flex;
+              align-items: center;
+            }
+          `;
+
+          export const Profile = styled.div`
+            display: flex;
+            margin-left: 20px;
+            padding-left: 20px;
+            border-left: 1px solid #eee;
+
+            div {
+              text-align: right;
+              margin-right: 10px;
+
+              strong {
+                display: block;
+                color: #333;
+              }
+
+              a {
+                display: block;
+                margin-top: 2px;
+                font-size: 12px;
+                color: #999;
+              }
+            }
+
+            img {
+              height: 32px;
+              border-radius: 50%;
+            }
+          `;
+
+
+        2) Create a file called index.js as per bellow
+
+          import React from 'react';
+          import { Link } from 'react-router-dom';
+
+          import logo from '~assets/logo-purple.svg';
+
+          import { Container, Content, Profile } from '~/components/Header/styles';
+
+          export default function Header() {
+            return (
+              <Container>
+                <Content>
+                  <nav>
+                    <img src={logo} alt="GoBarber" />
+                    <Link to="/dashboard">DASHBOARD</Link>
+                  </nav>
+
+                  <aside>
+                    <Profile>
+                      <div>
+                        <strong>Adriano Souza</strong>
+                        <Link to="/profile">Meu perfil</Link>
+                      </div>
+                      <img
+                        src="https://api.adorable.io/avatars/50/abott@adorable.png"
+                        alt="Adriano Souza"
+                      />
+                    </Profile>
+                  </aside>
+                </Content>
+              </Container>
+            );
+          }
+
+
+  3) On src/pages/_layouts/default/index.js proceed with changes as per bellow
+
+    a) Import the Header
+
+      import Header from '~/components/Header';
+
+    b) Add the Header before the {children}
+
+      <Wrapper>
+        <Header />
+        {children}
+      </Wrapper>
+
