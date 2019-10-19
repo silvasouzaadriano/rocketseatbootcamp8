@@ -7424,5 +7424,48 @@ RouteWrapper.defaultProps = {
 
     
 
+### GoBarber Web - Module 09 - Requests authenticated
 
+  These steps are the basis to JWT authentication works on client side. Nowadays we are storing the user token on Redux state in a variable also called token. However, would be better perform a way to all api requests add it token inside to header of authorization on the axios.
+
+  Note that JWT (JSON Web Token) is a standard method (RCT 7519) from industry to perform authentication among two parts (for instance backend and frontend) byt using a token assined which authenticate a web request. Basically this token is a code em Base64 which store JSON objects with all data which allows the authentication request. 
+
+  1) On src/store/modules/auth/sagas.js proceed as per bellow
+
+
+    a) On SignIn function before yield regarding to success add the line bellow. It means set a header called Authorization.
+
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+
+      Note that the api.default is used basically to set information used in all requests.
+
+    b) On export default all add a new takeLatest as per bellow
+
+      takeLatest('persist/REHYDRATE', setToken),
+
+    c) Before, export default all, create a function called setToken as per bellow
+
+      export function setToken({ payload }) {
+        if (!payload) return;
+
+        const { token } = payload.auth;
+
+        if (token) {
+          api.defaults.headers.Authorization = `Bearer ${token}`;
+        }
+      }
+
+
+    Note that the steps b and c are necessary to guarantee the set of Authorization also when the user pass by login authentication. That will be possible because the Redux persist only get available on screen after recovery the data from storage. It meas that the user token always will be availabled once the user is logged. It means that from now on all api request will send the authentication token.
+
+
+  2) In order to if a certain api will be done with user toke, lets test it changing the src/pages/Dashboard/index.js as per bellow
+
+    a) Import the api
+
+      import api from '~/services/api';
+
+    b) Inside to Dashboard function, add an API call as per bellow
+
+      api.get('appointments');
 
