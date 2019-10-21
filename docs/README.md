@@ -6391,6 +6391,7 @@ RouteWrapper.defaultProps = {
           export const Wrapper = styled.div`
             height: 100%;
             background: linear-gradient(-90deg, #7159c1, #ab59c1);
+            overflow-y: auto;
           `;
 
       ii - Create folder called default and
@@ -8608,5 +8609,99 @@ RouteWrapper.defaultProps = {
           </button>
 
         
+  ### GoBarber Web - Module 09 - Showing appointment
+
+
+    1) Add the library date-fns-tz
+
+      yarn add date-fns-tz
+
+    2) On src/pages/Dashboard/index.js, proceed as per below
+    
+      a) Define the hour range for application
+
+        i - Create a variable rangeconst 
+        
+          range = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+
+      b) Import the useEffect from react
+
+        import React, { useState, useMemo, useEffect } from 'react';
+
+      c) Import the setHours, setMinutes, setSeconds, isBefore, isEqual and parseISO from date-fns
+
+        import {
+          format,
+          subDays,
+          addDays,
+          setHours,
+          setMinutes,
+          setSeconds,
+          isBefore,
+          isEqual,
+          parseISO
+        } from 'date-fns';
+
+      d) Import the utcToZonedTime from date-fns-tz
+
+        import { utcToZonedTime } from 'date-fns-tz';
+
+      e) Inside to function Dashboard
+      
+        a) Create a state schedule, setSchedule to store the appointments
+
+          const [schedule, setSchedule] = useState([]);
+
+        b) Create an effect to process the data to be used by schedule state
+
+          useEffect(() => {
+            async function loadSchedule() {
+              const response = await api.get('schedule', {
+                params: { date },
+              });
+
+              const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+              const data = range.map(hour => {
+                const checkDate = setMilliseconds(
+                  setSeconds(setMinutes(setHours(date, hour), 0), 0),
+                  0
+                );
+                const compareDate = utcToZonedTime(checkDate, timezone);
+
+                return {
+                  time: `${hour}:00h`,
+                  past: isBefore(compareDate, new Date()),
+                  appointment: response.data.find(a =>
+                    isEqual(parseISO(a.date), compareDate)
+                  ),
+                };
+              });
+
+              setSchedule(data);
+            }
+
+            loadSchedule();
+          }, [date]);
+
+        c) Use the schedule state to interate the appointments on ul/Time(li)
+
+          <ul>
+            {schedule.map(time => (
+              <Time key={time.time} past={time.past} available={!time.appointment}>
+                <strong>{time.time}</strong>
+                <span>
+                  {time.appointment ? time.appointment.user.name : 'Em aberto'}
+                </span>
+              </Time>
+            ))}
+          </ul>
+
+
+
+
+
+      
+
 
 
