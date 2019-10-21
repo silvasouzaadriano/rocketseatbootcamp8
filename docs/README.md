@@ -8609,7 +8609,7 @@ RouteWrapper.defaultProps = {
           </button>
 
         
-  ### GoBarber Web - Module 09 - Showing appointment
+### GoBarber Web - Module 09 - Showing appointment
 
 
     1) Add the library date-fns-tz
@@ -8699,9 +8699,11 @@ RouteWrapper.defaultProps = {
 
 
 
-
+### GoBarber Mobile - Module 10 - Configurating Structure
 
       
+  1) Create a react native project based on instructions of Module 06
 
+  
 
 
