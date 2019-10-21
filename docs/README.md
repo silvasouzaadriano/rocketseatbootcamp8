@@ -8554,4 +8554,59 @@ RouteWrapper.defaultProps = {
     }
 
 
-  
+  ### GoBarber Web - Module 09 - Navigating among days
+
+    1) On src/pages/Dashboard/index.js proceed as per bellow
+
+      a) Import the hooks useState and useMemo from react.
+
+        import React, { useState, useMemo } from 'react';
+
+      b) Import the format, subDays and addDays from date-fns
+
+        import { format, subDays, addDays } from 'date-fns';
+
+      c) Import the pt from 'date-fns/locale/pt'
+
+        import pt from 'date-fns/locale/pt';
+
+      d) Inside to Dashboard function create a state to store the current day as per bellow
+
+        i - Ceate the states date and setDate
+
+          const { date, setDate } = useState(new Date());
+
+        ii - Create a variable called dateFormatted
+
+        iii - Using dateFormatted, on header, add it to strong
+
+      
+      e) In order to navigate among days, inside to Dashboard function, proceed as per bellow
+
+        i - Create a function called handlePrevDay
+
+          function handlePrevDay() {
+            setDate(subDays(date, 1));
+          }
+
+        ii - Create a function called handleNextDay
+
+          function handleNextDay() {
+            setDate(addDays(date, 1));
+          }
+
+        iii - On onClick method of Prev button add a call to handlePrevDay
+
+          <button type="button" onClick={handlePrevDay}>
+            <MdChevronLeft size={36} color="#fff" />
+          </button>
+
+        iv - On onClick method of Next button add a call to handleNextDay
+
+          <button type="button" onClick={handleNextDay}>
+            <MdChevronRight size={36} color="#fff" />
+          </button>
+
+        
+
+
