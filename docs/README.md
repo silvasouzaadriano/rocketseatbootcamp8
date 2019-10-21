@@ -2072,6 +2072,7 @@
         iv - 'react/state-in-constructor': [0, "always"],
         v - 'react/static-property-placement': ['off', 'property assignment'],
         vi - 'react/jsx-props-no-spreading': ['off', 'property assignment'],
+        vii - "no-underscore-dangle": 'off',
 
       - On globals section, add the line bellow:
 
@@ -7708,7 +7709,7 @@ RouteWrapper.defaultProps = {
                 content: '';
                 border-radius: 50%;
               }
-            `}
+            `};
         `;
 
         export const NotificationList = styled.div`
@@ -7719,6 +7720,7 @@ RouteWrapper.defaultProps = {
           background: rgba(0, 0, 0, 0.6);
           border-radius: 4px;
           padding: 15px 5px;
+          display: ${props => (props.visible ? 'block' : 'none')};
 
           &::before {
             content: '';
@@ -7753,8 +7755,10 @@ RouteWrapper.defaultProps = {
           }
 
           time {
+            display: block;
             font-size: 12px;
             opacity: 0.6;
+            margin-bottom: 5px;
           }
 
           button {
@@ -7762,9 +7766,6 @@ RouteWrapper.defaultProps = {
             border: 0;
             background: none;
             color: ${lighten(0.2, '#7159c1')};
-            padding: 0 5px;
-            margin: 0 5px;
-            border-left: 1px solid rgba(255, 255, 255, 0.1);
           }
 
           ${props =>
@@ -7777,9 +7778,11 @@ RouteWrapper.defaultProps = {
                 height: 8px;
                 background: #ff892e;
                 border-radius: 50%;
+                margin-left: 10px;
               }
             `}
         `;
+
 
 
         Some considerations:
@@ -7800,3 +7803,168 @@ RouteWrapper.defaultProps = {
     b) Before the Profiles add the Notifications as per bellow
 
       <Notifications />
+
+
+### GoBarber Web - Module 09 - Notifications
+
+
+  1) Add the library date-fns@next
+
+    yarn add date-fns@next
+
+    Note that the @next is guarantee the most recent version
+
+  2) On src/components/Notifications/index.js proceed with changes as per bellow
+
+    a) Create a state to store whether the notifications is visible or not.
+
+      i - Import the useState from react
+
+        import React, { useState } from 'react';
+
+      ii - Inside to Notifications function
+
+        1) Create the states called visible  as per bellow
+
+          const [visible, setVisible] = useState(false);
+
+        2) Add the state visible to NotificationList as per bellow
+
+          <NotificationList visible={visible}>
+
+        3) On Badge, as it is a button, add event onClick as per bellow
+
+          <Badge onClick={handleToggleVisible} hasUnread>
+
+        4) After states declarations create a function called handleToggleVisible as per bellow
+
+          function handleToggleVisible() {
+            setVisible(!visible);
+          }
+
+    a) Proceed as per bellow to load the notifications from api
+
+      i - Import the api after react-icons as per bellow
+
+        import api from '~/services/api';
+
+      ii - In order to dispatch the api once component is mounted
+      
+        1) Import the useEffect from react
+
+          import React, { useState, useEffect } from 'react';
+
+        2) Import the parseISO and formatDistance from date-fns
+
+          import { parseISO, formatDistance } from 'date-fns';
+
+        3) Import the portuguese idioma from date-fns/locale/pt
+
+          import pt from 'date-fns/locale/pt';
+
+        4) Create a state for notifications
+
+          const [notifications, setNotifications] = useState([]);
+
+        5) Using the hook useEffect, dispatch an action as per bellow which should contemplate a function called loadNotifications (add it after notifications state variable)
+
+          useEffect(() => {
+            async function loadNotifications() {
+              const response = await api.get('notifications');
+
+              const data = response.data.map(notification => ({
+                ...notification,
+                timeDistance: formatDistance(
+                  parseISO(notification.createdAt),
+                  new Date(),
+                  { addSuffix: true, locale: pt }
+                ),
+              }));
+
+              setNotifications(data);
+            }
+
+            loadNotifications();
+          }, []);
+
+        6) Using the state notifications, perform a map inside to Scroll as per bellow
+
+          <Scroll>
+            {notifications.map(notification => (
+              <Notification key={notification._id} unread>
+                <p>{notification.content}</p>
+                <time>{notification.timeDistance}</time>
+                <button type="button">Marcar como lida</button>
+              </Notification>
+            ))}
+          </Scroll>
+
+    b) Proceed as per bellow to mark notifictions as read
+
+      i - Create a async function called handleMarkAsRead as per bellow
+
+        async function handleMarkAsRead(id) {
+          await api.put(`notifications/${id}`);
+
+          setNotifications(
+            notifications.map(notification =>
+              notification._id === id ? { ...notification, read: true } : notification
+            )
+          );
+        }
+
+      ii - Add the handleMarkAsRead on onClick of Notification button
+
+        <button
+          type="button"
+          onClick={() => handleMarkAsRead(notification._id)}
+        >
+          Marcar como lida
+        </button>
+
+    c) Proceed as per bellow to mark notifictions bullet on Header visiable or not. It means that it only should be visible if the user does have notififictions not read.
+
+      i - Import the hook useMemo from react
+
+        import React, { useState, useEffect, useMemo } from 'react';
+
+      ii - Create a variable called hasUnreaad as per bellow
+
+        const hasUnread = useMemo(
+          () => !!notifications.find(notification => notification.read === false),
+          [notifications]
+        );
+
+      iii - Pass the hasUnread variable to hasUnread property on Badge as per bellow
+
+        <Badge onClick={handleToggleVisible} hasUnread={hasUnread}>
+
+      iv - Add a condition to Notification button to only be available if do have notifications not read
+
+          <NotificationList visible={visible}>
+            <Scroll>
+              {notifications.map(notification => (
+                <Notification key={notification._id} unread={!notification.read}>
+                  <p>{notification.content}</p>
+                  <time>{notification.timeDistance}</time>
+                  {!notification.read && (
+                    <button
+                      type="button"
+                      onClick={() => handleMarkAsRead(notification._id)}
+                    >
+                      Marcar como lida
+                    </button>
+                  )}
+                </Notification>
+              ))}
+            </Scroll>
+          </NotificationList>
+
+
+  3) On src/components/Notifications/styles.js proceed with following changes
+
+    a) Change the NotificationList as per bellow
+
+      i - Add a display to it based on visible property
+
+        display: ${props => (props.visible ? 'block' : 'none')}    
