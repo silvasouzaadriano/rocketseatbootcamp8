@@ -7972,6 +7972,7 @@ RouteWrapper.defaultProps = {
 
 ### GoBarber Web - Module 09 - Profile page
 
+
   1) On src/pages/Profile create a file called styles.js as per bellow
 
     import styled from 'styled-components';
@@ -8121,6 +8122,108 @@ RouteWrapper.defaultProps = {
       <Form initialData={profile} onSubmit={handleSubmit}>
 
       Note that the information about user name and e-mail will be loaded automatically once the property initialData is being used.
+
+
+### GoBarber Web - Module 09 - Profile updating
+
+
+  1) On src/store/modules/user/actions.js proceed with following configuration for create an update profile action
+
+  2) On src/store/modules/user/sagas.js proceed with the following changes
+
+    a) In order to "hear" the action
+    
+      i - Import the takeLatest, call and put from redux-saga/effects
+
+        import { takeLatest, call, put, all } from 'redux-saga/effects';
+
+      ii - Import the api
+
+        import api from '~/services/api';
+
+      iii - Import the toast from react-toastify
+
+        import { toast } from 'react-toastify';
+
+      iv - Import the actions
+
+        import { updateProfileSuccess, updateProfileFailure } from './actions';
+
+
+    b) For when the update profile is dispatched
+    
+      i -  Change the method all to run a saga called updateProfile as per bellow
+
+        export default all([takeLatest('@user/UPDATE_PROFILE_REQUEST', updateProfile)]);
+
+      ii - Create the updateProfile as per bellow
+
+        export function* updateProfile({ payload }) {
+          try {
+            const { name, email, ...rest } = payload.data;
+
+            const profile = {
+              name,
+              email,
+              ...(rest.oldPassword ? rest : {}),
+            };
+
+            const response = yield call(api.put, 'users', profile);
+
+            toast.success('Perfil atualizado com sucesso!');
+
+            yield put(updateProfileSuccess(response.data));
+          } catch (error) {
+            toast.error('Erro ao atualizar perfil, configura seus dados!');
+
+            yield put(updateProfileFailure());
+          }
+        }
+
+
+  3) On src/pages/Profile/index.js proceed with following changes
+
+    a) Import the useDispatch from react-redux
+
+      import { useSelector, useDispatch } from 'react-redux';
+
+    b) Import the actions
+
+      import { updateProfileRequest } from '~/store/modules/user/actions';
+
+    c) Inside to Profile function
+
+      a) Declare a variable called dispatch as per bellow
+
+        const dispatch = useDispatch();
+
+      b) Inside to handleSubmit add the variable dispatch as per bellow
+
+        dispatch(updateProfileRequest(data));
+
+
+  4) On src/store/modules/user/reducer.js proceed with following changes to user profile update state became available with changes dones.
+
+    a) Add a case regarding to @user/UPDATE_PROFILE_SUCCESS
+
+      export default function user(state = INITIAL_STATE, action) {
+        return produce(state, draft => {
+          switch (action.type) {
+            case '@auth/SIGN_IN_SUCCESS': {
+              draft.profile = action.payload.user;
+              break;
+            }
+            case '@user/UPDATE_PROFILE_SUCCESS': {
+              draft.profile = action.payload.profile;
+              break;
+            }
+            default:
+          }
+        });
+      }
+
+
+
 
 
 
