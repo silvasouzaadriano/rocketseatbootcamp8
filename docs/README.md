@@ -8346,7 +8346,106 @@ RouteWrapper.defaultProps = {
       };
 
 
+### GoBarber Web - Module 09 - Header data
 
 
+  1) On src/components/Header/index.js proceed as per bellow
+
+    a) Import the useSelector from react-redux
+
+    b) Inside to Header function, add a constant called profile as per bellow
+
+      const profile = useSelector(state => state.user.profile);
+
+    c) Using the variable profile replace the profile name and avatar as per bellow
+
+      <Profile>
+        <div>
+          <strong>{profile.name}</strong>
+          <Link to="/profile">Meu perfil</Link>
+        </div>
+        {profile.avatar ? (
+          <img src={profile.avatar.url} alt={profile.name} />
+        ) : (
+          <img
+            src="https://api.adorable.io/avatars/50/abott@adorable.png"
+            alt={profile.name}
+          />
+        )}
+      </Profile>
+
+  2) On src/components/Header/styles.js proceed as per bellow
+
+    a) Add the width: 32px; for img
+
+      img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+      }
         
+
+### GoBarber Web - Module 09 - Application Logout
+
+  1) On src/store/modules/auth/actions.js proceed with following changes
+
+    a) Create an action called signOut as per bellow
+
+      export function signOut() {
+        return {
+          type: '@auth/SIGN_OUT',
+        };
+      }
+
+  2) On src/store/modules/auth/reducer.js proceed with following changes
+
+    a) Add a new case to 'hear' the action @auth/SIGN_OUT
+
+      case '@auth/SIGN_OUT': {
+        draft.token = null;
+        draft.signed = false;
+        break;
+      }
+
+  3) On src/store/modules/user/reducer.js proceed with following changes
+
+    
+    a) Add a new case to 'hear' the action @auth/SIGN_OUT
+
+      case '@auth/SIGN_OUT': {
+        draft.profile = null;
+        break;
+      }
+
+  4) On src/store/modules/auth/sagas.js proceed with following changes
+
+    a) Add a saga to hear the signOut as per bellow
+
+      takeLatest('@auth/SIGN_OUT', signOut),
+
+    b) Create the function signOut as per bellow
+
+      export function signOut() {
+        history.push('/');
+      }
+
+  5) On src/pages/Profile/index.js proceed as per bellow
+
+    a) Import the signOut from auth/actions
+
+      import { signOut } from '~/store/modules/auth/actions';
+
+    b) Inside to Profile function
+
+       i - Create a function called handleSignOut as per bellow
+
+        function handleSignOut() {
+          dispatch(signOut());
+        }
+
+      ii - Add on onClick event of button (Sair do GoBarber) a call for handleSignOut
+
+        <button type="button" onClick={handleSignOut}>
+          Sair do GoBarber
+        </button>
 

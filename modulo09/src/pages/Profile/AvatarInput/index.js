@@ -20,7 +20,8 @@ export default function AvatarInput() {
         path: 'dataset.file',
       });
     }
-  }, [ref, registerField]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref]); // eslint-disable-line
 
   async function handleChange(e) {
     const data = new FormData();

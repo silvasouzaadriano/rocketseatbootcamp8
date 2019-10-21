@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { MdNotifications } from 'react-icons/md';
 import { parseISO, formatDistance } from 'date-fns';
 import pt from 'date-fns/locale/pt';
+import { toast } from 'react-toastify';
 
 import api from '~/services/api';
 
@@ -42,7 +43,11 @@ export default function Notifications() {
   }, []);
 
   function handleToggleVisible() {
-    setVisible(!visible);
+    if (notifications.length > 0) {
+      setVisible(!visible);
+    } else {
+      toast.warn('Você não possui notificações!');
+    }
   }
 
   async function handleMarkAsRead(id) {
