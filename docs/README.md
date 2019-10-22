@@ -8706,40 +8706,17 @@ RouteWrapper.defaultProps = {
 
   2) Install also the libraries bellow
 
-    yarn add react-native-gesture-handler
     yarn add react-native-intl
     yarn add react-native-vector-icons
-    yarn add react-navigation
     yarn add react-navigation-stack
-    yarn add react-navigation-tabs
+    
 
-  3) In Installation/Android, there are some imports and code blocks which must be added on MainActivity.java file. Proceed as per bellow
-
-    a) The imports must be added after last one on current file
-
-      import com.facebook.react.ReactActivityDelegate;
-      import com.facebook.react.ReactRootView;
-      import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
-
-    b) The code bellow must be added before the last bracket
-
-
-        @Override
-        protected ReactActivityDelegate createReactActivityDelegate() {
-          return new ReactActivityDelegate(this, getMainComponentName()) {
-            @Override
-            protected ReactRootView createRootView() {
-              return new RNGestureHandlerEnabledRootView(MainActivity.this);
-            }
-          };
-        }
-
-  4) Run the line command bellow
+  3) Due to react-native-vector-icons, run the line command bellow
 
     react-native link react-native-vector-icons
 
   
-  5) Now its necessary rerun the react native to reinstall the native dependencies. For achieve that, stop the server and then:
+  4) Now its necessary rerun the react native to reinstall the native dependencies. For achieve that, stop the server and then:
     
       i - For Android run the command bellow
 
@@ -8768,7 +8745,7 @@ RouteWrapper.defaultProps = {
       ],
 
   
-  2) On .eslintrc.js, after rules section add a new one called settings as per bellow
+  3) On .eslintrc.js, after rules section add a new one called settings as per bellow
 
     settings: {
       "import/resolver": {
@@ -8792,7 +8769,89 @@ RouteWrapper.defaultProps = {
 
     Note that this file is being created in order to allow the utilizaton of functionality ctrl + left mouse button to open files when the path have the ~ instead of ../    
 
-    
 
-  
-  7) Restart the application by run the yarn start
+### GoBarber Mobile - Module 10 - Authentication Routes
+
+
+  1) Add the libraries bellow
+
+    yarn add react-navigation react-native-gesture-handler react-navigation-tabs
+
+    yarn add jetifier -D. This library fix the libraries which are not updated. After add this module, run the command: yarn run jetify. In order to start this process automatically add this running on package.json as per bellow
+
+      a) On scripts add the line beloow
+
+        "postinstall": "jetify"
+
+  2) Regarding to react-native-gesture-handler,in Installation/Android, there are some imports and code blocks which must be added on MainActivity.java file. Proceed as per bellow
+
+    a) The imports must be added after last one on current file
+
+      import com.facebook.react.ReactActivityDelegate;
+      import com.facebook.react.ReactRootView;
+      import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
+
+    b) The code bellow must be added before the last bracket
+
+        @Override
+        protected ReactActivityDelegate createReactActivityDelegate() {
+          return new ReactActivityDelegate(this, getMainComponentName()) {
+            @Override
+            protected ReactRootView createRootView() {
+              return new RNGestureHandlerEnabledRootView(MainActivity.this);
+            }
+          };
+        }
+
+    3) On src create
+    
+      a) A folder called pages
+
+        i - A route called SignIn (folder) and it file called index.js
+
+          import React from 'react';
+          import {Text} from 'react-native';
+
+          // import { Container } from './styles';
+
+          export default function SignIn() {
+            return <Text>SignIn</Text>;
+          }
+
+        ii - A route called SignUp (folder) and it file called index.js
+
+          import React from 'react';
+          import {View} from 'react-native';
+
+          // import { Container } from './styles';
+
+          export default function SignUp() {
+            return <View />;
+          }
+
+      b) A route file called routes.js as per bellow
+
+        import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+        // import {createBottomTabNavigator} from 'react-navigation-tabs';
+
+        import SignIn from './pages/SignIn';
+        import SignUp from './pages/SignUp';
+
+        export default createAppContainer(
+          createSwitchNavigator({
+            SignIn,
+            SignUp,
+          })
+        );
+
+    4) On src/index.js proceed as per bellow
+
+      a) Import the routes
+
+        import Routes from './routes';
+
+      b) On the src function replace the <View /> to <Routes />
+
+        export default function src() {
+          return <Routes />;
+        }
