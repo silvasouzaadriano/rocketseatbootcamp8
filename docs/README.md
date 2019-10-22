@@ -8711,6 +8711,7 @@ RouteWrapper.defaultProps = {
     yarn add react-native-vector-icons
     yarn add react-navigation
     yarn add react-navigation-stack
+    yarn add react-navigation-tabs
 
   3) In Installation/Android, there are some imports and code blocks which must be added on MainActivity.java file. Proceed as per bellow
 
@@ -8745,5 +8746,53 @@ RouteWrapper.defaultProps = {
           yarn react-native run-android
 
   
+### GoBarber Mobile - Module 10 - Root Import configuration
 
 
+  1) Add the libraries bellow. These libs will allow the navigation by files in a simple way without using too many ../ for proceed with imports
+
+ 
+    yarn add babel-plugin-root-import -D
+    yarn add eslint-import-resolver-babel-plugin-root-import -D
+
+
+  2) On the babel.config.js create a section called pluggins as per bellow
+
+      plugins: [
+        [
+          'babel-plugin-root-import',
+          {
+            rootPathSuffix: 'src',
+          },
+        ],
+      ],
+
+  
+  2) On .eslintrc.js, after rules section add a new one called settings as per bellow
+
+    settings: {
+      "import/resolver": {
+        "babel-plugin-root-import": {
+          rootPathSuffix: "src"
+        }
+      }
+    }
+
+  4) On root folder create a file called jsconfig.json with the following content.
+
+    {
+      "compilerOptions": {
+        "baseUrl": "src",
+        "paths": {
+          "~/*": ["*"]
+        }
+      }
+    }
+
+
+    Note that this file is being created in order to allow the utilizaton of functionality ctrl + left mouse button to open files when the path have the ~ instead of ../    
+
+    
+
+  
+  7) Restart the application by run the yarn start
