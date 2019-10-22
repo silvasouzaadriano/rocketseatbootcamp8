@@ -8704,6 +8704,46 @@ RouteWrapper.defaultProps = {
       
   1) Create a react native project based on instructions of Module 06
 
+  2) Install also the libraries bellow
+
+    yarn add react-native-gesture-handler
+    yarn add react-native-intl
+    yarn add react-native-vector-icons
+    yarn add react-navigation
+    yarn add react-navigation-stack
+
+  3) In Installation/Android, there are some imports and code blocks which must be added on MainActivity.java file. Proceed as per bellow
+
+    a) The imports must be added after last one on current file
+
+      import com.facebook.react.ReactActivityDelegate;
+      import com.facebook.react.ReactRootView;
+      import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
+
+    b) The code bellow must be added before the last bracket
+
+
+        @Override
+        protected ReactActivityDelegate createReactActivityDelegate() {
+          return new ReactActivityDelegate(this, getMainComponentName()) {
+            @Override
+            protected ReactRootView createRootView() {
+              return new RNGestureHandlerEnabledRootView(MainActivity.this);
+            }
+          };
+        }
+
+  4) Run the line command bellow
+
+    react-native link react-native-vector-icons
+
+  
+  5) Now its necessary rerun the react native to reinstall the native dependencies. For achieve that, stop the server and then:
+    
+      i - For Android run the command bellow
+
+          yarn react-native run-android
+
   
 
 
