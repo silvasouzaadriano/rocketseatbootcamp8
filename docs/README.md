@@ -8711,7 +8711,7 @@ RouteWrapper.defaultProps = {
     yarn add react-navigation-stack
     
 
-  3) Due to react-native-vector-icons, run the line command bellow
+  3) Manual link steps (React Native < 0.60) due to react-native-vector-icons, run the line command bellow
 
     react-native link react-native-vector-icons
 
@@ -8855,3 +8855,61 @@ RouteWrapper.defaultProps = {
         export default function src() {
           return <Routes />;
         }
+
+
+### GoBarber Mobile - Module 10 - Background Configuration
+
+
+  1) Add the libraries bellow
+
+    a) yarn add react-native-linear-gradient.
+
+      i - Manual link steps (React Native < 0.60) due to react-native-vector-icons, run the line command bellow
+
+        react-native link react-linear-gradient
+
+      ii - Then run the command react-native run-androind again OR
+
+      iii - For IOS (only on MacOS), goes to cd/ios and run the command: pod install. Note that you need have the CocoaPods installed (https://cocoapods.org/) to proceed with that.
+
+    b) yarn add styled-components
+
+  2) On src folder
+
+    a) Create a folder called components
+
+      i - Crete a folder called Background
+
+        Note that it will be a component which we would like to add around to other components which we would to use a gradient.
+      
+        1) Create a file calle index.js as per bellow
+
+
+  3) On src/pages/SignIn/index.js proceed with the follow changes
+
+    a) Import the component Background
+
+      import Background from '~/components/Background';
+
+    b) Add the Background around to current Text
+
+      <Background>
+        <Text>SignIn</Text>
+      </Background>
+
+  4) On src/pages/SignUp/index.js proceed with the follow changes
+
+
+    a) Import the component Background
+
+      import Background from '~/components/Background';
+
+    b) Add the Background around to current Text
+
+      <Background>
+        <Text>SignIn</Text>
+      </Background>
+
+
+
+

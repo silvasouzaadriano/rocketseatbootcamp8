@@ -15,10 +15,12 @@
     "react-native": "0.61.2",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-intl": "^1.0.0",
+    "react-native-linear-gradient": "^2.5.6",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^1.10.2",
-    "react-navigation-tabs": "^2.5.6"
+    "react-navigation-tabs": "^2.5.6",
+    "styled-components": "^4.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
