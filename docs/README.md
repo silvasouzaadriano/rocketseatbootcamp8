@@ -9051,6 +9051,97 @@ RouteWrapper.defaultProps = {
       <Button>Entrar</Button>
 
     
+### GoBarber Mobile - Module 10 - SignIn page
 
+  1) Perform the download of assets folder and add it inside to src folder
 
+  2) On src/pages/SignIn
+  
+    a) Create a file called styles.js as per bellow
 
+      import {Platform} from 'react-native';
+      import styled from 'styled-components/native';
+
+      import Input from '~/components/Input';
+      import Button from '~/components/Button';
+
+      export const Container = styled.KeyboardAvoidingView.attrs({
+        enabled: Platform.OS === 'ios',
+        behavior: 'padding',
+      })`
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+        padding: 0 30px;
+      `;
+
+      export const Form = styled.View`
+        align-self: stretch;
+        margin-top: 50px;
+      `;
+
+      export const FormInput = styled(Input)`
+        margin-bottom: 10px;
+      `;
+
+      export const SubmitButton = styled(Button)`
+        margin-top: 5px;
+      `;
+
+      export const SignLink = styled.TouchableOpacity`
+        margin-top: 20px;
+      `;
+
+      export const SignLinkText = styled.Text`
+        color: #fff;
+        font-weight: bold;
+        font-size: 16px;
+      `;
+
+    b) Replace the current index.js as per bellow
+
+      import React from 'react';
+      import {Image} from 'react-native';
+
+      import logo from '~/assets/logo.png';
+
+      import Background from '~/components/Background';
+
+      import {
+        Container,
+        Form,
+        FormInput,
+        SubmitButton,
+        SignLink,
+        SignLinkText,
+      } from './styles';
+
+      export default function SignIn() {
+        return (
+          <Background>
+            <Container>
+              <Image source={logo} />
+              <Form>
+                <FormInput
+                  icon="mail-outline"
+                  keyboard="email-address"
+                  autocorrect={false}
+                  autoCapitalize="none"
+                  placeholder="Digite seu e-mail"
+                />
+
+                <FormInput
+                  icon="lock-outline"
+                  secureTextEntry
+                  placeholder="Sua senha secreta"
+                />
+
+                <SubmitButton onPress={() => {}}>Acessar</SubmitButton>
+              </Form>
+              <SignLink onPress={() => {}}>
+                <SignLinkText>Criar Conta gratuita</SignLinkText>
+              </SignLink>
+            </Container>
+          </Background>
+        );
+      }
