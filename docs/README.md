@@ -9145,3 +9145,388 @@ RouteWrapper.defaultProps = {
           </Background>
         );
       }
+
+### GoBarber Mobile - Module 10 - Input & Button
+
+
+  This module will create two global components which will be used in several places on the application
+
+
+  1) Add the libraries bellow
+
+    a) yarn add prop-types
+
+    b) yarn add react-native-vector-icons
+
+      i - Manual link steps, run the lines command bellow
+
+        1) react-native link react-native-vector-icons
+
+        2) react-native run-android OR react-native run-ios(only for MacOs)
+
+
+  2) On src/components
+
+    a) Create a folder called Input
+
+      i - Create a file called styles.js
+
+        import styled from 'styled-components/native';
+
+        export const Container = styled.View`
+          padding: 0 15px;
+          height: 46px;
+          background: rgba(0, 0, 0, 0.1);
+          border-radius: 4px;
+
+          flex-direction: row;
+          align-items: center;
+        `;
+
+        export const TInput = styled.TextInput.attrs({
+          placeholderTextColor: 'rgba(255, 255, 255, 0.8)',
+        })`
+          flex: 1;
+          font-size: 15px;
+          margin-left: 10px;
+          color: #fff;
+        `;
+
+
+      ii - Create a file called index.js as per bellow
+
+        import React, {forwardRef} from 'react';
+        import Icon from 'react-native-vector-icons/MaterialIcons';
+        import PropTypes from 'prop-types';
+
+        import {Container, TInput} from './styles';
+
+        function Input({style, icon, ...rest}, ref) {
+          return (
+            <Container style={style}>
+              {icon && <Icon name={icon} size={20} color="rgba(255, 255, 255, 0.6)" />}
+              <TInput {...rest} ref={ref} />
+            </Container>
+          );
+        }
+
+        Input.propTypes = {
+          icon: PropTypes.string,
+          style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+        };
+
+        Input.defaultProps = {
+          icon: null,
+          style: {},
+        };
+
+        export default forwardRef(Input);
+
+
+    b) Create a folder called Button
+
+      i - Create a file called styles.jsimport styled from 'styled-components/native';
+
+        import {RectButton} from 'react-native-gesture-handler';
+
+        export const Container = styled(RectButton)`
+          height: 46px;
+          background: #3b9eff;
+          border-radius: 4px;
+
+          align-items: center;
+          justify-content: center;
+        `;
+
+        export const Text = styled.Text`
+          color: #fff;
+          font-weight: bold;
+          font-size: 16px;
+        `;
+
+
+      ii - Create a file called index.js
+
+        import React from 'react';
+        import {ActivityIndicator} from 'react-native';
+        import PropTypes from 'prop-types';
+
+        import {Container, Text} from './styles';
+
+        export default function Button({children, loading, ...rest}) {
+          return (
+            <Container {...rest}>
+              {loading ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Text>{children}</Text>
+              )}
+            </Container>
+          );
+        }
+
+        Button.propTypes = {
+          children: PropTypes.string.isRequired,
+          loading: PropTypes.bool,
+        };
+
+        Button.defaultProps = {
+          loading: false,
+        };
+
+
+  
+  3) On src/pages/SignIn/index.js proceed as per bellow
+
+    a) Import the component Input
+
+      import Input from '~/components/Input';
+
+    b) Import the component Button
+
+      import Button from '~/components/Button';
+
+    c) After <Text> add the component Input as per bellow
+
+      <Input
+        style={{marginTop: 30}}
+        icon="call"
+        placeholder="Digite seu nome"
+      />
+
+    d) After component Input add the Button as per bellow
+
+      <Button>Entrar</Button>
+
+    
+### GoBarber Mobile - Module 10 - SignIn page
+
+  1) Perform the download of assets folder and add it inside to src folder
+
+  2) On src/pages/SignIn
+  
+    a) Create a file called styles.js as per bellow
+
+      import {Platform} from 'react-native';
+      import styled from 'styled-components/native';
+
+      import Input from '~/components/Input';
+      import Button from '~/components/Button';
+
+      export const Container = styled.KeyboardAvoidingView.attrs({
+        enabled: Platform.OS === 'ios',
+        behavior: 'padding',
+      })`
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+        padding: 0 30px;
+      `;
+
+      export const Form = styled.View`
+        align-self: stretch;
+        margin-top: 50px;
+      `;
+
+      export const FormInput = styled(Input)`
+        margin-bottom: 10px;
+      `;
+
+      export const SubmitButton = styled(Button)`
+        margin-top: 5px;
+      `;
+
+      export const SignLink = styled.TouchableOpacity`
+        margin-top: 20px;
+      `;
+
+      export const SignLinkText = styled.Text`
+        color: #fff;
+        font-weight: bold;
+        font-size: 16px;
+      `;
+
+    b) Replace the current index.js as per bellow
+
+      import React from 'react';
+      import {Image} from 'react-native';
+
+      import logo from '~/assets/logo.png';
+
+      import Background from '~/components/Background';
+
+      import {
+        Container,
+        Form,
+        FormInput,
+        SubmitButton,
+        SignLink,
+        SignLinkText,
+      } from './styles';
+
+      export default function SignIn() {
+        return (
+          <Background>
+            <Container>
+              <Image source={logo} />
+              <Form>
+                <FormInput
+                  icon="mail-outline"
+                  keyboard="email-address"
+                  autocorrect={false}
+                  autoCapitalize="none"
+                  placeholder="Digite seu e-mail"
+                />
+
+                <FormInput
+                  icon="lock-outline"
+                  secureTextEntry
+                  placeholder="Sua senha secreta"
+                />
+
+                <SubmitButton onPress={() => {}}>Acessar</SubmitButton>
+              </Form>
+              <SignLink onPress={() => {}}>
+                <SignLinkText>Criar Conta gratuita</SignLinkText>
+              </SignLink>
+            </Container>
+          </Background>
+        );
+      }
+
+### GoBarber Mobile - Module 10 - SignUp page
+
+  1) On src/pages/SignIn/index.js
+
+    a) Import the library prop-types
+
+      import PropTypes from 'prop-types';
+
+    b) Pass as parameter a property called navigation to SignIn function
+
+      export default function SignIn({ navigation }) 
+
+    c) On SignLink, change the function on onPress to contemplate the navigation to SignUp page
+
+      <SignLink onPress={() => navigation.navigate('SignUp')}>
+         <SignLinkText>Criar conta gratuita</SignLinkText>
+      </SignLink>
+
+    d) On end of file add a property validation regarding to navigation
+
+      SignIn.propTypes = {
+        navigation: PropTypes.shape({
+          navigate: PropTypes.func.isRequired,
+        }).isRequired,
+      };
+
+
+
+  2) On src/pages/SignUp
+  
+    a) Create a file called styles.js as per bellow
+
+      import {Platform} from 'react-native';
+      import styled from 'styled-components/native';
+
+      import Input from '~/components/Input';
+      import Button from '~/components/Button';
+
+      export const Container = styled.KeyboardAvoidingView.attrs({
+        enabled: Platform.OS === 'ios',
+        behavior: 'padding',
+      })`
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+        padding: 0 30px;
+      `;
+
+      export const Form = styled.View`
+        align-self: stretch;
+        margin-top: 50px;
+      `;
+
+      export const FormInput = styled(Input)`
+        margin-bottom: 10px;
+      `;
+
+      export const SubmitButton = styled(Button)`
+        margin-top: 5px;
+      `;
+
+      export const SignLink = styled.TouchableOpacity`
+        margin-top: 20px;
+      `;
+
+      export const SignLinkText = styled.Text`
+        color: #fff;
+        font-weight: bold;
+        font-size: 16px;
+      `;
+
+
+    b) Replace the current index.js as per bellow
+
+      import React from 'react';
+      import {Image} from 'react-native';
+      import PropTypes from 'prop-types';
+
+      import logo from '~/assets/logo.png';
+
+      import Background from '~/components/Background';
+
+      import {
+        Container,
+        Form,
+        FormInput,
+        SubmitButton,
+        SignLink,
+        SignLinkText,
+      } from './styles';
+
+      export default function SignUp({navigation}) {
+        return (
+          <Background>
+            <Container>
+              <Image source={logo} />
+              <Form>
+                <FormInput
+                  icon="person-outline"
+                  autocorrect={false}
+                  autoCapitalize="none"
+                  placeholder="Nome completo"
+                />
+
+                <FormInput
+                  icon="mail-outline"
+                  keyboard="email-address"
+                  autocorrect={false}
+                  autoCapitalize="none"
+                  placeholder="Digite seu e-mail"
+                />
+
+                <FormInput
+                  icon="lock-outline"
+                  secureTextEntry
+                  placeholder="Sua senha secreta"
+                />
+
+                <SubmitButton onPress={() => {}}>Criar Conta</SubmitButton>
+              </Form>
+              <SignLink onPress={() => navigation.navigate('SignIn')}>
+                <SignLinkText>Tela de Login</SignLinkText>
+              </SignLink>
+            </Container>
+          </Background>
+        );
+      }
+
+      SignUp.propTypes = {
+        navigation: PropTypes.shape({
+          navigate: PropTypes.func.isRequired,
+        }).isRequired,
+      };
+
+
+      
