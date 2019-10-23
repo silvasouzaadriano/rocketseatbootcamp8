@@ -9529,4 +9529,23 @@ RouteWrapper.defaultProps = {
       };
 
 
+### GoBarber Mobile - Module 10 - StatusBar configuration
+
+  1) On src/index.js proceed as per bellow
+
+    a) Import the StatusBar from react-native
+
+      import {StatusBar} from 'react-native';
+
+    b) On return of src function, add fragment around Routes and StatusBar
+
+      export default function src() {
+        return (
+          <>
+            <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
+            <Routes />
+          </>
+        );
+      }
+
       
