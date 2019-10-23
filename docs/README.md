@@ -8707,21 +8707,8 @@ RouteWrapper.defaultProps = {
   2) Install also the libraries bellow
 
     yarn add react-native-intl
-    yarn add react-native-vector-icons
     yarn add react-navigation-stack
     
-
-  3) Manual link steps (React Native < 0.60) due to react-native-vector-icons, run the line command bellow
-
-    react-native link react-native-vector-icons
-
-  
-  4) Now its necessary rerun the react native to reinstall the native dependencies. For achieve that, stop the server and then:
-    
-      i - For Android run the command bellow
-
-          yarn react-native run-android
-
   
 ### GoBarber Mobile - Module 10 - Root Import configuration
 
@@ -8868,9 +8855,9 @@ RouteWrapper.defaultProps = {
 
         react-native link react-linear-gradient
 
-      ii - Then run the command react-native run-androind again OR
+      ii - Then run the command react-native run-android again OR react-native run-ios (only for MacOs)
 
-      iii - For IOS (only on MacOS), goes to cd/ios and run the command: pod install. Note that you need have the CocoaPods installed (https://cocoapods.org/) to proceed with that.
+      iii - Also only for MacOS, goes to cd/ios and run the command: pod install. Note that you need have the CocoaPods installed (https://cocoapods.org/) to proceed with that.
 
     b) yarn add styled-components
 
@@ -8910,6 +8897,160 @@ RouteWrapper.defaultProps = {
         <Text>SignIn</Text>
       </Background>
 
+
+### GoBarber Mobile - Module 10 - Input & Button
+
+
+  This module will create two global components which will be used in several places on the application
+
+
+  1) Add the libraries bellow
+
+    a) yarn add prop-types
+
+    b) yarn add react-native-vector-icons
+
+      i - Manual link steps, run the lines command bellow
+
+        1) react-native link react-native-vector-icons
+
+        2) react-native run-android OR react-native run-ios(only for MacOs)
+
+
+  2) On src/components
+
+    a) Create a folder called Input
+
+      i - Create a file called styles.js
+
+        import styled from 'styled-components/native';
+
+        export const Container = styled.View`
+          padding: 0 15px;
+          height: 46px;
+          background: rgba(0, 0, 0, 0.1);
+          border-radius: 4px;
+
+          flex-direction: row;
+          align-items: center;
+        `;
+
+        export const TInput = styled.TextInput.attrs({
+          placeholderTextColor: 'rgba(255, 255, 255, 0.8)',
+        })`
+          flex: 1;
+          font-size: 15px;
+          margin-left: 10px;
+          color: #fff;
+        `;
+
+
+      ii - Create a file called index.js as per bellow
+
+        import React, {forwardRef} from 'react';
+        import Icon from 'react-native-vector-icons/MaterialIcons';
+        import PropTypes from 'prop-types';
+
+        import {Container, TInput} from './styles';
+
+        function Input({style, icon, ...rest}, ref) {
+          return (
+            <Container style={style}>
+              {icon && <Icon name={icon} size={20} color="rgba(255, 255, 255, 0.6)" />}
+              <TInput {...rest} ref={ref} />
+            </Container>
+          );
+        }
+
+        Input.propTypes = {
+          icon: PropTypes.string,
+          style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+        };
+
+        Input.defaultProps = {
+          icon: null,
+          style: {},
+        };
+
+        export default forwardRef(Input);
+
+
+    b) Create a folder called Button
+
+      i - Create a file called styles.jsimport styled from 'styled-components/native';
+
+        import {RectButton} from 'react-native-gesture-handler';
+
+        export const Container = styled(RectButton)`
+          height: 46px;
+          background: #3b9eff;
+          border-radius: 4px;
+
+          align-items: center;
+          justify-content: center;
+        `;
+
+        export const Text = styled.Text`
+          color: #fff;
+          font-weight: bold;
+          font-size: 16px;
+        `;
+
+
+      ii - Create a file called index.js
+
+        import React from 'react';
+        import {ActivityIndicator} from 'react-native';
+        import PropTypes from 'prop-types';
+
+        import {Container, Text} from './styles';
+
+        export default function Button({children, loading, ...rest}) {
+          return (
+            <Container {...rest}>
+              {loading ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Text>{children}</Text>
+              )}
+            </Container>
+          );
+        }
+
+        Button.propTypes = {
+          children: PropTypes.string.isRequired,
+          loading: PropTypes.bool,
+        };
+
+        Button.defaultProps = {
+          loading: false,
+        };
+
+
+  
+  3) On src/pages/SignIn/index.js proceed as per bellow
+
+    a) Import the component Input
+
+      import Input from '~/components/Input';
+
+    b) Import the component Button
+
+      import Button from '~/components/Button';
+
+    c) After <Text> add the component Input as per bellow
+
+      <Input
+        style={{marginTop: 30}}
+        icon="call"
+        placeholder="Digite seu nome"
+      />
+
+    d) After component Input add the Button as per bellow
+
+      <Button>Entrar</Button>
+
+    
 
 
 
