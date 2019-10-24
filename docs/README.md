@@ -9659,7 +9659,77 @@ RouteWrapper.defaultProps = {
 
       <SubmitButton onPress={handleSubmit}>Criar Conta</SubmitButton>
 
-      
+
+### GoBarber Mobile - Module 10 - Reactotron
+
+
+  1) Add the libraries bellow
+
+    a) yarn add redux redux-saga react-redux
+    
+    b) yarn add reactotron-react-native reactotron-redux reactotron-redux-saga
+
+  2) On src
+
+    a) Create a folder called config
+
+      i - Then create the file called ReactotronConfig.js as per bellow
+
+        import Reactotron from 'reactotron-react-native';
+        import {reactotronRedux} from 'reactotron-redux';
+        import reactotronSaga from 'reactotron-redux-saga';
+
+        if (__DEV__) {
+          const tron = Reactotron.configure()
+            .useReactNative()
+            .use(reactotronRedux())
+            .use(reactotronSaga())
+            .connect();
+
+          tron.clear();
+
+          console.tron = tron;
+        }
+
+        Some considerations:
+
+          a) From this part on, the Reactotron should show something in it timeline. However, if you are using Android, somes steps should be done:
+
+            1) In case running using USB, add your IP on signature of Reactotron.configure(), in the ReactotronConfig.js. change the configure to contemplate the host as well. For instance:
+
+
+              if (__DEV__) {
+                const tron = Reactotron.configure({ host: '189.4.72.223' })
+                  .useReactNative()
+                  .use(reactotronRedux())
+                  .use(reactotronSaga())
+                  .connect();
+
+                tron.clear();
+
+                console.tron = tron;
+              }
+
+            2) if you are using an Android device emulator or even other emulator run the following command to make sure it can connect to Reactotron 
+
+              a - adb reverse tcp:9090 tcp:9090
+
+                Note that the adb should be in the path to can run. However, if not, you may alternativelly goes to you Android path to run it Iif you are using Android emulator. For instance:
+
+                ~/Android/sdk/platform-tools/adb reverse tcp:9090 tcp:9090
+
+              b - Refresh your app (or start it up by running react-native start) and have a look at Reactotron now. Its expected an connection information on Timeline
+
+  
+  3) On src/index.js
+
+    a) Import the ReactotronConfig
+
+      import './config/ReactotronConfig';
+
+    
+
+    
 
     
 
