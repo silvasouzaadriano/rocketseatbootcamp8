@@ -9548,4 +9548,120 @@ RouteWrapper.defaultProps = {
         );
       }
 
+### GoBarber Mobile - Module 10 - Acessibility tips
+
+
+  1) On src/pages/SignIn/index.js proceed as per bellow
+
+    a) Import the useRef from react
+
+      import React, {useRef} from 'react';
+
+    b) Inside to SignIn function create a variable called passwordRef as per bellow
+
+      const passwordRef = useRef();
+
       
+    c) Create an empty function called handleSubmit as per bellow
+
+      function handleSubmit() {}
+
+
+    d) On FormInput related to e-mail
+    
+      i -  Add a property called returnKeyType
+
+        returnKeyType="next"
+
+      ii - Add a property called onSubmitEditing moving the focus to FormInput button related to password
+
+        onSubmitEditing={() => passwordRef.current.focus()}
+
+    e) On FormInput related to password
+    
+      i - Add a property called ref
+
+        ref={passwordRef}
+
+      ii -  Add a property called returnKeyType
+
+        returnKeyType="send"
+      
+      ii - Add a property called onSubmitEditing calling the handlesubmt function
+
+        onSubmitEditing={handleSubmit}
+
+    f) On SubmitButton "Acessar" add a property called onPress calling the handlesubmt function
+
+      <SubmitButton onPress={handleSubmit}>Acessar</SubmitButton>
+
+
+  2) On src/pages/SignUp/index.js proceed as per bellow
+
+    a) Import the useRef from react
+
+      import React, {useRef} from 'react';
+
+    b) Inside to SignIn function create the variables called emailRef and passwordRef
+      as per bellow
+
+      const emailRef = useRef();
+      const passwordRef = useRef();
+
+      
+    c) Create an function called handleSubmit as per bellow
+
+      function handleSubmit() {}
+
+    
+    d) On FormInput related to "Nome completo"
+    
+      i -  Add a property called returnKeyType
+       
+        returnKeyType="next"
+
+      ii - Add a property called onSubmitEditing moving the focus to FormInput button related to e-mail
+
+        onSubmitEditing={() => emailRef.current.focus()}
+
+
+    e) On FormInput related to e-mail
+    
+      i - Add a property called ref
+      
+        ref={emailRef}
+
+      ii -  Add a property called returnKeyType
+
+        returnKeyType="next"
+
+      iii - Add a property called onSubmitEditing moving the focus to FormInput button related to password
+
+        onSubmitEditing={() => passwordRef.current.focus()}
+
+    
+    f) On FormInput related to password
+    
+      i - Add a property called ref
+
+        ref={passwordRef}
+
+      ii -  Add a property called returnKeyType
+
+        returnKeyType="send"
+      
+      ii - Add a property called onSubmitEditing calling the handleSubmit function
+
+        onSubmitEditing={handleSubmit}
+
+    
+    g) On SubmitButton "Criar Conta" add a property called onPress calling the handleSubmit function    
+
+      <SubmitButton onPress={handleSubmit}>Criar Conta</SubmitButton>
+
+      
+
+    
+
+      
+
