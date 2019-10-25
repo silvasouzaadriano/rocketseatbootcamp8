@@ -8708,7 +8708,8 @@ RouteWrapper.defaultProps = {
 
     yarn add react-native-intl
     yarn add react-navigation-stack
-    
+    yarn add react-native-reanimated
+    yarn add react-navigation-drawer
   
 ### GoBarber Mobile - Module 10 - Root Import configuration
 
@@ -9998,6 +9999,122 @@ RouteWrapper.defaultProps = {
           dispatch(signUpRequest(name, email, password));
         }
       
+
+### GoBarber Mobile - Module 10 - Initial Route
+
+  1) On src/pages
+
+    a) Create a folder called Dashboard
+    
+      i - Create a file called index.js as per bellow
+
+        import React from 'react';
+        import {View} from 'react-native';
+
+        // import { Container } from './styles';
+
+        export default function Dashboard() {
+          return <View />;
+        }
+
+
+  1) On src
+
+    a) Create a file called App.js as per bellow
+
+      import React from 'react';
+      import {useSelector} from 'react-redux';
+      import createRouter from './routes';
+
+      export default function App() {
+        const signed = useSelector(state => state.auth.signed);
+
+        const Routes = createRouter(signed);
+
+        return <Routes />;
+      }
+
+
+    a) On src/index.js proceed with changes as per bellow
+    
+      i - Replace the function name from src to Index
+
+      ii - Remove the Routes import
+
+      iii - Import the src/App
+
+      iv - Replace the tag <Routes /> to <App />
+
+      In the end the code must be something like that
+
+      import React from 'react';
+      import {PersistGate} from 'redux-persist/integration/react';
+      import {Provider} from 'react-redux';
+      import {StatusBar} from 'react-native';
+
+      import './config/ReactotronConfig';
+
+      import {store, persistor} from './store';
+      import App from './App';
+
+      export default function Index() {
+        return (
+          <Provider store={store}>
+            <PersistGate persistor={persistor}>
+              <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
+              <App />
+            </PersistGate>
+          </Provider>
+        );
+      }
+
+
+  
+    b) On src/routes.js proceed with changes as per bellow
+
+      i - Import the createBottomTabNavigator from react-navigation-tabs
+
+        import {createBottomTabNavigator} from 'react-navigation-tabs';
+
+      ii - Import the Dashboard
+
+        import Dashboard from './pages/Dashboard';
+
+      ii - Chaining the createSwitchNavigator, create two groups called Sign and App as per bellow
+
+      iii - In order to receives the information to know whether the user is logged or not, transform the export default createAppContainer in a function which return the createAppContainer
+
+      In the end the code must be something like that
+
+        import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+        import {createBottomTabNavigator} from 'react-navigation-tabs';
+
+        import SignIn from './pages/SignIn';
+        import SignUp from './pages/SignUp';
+
+        import Dashboard from './pages/Dashboard';
+
+        export default (isSigned = false) =>
+          createAppContainer(
+            createSwitchNavigator(
+              {
+                Sign: createSwitchNavigator({
+                  SignIn,
+                  SignUp,
+                }),
+                App: createBottomTabNavigator({
+                  Dashboard,
+                }),
+              },
+              {
+                initialRouteName: isSigned ? 'App' : 'Sign',
+              }
+            )
+          );
+
+      
+
+
 
 
 
