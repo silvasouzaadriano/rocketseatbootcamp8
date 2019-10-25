@@ -9881,4 +9881,123 @@ RouteWrapper.defaultProps = {
       storage: AsyncStorage,      
 
 
+### GoBarber Mobile - Module 10 - Connecting Redux 
+
+  1) On src/store/modules/auth/sagas.js proceed with changes as per bellow
+
+    a) As the login on Mobile is for user which are not providers, exclude from call of users api inside to SignUp functon the attribute provider. In the end that piece of code must be something like that
+
+      yield call(api.post, 'users', {
+        name,
+        email,
+        password,
+      });
+  
+  2) On src/pages/SignIn/index.js proceed with changes as per bellow
+
+    a) Import the hookd Dispatch from react-redux
+
+      import {useDispatch} from 'react-redux';
+
+    b) Import the signInRequest auth/actions
+
+      import {signInRequest} from '~/store/modules/auth/actions';
+
+    c) Import the useState and useSelector from react
+
+      import React, {useRef, useState, useSelector} from 'react';
+
+    d) On SignIn function
+
+      i - Create two constant called dispatch and loading as per bellow
+
+        1) const dispatch = useDispatch();
+
+        2) const loading = useSelector(state => state.auth.loading);
+
+      ii - Using the useState create a state to email and password as per bellow
+
+        const [email, setEmail] = useState('');
+        const [password, setPassword] = useState('');
+
+      iii - On FormInput about e-mail add the properties bellow
+      
+         value={email}
+         onChangeText={setEmail}
+
+      iv - On FormInput about password add the properties bellow
+      
+         value={password}
+         onChangeText={setPassword}
+
+      v - On SubmitButton add the property loading as per bellow
+
+        <SubmitButton loading={loading} onPress={handleSubmit}>
+          Acessar
+        </SubmitButton>
+
+      vi - Change the handleSubmit function as per bellow
+
+        function handleSubmit() {
+          dispatch(signInRequest(email, password));
+        }
+
+
+  3) On src/pages/SignUp/index.js proceed with changes as per bellow
+
+    a) Import the hookd Dispatch from react-redux
+
+      import {useDispatch, useSelector} from 'react-redux';
+
+    b) Import the signUpRequest auth/actions
+
+      import {signUpRequest} from '~/store/modules/auth/actions';
+
+    c) Import the useState from react
+
+      import React, {useRef, useState} from 'react';
+
+    d) On SignIn function
+
+      i - Create two constant called dispatch and loading as per bellow
+
+        1) const dispatch = useDispatch();
+
+        2) const loading = useSelector(state => state.auth.loading);
+
+      ii - Using the useState create a state to name, email and password as per bellow
+
+          const [name, setName] = useState('');
+          const [email, setEmail] = useState('');
+          const [password, setPassword] = useState('');
+
+      iii - On FormInput about namel add the properties bellow
+      
+         value={name}
+         onChangeText={setName}
+
+      iv - On FormInput about e-mail add the properties bellow
+      
+         value={email}
+         onChangeText={setEmail}
+
+      v - On FormInput about password add the properties bellow
+      
+         value={password}
+         onChangeText={setPassword}
+
+      v - On SubmitButton add the property loading as per bellow
+
+        <SubmitButton loading={loading} onPress={handleSubmit}>
+          Criar Conta
+        </SubmitButton>
+
+      vii - Change the handleSubmit function as per bellow
+
+        function handleSubmit() {
+          dispatch(signUpRequest(name, email, password));
+        }
+      
+
+
 
