@@ -10113,8 +10113,129 @@ RouteWrapper.defaultProps = {
           );
 
       
+### GoBarber Mobile - Module 10 - Route stylizations
+
+  
+  1) Change as per bellow the src/pages/Dashboard/index.js in order to perform the styizations
+
+    a) Import the Background
+
+      import Background from '~/components/Background'
+
+      i - Then
+
+        1) Exclude the View import
+
+        2) replace the <View /> to <Background />
+
+          export default function Dashboard() {
+            return <Background />;
+          }
+
+    b) Import the propTypes
+
+      import PropTypes from 'prop-types';
+    
+    c) Import the MaterialIcons
+
+      import Icon from 'react-native-vector-icons/MaterialIcons';
+
+    d) Create a function called IconTab as per bellow
+
+      function IconTab({tintColor}) {
+        return <Icon name="event" size={20} color={tintColor} />;
+      }
+
+    e) Create a propTypes validation for tintColor
+
+      IconTab.propTypes = {
+        tintColor: PropTypes.string.isRequired,
+      };
+ 
+    f) Create a NavigationOptions as per bellow
+
+      Dashboard.navigationOptions = {
+        tabBarLabel: 'Agendamentos',
+        tabBarIcon: IconTab,
+      };
+
+  2) On src/pages
+
+    a) Create a folder called Profile
+
+      i - Create a file called index.js as per bellow
+
+        import React from 'react';
+        import PropTypes from 'prop-types';
+        import Icon from 'react-native-vector-icons/MaterialIcons';
+
+        import Background from '~/components/Background';
+
+        // import { Container } from './styles';
+
+        export default function Profile() {
+          return <Background />;
+        }
+
+        function IconTab({tintColor}) {
+          return <Icon name="person" size={20} color={tintColor} />;
+        }
+
+        IconTab.propTypes = {
+          tintColor: PropTypes.string.isRequired,
+        };
+
+        Profile.navigationOptions = {
+          tabBarLabel: 'Meu perfil',
+          tabBarIcon: IconTab,
+        };
 
 
+  2) Change the src/routes.js as per bellow
+
+    a) Import the Profile
+
+      import Profile from './pages/Profile';
+
+    b) Add the Profile after Dashboard on createBottomTabNavigation
+
+    b) Add the tabBarOptions as second parameter to createBottomTabNavigator as per bellow
+
+    In the end the export default must be something like that
+
+      export default (isSigned = false) =>
+        createAppContainer(
+          createSwitchNavigator(
+            {
+              Sign: createSwitchNavigator({
+                SignIn,
+                SignUp,
+              }),
+              App: createBottomTabNavigator(
+                {
+                  Dashboard,
+                  Profile,
+                },
+                {
+                  tabBarOptions: {
+                    keyboardHidesTabBar: true,
+                    activeTintColor: '#FFF',
+                    inativeTintColor: 'rgba(255, 255, 255, 0.6)',
+                    style: {
+                      backgroundColor: '#8d41a8',
+                    },
+                  },
+                }
+              ),
+            },
+            {
+              initialRouteName: isSigned ? 'App' : 'Sign',
+            }
+          )
+        );
+
+  
+ 
 
 
 
