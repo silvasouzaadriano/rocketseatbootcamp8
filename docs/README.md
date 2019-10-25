@@ -2154,7 +2154,7 @@
 
 
       if (__DEV__) {
-        const tron = Reactotron.configure({ host: '189.4.72.223' })
+        const tron = Reactotron.configure({ host: '192.168.0.7' })
           .useReactNative()
           .connect();
 
@@ -9699,7 +9699,7 @@ RouteWrapper.defaultProps = {
 
 
               if (__DEV__) {
-                const tron = Reactotron.configure({ host: '189.4.72.223' })
+                const tron = Reactotron.configure({ host: '192.168.0.7' })
                   .useReactNative()
                   .use(reactotronRedux())
                   .use(reactotronSaga())
@@ -9729,9 +9729,156 @@ RouteWrapper.defaultProps = {
 
     
 
-    
+### GoBarber Mobile - Module 10 - Redux configuration
 
-    
 
-      
+  1) As the configuration will be the same for web and mobile, copy from web the folder store and add it to src folder
+
+  2) Add the libraries bellow
+
+    a) yarn add redux-persist immer
+
+    b) yarn add axios
+    
+    c) yarn @react-native-community/async-storage
+
+      i - Run the command: react-native link @react-native-community/async-storage
+
+      ii - Run the command: yarn react-native run-android
+
+      iii - Restart the application by running the command: yarn react-native start
+
+
+  3) On src/store/index.js proceed with the following changes
+
+    a) Replace the const sagaMonitor as per bellow
+
+      const sagaMonitor = __DEV__ ? console.tron.createSagaMonitor() : null;
+
+  4) On src/store/createStore.js proceed with the following changes
+
+    a) Replace the const enhancer as per bellow
+
+      const enhancer = __DEV__
+        ? compose(
+            console.tron.createEnhancer(),
+            applyMiddleware(...middlewares)
+          )
+        : applyMiddleware(...middlewares);
+
+
+  5) On src
+
+    a) Create a folder called services
+
+      i - Create a file called api.js as per bellow
+
+        import axios from 'axios';
+
+        const api = axios.create({
+          baseURL: 'http://10.0.2.2:3333',
+        });
+
+        export default api;
+
+
+      Some considerations:
+
+        a) Regarding to baseURL
+
+          i - For IOS use the url http://localhost:3333
+
+          i - For Android
+
+            1) Using Adroid emulator use the url http://10.0.2.2:3333
+
+            2) Using Genymotion emulator use the url http://10.0.3.2:3333
+
+            3) Using by USB/WiFi use your IP on url, for instance: http://192.168.0.7:3333
+
+    b) On src/store/modules/auth/sagas.js proceed with the following changes
+
+      i - Detete the import related to history and comment the lines related to history.push
+
+      ii - Delete the import about Toastfy once will be used the react native alert
+
+      iii - Import the Alert from react-native
+
+        import {Alert} from 'react-native';
+
+      iv - Replace where have toast to Alert. Note that regarding to if, in opposite for web, its needed check if the used is a provider to raise the message error
+
+        if (user.provider) {
+          Alert.alert('Erro no Login', 'Usuáro não pode ser prestador de serviços');
+          yield put(signFailure());
+          return;
+        }
+
+        Alert.alert(
+          'Falha na autenticação',
+          'Houve um erro no login, verifique seus dados!'
+        );
+
+        Alert.alert(
+          'Falha no cadastro',
+          'Houve um erro no cadastro, verifique seus dados!'
+        );
+
+    c) On src/store/modules/user/sagas.js proceed with the following changes
+
+      ii - Delete the import about Toastfy once will be used the react native alert
+
+      iii - Import the Alert from react-native
+
+        import {Alert} from 'react-native';
+
+      iv - Replace where have toast to Alert
+
+        Alert.alert('Sucesso!', 'Perfil atualizado com sucesso!');
+
+        Alert.alert(
+          'Falha na atualização',
+          'Houve um erro na atualização do perfil, verifique seus dados'
+        );
+
+
+  6) On src/index.js proceed with following changes
+
+    a) Import the PersistGate from redux-persist/integration/react
+
+      import {PersistGate} from 'redux-persist/integration/react';
+
+    b) Import the Provider from react-redux
+
+      import {Provider} from 'react-redux';
+
+    c) Import the store and persistor from store
+
+      import {store, persistor} from './store';
+
+    d) Add the Provider and the PersistGate around all tags on return of App function
+
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
+          <Routes />
+        </PersistGate>
+      </Provider>
+
+
+  7) On src/store/persistReducers.js proceed with the following changes
+
+    a) Delete the import line bellow once it is obsolete
+
+      import storage from 'redux-persist/lib/storage';
+
+    b) Import the AsyncStorage from @react-native-community/async-storage
+
+      import AsyncStorage from '@react-native-community/async-storage';
+
+    c) On constant persistedReducer replace the attribute storage to
+
+      storage: AsyncStorage,      
+
+
 

@@ -38,6 +38,8 @@ target 'modulo10' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+
   target 'modulo10Tests' do
     inherit! :search_paths
     # Pods for testing
