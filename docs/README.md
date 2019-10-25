@@ -10236,6 +10236,170 @@ RouteWrapper.defaultProps = {
 
   
  
+### GoBarber Mobile - Module 10 - Appointment list
+
+  1) On src/components
+
+    a) Create folder called Appointment
+
+      i - Create a file called styles.js as per bellow
+
+        import styled from 'styled-components/native';
+
+        export const Container = styled.View`
+          margin-bottom: 15px;
+          padding: 20px;
+          border-radius: 4px;
+          background: #fff;
+
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+        `;
+
+        export const Left = styled.View`
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+        `;
+
+        export const Avatar = styled.Image`
+          width: 50px;
+          height: 50px;
+          border-radius: 25px;
+        `;
+
+        export const Info = styled.View`
+          margin-left: 15px;
+        `;
+
+        export const Name = styled.Text`
+          font-weight: bold;
+          font-size: 14px;
+          color: #333;
+        `;
+
+        export const Time = styled.Text`
+          color: #999;
+          font-size: 13px;
+          margin-top: 4px;
+        `;
+
+
+      i - Create a file called index.js as per bellow
+
+        import React from 'react';
+        import {TouchableOpacity} from 'react-native';
+        import Icon from 'react-native-vector-icons/MaterialIcons';
+
+        import {Container, Left, Avatar, Info, Name, Time} from './styles';
+
+        export default function Appointment() {
+          return (
+            <Container>
+              <Left>
+                <Avatar
+                  source={{uri: 'https://api.adorable.io/avatar/50/rocketseat.png'}}
+                />
+
+                <Info>
+                  <Name>Adriano Souza</Name>
+                  <Time>há 3 horas</Time>
+                </Info>
+              </Left>
+
+              <TouchableOpacity onPress={() => {}}>
+                <Icon name="event-busy" size={30} color="#f64c75" />
+              </TouchableOpacity>
+            </Container>
+          );
+        }
+
+
+  2) On src/pages/Dashboard
+  
+    a) Create a file called styles.js as per bellow
+
+      import styled from 'styled-components/native';
+
+      export const Container = styled.SafeAreaView`
+        flex: 1;
+      `;
+
+      export const Title = styled.Text`
+        font-size: 20px;
+        color: #fff;
+        font-weight: bold;
+        align-self: center;
+        margin-top: 30px;
+      `;
+
+      export const List = styled.FlatList.attrs({
+        showsVerticalScrollIndicator: false,
+        contentContainerStyle: {padding: 30},
+      })``;
+
+
+    b) On index.js
+    
+      i - Enable the import about styles
+
+        import {Container, Title, List} from './styles';
+
+      ii - Import the Appointment component
+
+        import Appointment from '~/components/Appointment';
+
+      iii - Inside to Background tag add the Container and Title
+
+      iv - Create a constant called data
+
+      v - Inside to Container, after Title, add tag called List
+
+      In the end the code must be something like that
+
+        import React from 'react';
+        import PropTypes from 'prop-types';
+
+        import Icon from 'react-native-vector-icons/MaterialIcons';
+
+        import Background from '~/components/Background';
+        import Appointment from '~/components/Appointment';
+
+        import {Container, Title, List} from './styles';
+
+        const data = [1, 2, 3, 4, 5];
+
+        export default function Dashboard() {
+          return (
+            <Background>
+              <Container>
+                <Title>Agendamentos</Title>
+
+                <List
+                  data={data}
+                  keyExtractor={item => String(item)}
+                  renderItem={({item}) => <Appointment data={item} />}
+                />
+              </Container>
+            </Background>
+          );
+        }
+
+        function IconTab({tintColor}) {
+          return <Icon name="event" size={20} color={tintColor} />;
+        }
+
+        IconTab.propTypes = {
+          tintColor: PropTypes.string.isRequired,
+        };
+
+        Dashboard.navigationOptions = {
+          tabBarLabel: 'Agendamentos',
+          tabBarIcon: IconTab,
+        };
+
 
 
 
