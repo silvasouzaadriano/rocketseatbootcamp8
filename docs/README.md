@@ -10535,3 +10535,341 @@ RouteWrapper.defaultProps = {
 
       opacity: ${props => (props.past ? 0.6 : 1)};
 
+
+### GoBarber Mobile - Module 10 - Profile update
+
+  1) As will not have avatar for client remove from src/store/modules/user/sagas.js all references for avatar_id
+
+  2) On src/pages/Profile
+  
+    a) Create a file called styles.js as per bellow
+
+      import styled from 'styled-components/native';
+
+      import Input from '~/components/Input';
+      import Button from '~/components/Button';
+
+      export const Container = styled.SafeAreaView`
+        flex: 1;
+      `;
+
+      export const Separator = styled.View`
+        height: 1px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 20px 0 30px;
+      `;
+
+      export const Title = styled.Text`
+        font-size: 20px;
+        color: #fff;
+        font-weight: bold;
+        align-self: center;
+        margin-top: 30px;
+      `;
+
+      export const Form = styled.ScrollView.attrs({
+        showsVerticalScrollIndicator: false,
+        contentContainerStyle: {padding: 30},
+      })`
+        align-self: stretch;
+      `;
+
+      export const FormInput = styled(Input)`
+        margin-bottom: 10px;
+      `;
+
+      export const SubmitButton = styled(Button)`
+        margin-top: 5px;
+      `;
+
+
+    b) Change the index.js as per bellow
+
+      i - Enable the styles import
+
+        import {
+          Container,
+          Title,
+          Separator,
+          Form,
+          FormInput,
+          SubmitButton,
+        } from './styles';
+
+      ii - Import the useRef, useState, useEffect from react
+
+        import React, {useRef, useState, useEffect} from 'react';
+
+      iii - Import the useSelector, useDispatch from react-redux
+
+        import {useSelector, useDispatch} from 'react-redux';
+
+      iv - Replace the content of profile function as per bellow
+
+        export default function Profile() {
+        const dispatch = useDispatch();
+        const profile = useSelector(state => state.user.profile);
+
+        const emailRef = useRef();
+        const oldPasswordRef = useRef();
+        const passwordRef = useRef();
+        const confirmPasswordRef = useRef();
+
+        const [name, setName] = useState(profile.name);
+        const [email, setEmail] = useState(profile.email);
+        const [oldPassword, setOldPassword] = useState('');
+        const [password, setPassword] = useState('');
+        const [confirmPassword, setConfirmPassword] = useState('');
+
+        useEffect(() => {
+          setOldPassword('');
+          setPassword('');
+          setConfirmPassword('');
+        }, [profile]);
+
+        function handleSubmit() {
+          dispatch(
+            updateProfileRequest({
+              name,
+              email,
+              oldPassword,
+              password,
+              confirmPassword,
+            })
+          );
+        }
+
+        return (
+          <Background>
+            <Container>
+              <Title>Meu perfil</Title>
+
+              <Form>
+                <FormInput
+                  icon="person-outline"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  placeholder="Nome completo"
+                  returnKeyType="next"
+                  onSubmitEditing={() => emailRef.current.focus()}
+                  value={name}
+                  onChangeText={setName}
+                />
+
+                <FormInput
+                  icon="mail-outline"
+                  keyboardType="email-address"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  placeholder="Digite seu e-mail"
+                  ref={emailRef}
+                  returnKeyType="next"
+                  onSubmitEditing={() => oldPasswordRef.current.focus()}
+                  value={email}
+                  onChangeText={setEmail}
+                />
+
+                <Separator />
+
+                <FormInput
+                  icon="lock-outline"
+                  secureTextEntry
+                  placeholder="Sua senha atual"
+                  ref={oldPasswordRef}
+                  returnKeyType="next"
+                  onSubmitEditing={() => passwordRef.current.focus()}
+                  value={oldPassword}
+                  onChangeText={setOldPassword}
+                />
+
+                <FormInput
+                  icon="lock-outline"
+                  secureTextEntry
+                  placeholder="Sua nova senha"
+                  ref={passwordRef}
+                  returnKeyType="next"
+                  onSubmitEditing={() => confirmPasswordRef.current.focus()}
+                  value={password}
+                  onChangeText={setPassword}
+                />
+
+                <FormInput
+                  icon="lock-outline"
+                  secureTextEntry
+                  placeholder="Confirmação de senha"
+                  ref={confirmPasswordRef}
+                  returnKeyType="send"
+                  onSubmitEditing={handleSubmit}
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                />
+
+                <SubmitButton onPress={handleSubmit}>Atualizar perfil</SubmitButton>
+              </Form>
+            </Container>
+          </Background>
+        );
+      }
+
+### GoBarber Mobile - Module 10 - Logout
+
+  1) Exclude from src/store/modules/auth/sagas.js the function signOut and it takeLatest reference
+
+  2) On src/pages/Profile/styles.js add the LogoutButton styles bellow
+
+    export const LogoutButton = styled(Button)`
+      margin-top: 10px;
+      background: #f64c75;
+    `;
+
+  3) On src/pages/Profile/index.js
+
+    a) Import the signOut from auth/actions
+
+      import {signOut} from '~/store/modules/auth/actions';
+
+    b) Create the function handleLogout
+
+      function handleLogout() {
+        dispatch(signOut());
+      }
+
+    c) After SubmitButton, create the LogoutButton
+
+      <LogoutButton onPress={handleLogout}>Sair do GoBarber</LogoutButton>
+
+
+### GoBarber Mobile - Module 10 - Appointment Routes
+
+
+    1) Inside to src/pages
+
+      a) Create a folder called Confirm
+
+        i - Create a file called styles.js
+
+          import styled from 'styled-components/native';
+
+          export const Container = styled.View``;
+
+
+        ii - Create a file called index.js
+
+          import React from 'react';
+
+          import {Container} from './styles';
+
+          export default function Confirm() {
+            return <Container />;
+          }
+
+      
+      b) Create a folder called SelectDateTime
+
+        i - Create a file called styles.js
+
+          import styled from 'styled-components/native';
+
+          export const Container = styled.View``;
+
+
+        ii - Create a file called index.js 
+
+          import React from 'react';
+
+          import {Container} from './styles';
+
+          export default function SelectDateTime() {
+            return <Container />;
+          }
+ 
+
+
+      c) Create a folder called SelectProvider
+
+        i - Create a file called styles.js
+
+          import styled from 'styled-components/native';
+
+          export const Container = styled.View``;
+
+
+        ii - Create a file called index.js 
+
+        import React from 'react';
+        import {TouchableOpacity} from 'react-native';
+        import Icon from 'react-native-vector-icons/MaterialIcons';
+
+        import Background from '~/components/Background';
+
+        // import {Container} from './styles';
+
+        export default function SelectProvider() {
+          return <Background />;
+        }
+
+        SelectProvider.navigationOptions = ({navigation}) => ({
+          title: 'Selecione o prestador',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Dashboard');
+              }}>
+              <Icon name="chevron-left" size={20} color="#FFF" />
+            </TouchableOpacity>
+          ),
+        });
+
+
+  2) On src/routes.js                     
+
+    a) Import the react
+
+      import React from 'react';
+
+    b) Import the three pages SelectProvider, SelectDateTime and Confirm
+
+      import SelectProvider from './pages/New/SelectProvider';
+      import SelectDateTime from './pages/New/SelectDateTime';
+      import Confirm from './pages/New/Confirm';
+
+    c) Import the createStackNavigator from react-navigation-stack
+
+      import {createStackNavigator} from 'react-navigation-stack';
+
+    d) Import the MaterialIcons
+
+      import Icon from 'react-native-vector-icons/MaterialIcons';
+
+    e) Inside to createBottomTabNavigator create a new item called New as per bellowNew: {
+              
+      screen: createStackNavigator(
+        {
+          SelectProvider,
+          SelectDateTime,
+          Confirm,
+        },
+        {
+          headerLayoutPreset: 'center',
+          defaultNavigationOptions: {
+            headerTransparent: true,
+            headerTintColor: '#FFF',
+            headerLeftContainerStyle: {
+              marginLeft: 20,
+            },
+          },
+        }
+      ),
+      navigationOptions: {
+        tabBarVisible: false,
+        tabBarLabel: 'Agendar',
+        tabBarIcon: (
+          <Icon
+            name="add-circle-outline"
+            size={20}
+            color="rgba(255, 255, 255, 0.6)"
+          />
+        ),
+      },
+    },
+
