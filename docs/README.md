@@ -10401,5 +10401,137 @@ RouteWrapper.defaultProps = {
         };
 
 
+### GoBarber Mobile - Module 10 - API Appointments
 
+  1) Add library date-fns@next
+
+    yarn add date-fns@next
+
+  2) Change the src/pages/Dashboard/index.js to contemplate the real API appointments
+
+    a) Import the useEffect and useState
+
+      import React, {useEffect, useState} from 'react';
+
+    b) Import the api
+
+      import api from '~/services/api';
+
+    c)  Create a state to store the appointments
+
+      const [appointments, setAppointments] = useState([]);
+
+    d) Create a hook useEffect to load the appointments everytime when the Dashboard screen is loaded.
+
+
+      useEffect(() => {
+        async function loadAppointments() {
+          const response = await api.get('appointments');
+
+          setAppointments(response.data);
+        }
+
+        loadAppointments();
+      }, []);
+
+    e) Create a function handleCancel to manage the appointment cancellation
+
+      async function handleCancel(id) {
+        const response = await api.delete(`appointments/${id}`);
+
+        setAppointments(
+          appointments.map(appointment =>
+            appointment.id === id
+              ? {
+                  ...appointment,
+                  canceled_at: response.data.canceled_at,
+                }
+              : appointment
+          )
+        );
+      }
+
+    f) Add on List/Appointment tag a property called onCancel which will represent the call of function handleCancel
+
+      <List
+          data={appointments}
+          keyExtractor={item => String(item.id)}
+          renderItem={({item}) => (
+            <Appointment onCancel={() => handleCancel(item.id)} data={item} />
+          )}
+        />
+
+
+  3) Change the src/components/Appointment/index.js as per bellow
+
+    a) Proceed with following imports
+
+      import React, {useMemo} from 'react';
+      import {parseISO, formatRelative} from 'date-fns';
+      import pt from 'date-fns/locale/pt';
+      import PropTypes from 'prop-types';
+
+    b) On signature of Appointment function add the parameters data and onCancel representing the information which will came from Dashboard/List/Appointment
+
+
+      export default function Appointment({data, onCancel}) {
+
+    c) Create a useMemo hook called dateParsed which should return the appointment date formatted
+
+      const dateParsed = useMemo(() => {
+        return formatRelative(parseISO(data.date), new Date(), {
+          locale: pt,
+          addSuffix: true,
+        });
+      }, [data.date]);
+
+    d) On Container tag add a property called past to control the opacity of appointments.
+
+      <Container past={data.past}>
+
+    e) Change the Avatar, Name and Time tags to utilized the information which cames from api via data objects
+
+      <Left>
+        <Avatar
+          source={{
+            uri: data.provider.avatar
+              ? data.provider.avatar.url.replace('localhost', '10.0.2.2')
+              : `https://api.adorable.io/avatar/50/${data.provider.name}.png`,
+          }}
+        />
+
+        <Info>
+          <Name>{data.provider.name}</Name>
+          <Time>{dateParsed}</Time>
+        </Info>
+      </Left>
+
+    f) Add a check to only show the TouchableOpacity button if the appointment was not cancelled and the there is no canceled date set. Also, on the same button add the call to onCancel function which will cancel the appointment
+
+
+      {data.cancelable && !data.canceled_at && (
+        <TouchableOpacity onPress={onCancel}>
+          <Icon name="event-busy" size={20} color="#f64c75" />
+        </TouchableOpacity>
+      )}
+
+    g) In the end of file add a propTypes validation related to data and onCancel objects
+
+      Appointment.propTypes = {
+        data: PropTypes.shape({
+          provider: PropTypes.object.isRequired,
+          date: PropTypes.any.isRequired,
+          past: PropTypes.bool.isRequired,
+          cancelable: PropTypes.bool.isRequired,
+          canceled_at: PropTypes.any,
+        }).isRequired,
+        onCancel: PropTypes.func.isRequired,
+      };
+
+  
+  4) Change the src/components/Appointment/styles.js as per bellow
+
+    a) Add on Container the opacity as per bellow
+
+      opacity: ${props => (props.past ? 0.6 : 1)};
 
