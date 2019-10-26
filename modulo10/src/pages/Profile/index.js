@@ -119,10 +119,9 @@ export default function Profile() {
             value={confirmPassword}
             onChangeText={setConfirmPassword}
           />
-
-          <SubmitButton onPress={handleSubmit}>Atualizar perfil</SubmitButton>
-          <LogoutButton onPress={handleLogout}>Sair do GoBarber</LogoutButton>
         </Form>
+        <SubmitButton onPress={handleSubmit}>Atualizar perfil</SubmitButton>
+        <LogoutButton onPress={handleLogout}>Sair do GoBarber</LogoutButton>
       </Container>
     </Background>
   );

@@ -1,7 +1,12 @@
 import React from 'react';
 
-import {Container} from './styles';
+import Background from '~/components/Background';
+// import {Container} from './styles';
 
 export default function SelectDateTime() {
-  return <Container />;
+  return <Background />;
 }
+
+SelectDateTime.navigationOptions = () => ({
+  title: 'Selecione o horário',
+});

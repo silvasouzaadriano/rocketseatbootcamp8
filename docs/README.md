@@ -10466,17 +10466,37 @@ RouteWrapper.defaultProps = {
 
     a) Proceed with following imports
 
-      import React, {useMemo} from 'react';
+      import React, {useMemo, useState, useEffect} from 'react';
       import {parseISO, formatRelative} from 'date-fns';
       import pt from 'date-fns/locale/pt';
+
+      import {TouchableOpacity, Platform} from 'react-native';
+      import Icon from 'react-native-vector-icons/MaterialIcons';
       import PropTypes from 'prop-types';
+
+      import {Container, Left, Avatar, Info, Name, Time} from './styles';
 
     b) On signature of Appointment function add the parameters data and onCancel representing the information which will came from Dashboard/List/Appointment
 
-
       export default function Appointment({data, onCancel}) {
 
-    c) Create a useMemo hook called dateParsed which should return the appointment date formatted
+    c) Create a useEffect hook which should store the local IP from and IP to in order to be used during IP replace on avatar.url
+
+      const [localIPFrom, setLocalIPFrom] = useState('localhost');
+      const [localIPTo, setLocalIPTo] = useState('10.0.2.2');
+
+      useEffect(() => {
+        if (Platform.OS === 'ios') {
+          setLocalIPFrom('10.0.2.2');
+          setLocalIPTo('localhost');
+        } else {
+          setLocalIPFrom('localhost');
+          setLocalIPTo('10.0.2.2');
+        }
+      }, [localIPFrom, localIPTo]);
+
+
+    d) Create a useMemo hook called dateParsed which should return the appointment date formatted
 
       const dateParsed = useMemo(() => {
         return formatRelative(parseISO(data.date), new Date(), {
@@ -10485,17 +10505,20 @@ RouteWrapper.defaultProps = {
         });
       }, [data.date]);
 
-    d) On Container tag add a property called past to control the opacity of appointments.
+    e) On Container tag add a property called past to control the opacity of appointments.
 
       <Container past={data.past}>
 
-    e) Change the Avatar, Name and Time tags to utilized the information which cames from api via data objects
+    f) Change the Avatar, Name and Time tags to utilized the information which cames from api via data objects
 
       <Left>
         <Avatar
           source={{
             uri: data.provider.avatar
-              ? data.provider.avatar.url.replace('localhost', '10.0.2.2')
+              ? data.provider.avatar.url.replace(
+                  `${localIPFrom}`,
+                  `${localIPTo}`
+                )
               : `https://api.adorable.io/avatar/50/${data.provider.name}.png`,
           }}
         />
@@ -10506,7 +10529,7 @@ RouteWrapper.defaultProps = {
         </Info>
       </Left>
 
-    f) Add a check to only show the TouchableOpacity button if the appointment was not cancelled and the there is no canceled date set. Also, on the same button add the call to onCancel function which will cancel the appointment
+    g) Add a check to only show the TouchableOpacity button if the appointment was not cancelled and the there is no canceled date set. Also, on the same button add the call to onCancel function which will cancel the appointment
 
 
       {data.cancelable && !data.canceled_at && (
@@ -10515,7 +10538,7 @@ RouteWrapper.defaultProps = {
         </TouchableOpacity>
       )}
 
-    g) In the end of file add a propTypes validation related to data and onCancel objects
+    h) In the end of file add a propTypes validation related to data and onCancel objects
 
       Appointment.propTypes = {
         data: PropTypes.shape({
@@ -10872,4 +10895,172 @@ RouteWrapper.defaultProps = {
         ),
       },
     },
+
+
+### GoBarber Mobile - Module 10 - Provider list
+
+  1) On src/pages/New/SelectProvider/styles.js change as per bellow
+
+    import styled from 'styled-components/native';
+    import {RectButton} from 'react-native-gesture-handler';
+
+    export const Container = styled.SafeAreaView`
+      flex: 1;
+    `;
+
+    export const ProvidersList = styled.FlatList.attrs({
+      showsVerticalScrollIndicator: false,
+      numColumns: 2,
+    })`
+      margin-top: 60px;
+      padding: 0 20px;
+    `;
+
+    export const Provider = styled(RectButton)`
+      background: #fff;
+      border-radius: 4px;
+      padding: 20px;
+      flex: 1;
+      align-items: center;
+      margin: 0 10px 20px;
+    `;
+
+    export const Avatar = styled.Image`
+      width: 50px;
+      height: 50px;
+      border-radius: 25px;
+    `;
+
+    export const Name = styled.Text`
+      margin-top: 15px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+      text-align: center;
+    `;
+
+  
+  2) On src/pages/New/SelectProvider/index.js proceed with following changes
+
+    a) Import the useEffect and useState
+
+      import React, {useEffect, useState} from 'react';
+
+    b) Import the api
+
+      import api from '~/services/api';
+
+    c) Import the styles
+
+      import {Container, ProvidersList, Provider, Avatar, Name} from './styles';
+
+    d) Change the SelectProvider function to contemplate a state which will store the providers
+
+    e) Change the return of SelectProvider function to interate and show the providers
+
+    In the end the code should be something like that
+
+      import React, {useEffect, useState} from 'react';
+      import {TouchableOpacity, Platform} from 'react-native';
+      import Icon from 'react-native-vector-icons/MaterialIcons';
+      import PropTypes from 'prop-types';
+
+      import api from '~/services/api';
+
+      import Background from '~/components/Background';
+
+      import {Container, ProvidersList, Provider, Avatar, Name} from './styles';
+
+      export default function SelectProvider({navigation}) {
+        const [providers, setProviders] = useState([]);
+        const [localIPFrom, setLocalIPFrom] = useState('localhost');
+        const [localIPTo, setLocalIPTo] = useState('10.0.2.2');
+
+        useEffect(() => {
+          if (Platform.OS === 'ios') {
+            setLocalIPFrom('10.0.2.2');
+            setLocalIPTo('localhost');
+          } else {
+            setLocalIPFrom('localhost');
+            setLocalIPTo('10.0.2.2');
+          }
+
+          async function loadProviders() {
+            const response = await api.get('providers');
+
+            setProviders(response.data);
+          }
+
+          loadProviders();
+        }, [localIPFrom, localIPTo]);
+
+        return (
+          <Background>
+            <Container>
+              <ProvidersList
+                data={providers}
+                keyExtractor={provider => String(provider.id)}
+                renderItem={({item: provider}) => (
+                  <Provider
+                    onPress={() => navigation.navigate('SelectDateTime', {provider})}>
+                    <Avatar
+                      source={{
+                        uri: provider.avatar
+                          ? provider.avatar.url.replace(
+                              `${localIPFrom}`,
+                              `${localIPTo}`
+                            )
+                          : `https://api.adorable.io/avatar/50/${provider.name}.png`,
+                      }}
+                    />
+                    <Name>{provider.name}</Name>
+                  </Provider>
+                )}
+              />
+            </Container>
+          </Background>
+        );
+      }
+
+      SelectProvider.navigationOptions = ({navigation}) => ({
+        title: 'Selecione o prestador',
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Dashboard');
+            }}>
+            <Icon name="chevron-left" size={20} color="#FFF" />
+          </TouchableOpacity>
+        ),
+      });
+
+      SelectProvider.propTypes = {
+        navigation: PropTypes.shape({
+          navigate: PropTypes.func.isRequired,
+        }).isRequired,
+      };
+
+
+  
+  3) On src/pages/New/SelectDateTime/index.js
+
+    a) Import the Background
+
+      import Background from '~/components/Background';
+
+    b) Replace the View tag by Background tag
+
+      export default function SelectDateTime() {
+        return <Background />;
+      }
+
+    c) In the end of file add a navigationOptions as per bellow
+
+      SelectDateTime.navigationOptions = () => ({
+        title: 'Selecione o horário',
+      });
+
+      
+
+
 

@@ -1,14 +1,27 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState, useEffect} from 'react';
 import {parseISO, formatRelative} from 'date-fns';
 import pt from 'date-fns/locale/pt';
 
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, Platform} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 
 import {Container, Left, Avatar, Info, Name, Time} from './styles';
 
 export default function Appointment({data, onCancel}) {
+  const [localIPFrom, setLocalIPFrom] = useState('localhost');
+  const [localIPTo, setLocalIPTo] = useState('10.0.2.2');
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      setLocalIPFrom('10.0.2.2');
+      setLocalIPTo('localhost');
+    } else {
+      setLocalIPFrom('localhost');
+      setLocalIPTo('10.0.2.2');
+    }
+  }, [localIPFrom, localIPTo]);
+
   const dateParsed = useMemo(() => {
     return formatRelative(parseISO(data.date), new Date(), {
       locale: pt,
@@ -22,7 +35,10 @@ export default function Appointment({data, onCancel}) {
         <Avatar
           source={{
             uri: data.provider.avatar
-              ? data.provider.avatar.url.replace('localhost', '10.0.2.2')
+              ? data.provider.avatar.url.replace(
+                  `${localIPFrom}`,
+                  `${localIPTo}`
+                )
               : `https://api.adorable.io/avatar/50/${data.provider.name}.png`,
           }}
         />
