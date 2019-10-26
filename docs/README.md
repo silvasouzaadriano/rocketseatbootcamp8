@@ -11062,5 +11062,40 @@ RouteWrapper.defaultProps = {
 
       
 
+### GoBarber Mobile - Module 10 - Date Picker by platform
+
+  1) Add the library bellow
+
+    yarn add @react-native-community/datetimepicker
+
+  2) Perform the link for library @react-native-community/datetimepicker
+
+    react-native link @react-native-community/datetimepicker
+
+  3) Perform the react-native run-android
+
+    yarn react-native run-android
+
+  4) Restart the appplication
+
+    react-native start
+
+  5) On src/components, create a folder called DataInput
+
+    a) Create file called index.android.js as per bellow
+
+    b) Create a file called index.ios.js as per bellow
+
+    c) Create a file called index.js as per bellow
+
+    d) Create a file called styles.js as per bellow
+
+  6) On src/pages/New/SelectDateTime
+
+    a) Create a file called styles.js as per bellow
+
+    b) Create a file called index.js as per bellow
+
+
 
 
