@@ -11082,19 +11082,27 @@ RouteWrapper.defaultProps = {
 
   5) On src/components, create a folder called DataInput
 
-    a) Create file called index.android.js as per bellow
+    a) Create file called index.android.js
 
-    b) Create a file called index.ios.js as per bellow
+    b) Create a file called index.ios.js
 
-    c) Create a file called index.js as per bellow
+    c) Create a file called index.js
 
-    d) Create a file called styles.js as per bellow
+    d) Create a file called styles.js
 
   6) On src/pages/New/SelectDateTime
 
-    a) Create a file called styles.js as per bellow
+    a) Create a file called styles.js
 
-    b) Create a file called index.js as per bellow
+    b) Create a file called index.js
+
+  7) On src/pages/New, create a folder called Confirm
+
+    a) Create a file called index.js
+
+    b) Create a file called styles.js
+
+  
 
 
 
