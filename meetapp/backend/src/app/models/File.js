@@ -6,10 +6,12 @@ class File extends Model {
       {
         name: Sequelize.STRING,
         path: Sequelize.STRING,
+        type: Sequelize.STRING,
         url: {
           type: Sequelize.VIRTUAL,
           get() {
-            return `${process.env.APP_URL}/files/${this.path}`;
+            return `http://localhost:3333/files/${this.path}`;
+            // return `http://192.168.15.16:3333/files/${this.path}`; /* FOR TESTING WITH IPHONE */
           },
         },
       },

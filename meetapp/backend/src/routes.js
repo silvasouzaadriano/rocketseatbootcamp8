@@ -1,53 +1,52 @@
 import { Router } from 'express';
+
 import multer from 'multer';
 import multerConfig from './config/multer';
+
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
+
+/* MIDDLEWARES */
+import { authMiddleware, authCreateSession } from './app/middlewares/auth';
+import { createUser, updateUser } from './app/middlewares/UserMiddlewares';
+import { createMeetapp } from './app/middlewares/MeetappMiddlewares';
+
+/* CONTROLLERS */
 import FileController from './app/controllers/FileController';
-import authMiddleware from './app/middlewares/auth';
-import MeetupController from './app/controllers/MeetupController';
-import OrganizingController from './app/controllers/OrganizingController';
+import NotificationsController from './app/controllers/NotificationsController';
+import MeetappController from './app/controllers/MeetappController';
 import SubscriptionController from './app/controllers/SubscriptionController';
 
 const routes = new Router();
-const upload = multer(multerConfig);
+const uploads = multer(multerConfig);
 
-// Route for user creation
-routes.post('/users', UserController.store);
+/* USER AND SESSION */
+routes.post('/users', createUser, UserController.store);
+routes.post('/sessions', authCreateSession, SessionController.store);
 
-// Route for session controller
-routes.post('/sessions', SessionController.store);
-
-// Router for determine the authMiddleware as global
-// It means that from this point on all router will
-// incorporate this middleware
 routes.use(authMiddleware);
 
-// Router for user update. This route must accessed when user is authenticated
-routes.put('/users', UserController.update);
+/* USER */
+routes.put('/users', updateUser, UserController.update);
 
-// Route for upload files
-routes.post('/files', upload.single('file'), FileController.store);
+/* MEETAPP */
+routes.post('/meetapps', createMeetapp, MeetappController.store);
+routes.get('/meetapps', MeetappController.index);
+routes.put('/meetapps/:id', MeetappController.update);
+routes.delete('/meetapps/:id', MeetappController.delete);
+routes.get('/meetapps/:id', MeetappController.show);
 
-// Route for get meetup
-routes.get('/meetups', MeetupController.index);
-
-// Route for meetuo creation
-routes.post('/meetups', MeetupController.store);
-
-// Route for meetup update
-routes.put('/meetups/:id', MeetupController.update);
-
-// Route for meetup deletion
-routes.delete('/meetups/:id', MeetupController.delete);
-
-// Route for get all meetups organized by an user
-routes.get('/organizing', OrganizingController.index);
-
-// Route for get all meetups which user is subscribed
+/* SUBSCRIBED */
 routes.get('/subscriptions', SubscriptionController.index);
+routes.post('/subscriptions/:id', SubscriptionController.store);
+routes.delete('/subscriptions/:id', SubscriptionController.delete);
+// routes.get('/subscriptions/:id', SubscriptionController.show);
 
-// Route for subscribe meetups
-routes.post('/meetups/:meetupId/subscriptions', SubscriptionController.store);
+// /* NOTIFICATIOS */
+routes.get('/notifications', NotificationsController.index);
+routes.put('/notifications/:id', NotificationsController.update);
+
+/* FILES */
+routes.post('/files', uploads.single('file'), FileController.store);
 
 export default routes;

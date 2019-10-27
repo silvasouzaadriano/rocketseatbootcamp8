@@ -1,82 +1,78 @@
-import * as Yup from 'yup'; // This is because the yup does not have export default
 import User from '../models/User';
+import File from '../models/File';
+import Notification from '../schemas/Notification';
 
 class UserController {
-  // User creation
   async store(req, res) {
-    // Validations
-    const schema = Yup.object().shape({
-      name: Yup.string().required(),
-      email: Yup.string()
-        .email()
-        .required(),
-      password: Yup.string()
-        .required()
-        .min(6),
+    const userExist = await User.findOne({ where: { email: req.body.email } });
+    if (userExist) {
+      return res.status(400).json({ error: 'Esse email já foi registrado!' });
+    }
+    const user = await User.create(req.body);
+    const { id, name, email } = user;
+    await Notification.create({
+      user: id,
+      content: `Seja bem-vindo ao Meetapp!`,
     });
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails' });
-    }
 
-    // Verifying the user email already exist
-    const userExists = await User.findOne({ where: { email: req.body.email } });
-    if (userExists) {
-      return res.status(400).json({ error: 'User already exists.' });
-    }
-
-    // Create the user
-    const { id, name, email } = await User.create(req.body);
-
-    return res.json({
-      id,
-      name,
-      email,
+    return res.status(201).json({
+      user: {
+        id,
+        name,
+        email,
+        avatar: null,
+      },
+      token: user.generateToken(),
     });
   }
 
-  // User update, which only must be accessed with user logged
   async update(req, res) {
-    // Validations
-    const schema = Yup.object().shape({
-      name: Yup.string(),
-      email: Yup.string().email(),
-      oldPassword: Yup.string().min(6),
-      password: Yup.string()
-        .min(6)
-        .when('oldPassword', (oldPassword, field) =>
-          oldPassword ? field.required() : field
-        ),
-      confirmPassword: Yup.string().when('password', (password, field) =>
-        password ? field.required().oneOf([Yup.ref('password')]) : field
-      ),
-    });
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails' });
-    }
-    const { email, oldPassword } = req.body;
+    const { email, oldPassword, avatar_id } = req.body;
 
     const user = await User.findByPk(req.userId);
 
+    /* verifying if email already exist */
     if (email !== user.email) {
-      // Verifying the user email already exist
-      const userExists = await User.findOne({ where: { email } });
-      if (userExists) {
-        return res.status(400).json({ error: 'User already exists.' });
+      const userExist = await User.findOne({
+        where: { email },
+      });
+      if (userExist) {
+        return res.status(422).json({ error: 'Usuário já existe!' });
       }
     }
 
-    // Verifying if old password exists
-    if (oldPassword && !(await user.checkPassword(oldPassword))) {
-      return res.status(401).json({ error: 'Password does not match' });
+    /* verifying if avartar_id exist */
+    if (avatar_id) {
+      const image = await File.findByPk(avatar_id);
+      if (!image)
+        return res.status(400).json({ error: 'Avatar não encontrado' });
+      if (image.type !== 'avatar')
+        return res
+          .status(400)
+          .json({ error: 'Seu avatar deve ser uma foto de perfil' });
     }
 
-    // Updating user information
-    const { id, name } = await user.update(req.body);
+    if (oldPassword && !(await user.checkPassword(oldPassword))) {
+      return res.status(401).json({ error: 'Senha não corresponde' });
+    }
+
+    await user.update(req.body);
+
+    const { id, name, avatar } = await User.findByPk(req.userId, {
+      include: [
+        {
+          model: File,
+          as: 'avatar',
+          attributes: ['id', 'path', 'url'],
+        },
+      ],
+    });
 
     return res.json({
       id,
       name,
       email,
+      avatar,
     });
   }
 }

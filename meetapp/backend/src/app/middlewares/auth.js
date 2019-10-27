@@ -1,29 +1,43 @@
-// This middleware will verify if the user is logged
-// by using the token generated during session authentication
-
 import jwt from 'jsonwebtoken';
-import { promisify } from 'util'; // transform call back function in async await
+import { promisify } from 'util';
+import * as Yup from 'yup';
 import authConfig from '../../config/auth';
 
-export default async (req, res, next) => {
+export const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return res.status(401).json({ error: 'Token not provided' });
+    return res.status(401).json({ error: 'Token não informado' });
   }
 
-  // Get the token from authHeader
   const [, token] = authHeader.split(' ');
 
-  // Validating token
   try {
     const decoded = await promisify(jwt.verify)(token, authConfig.secret);
 
-    // This attribution will be used by update route on UserController.js
-    // for know which user to be updated
     req.userId = decoded.id;
+
     return next();
   } catch (err) {
-    return res.status(401).json({ error: 'Token is invalid' });
+    return res.status(401).json({ error: 'Token inválido' });
+  }
+};
+
+export const authCreateSession = async (req, res, next) => {
+  const schema = Yup.object().shape({
+    email: Yup.string()
+      .email()
+      .required('e-mail é um campo obrigatório'),
+    password: Yup.string()
+      .required('senha é um campo obrigatório')
+      .min(6, 'A senha deve ter entre 6-10 caracteres')
+      .max(10, 'A senha deve ter entre 6-10 caracteres'),
+  });
+
+  try {
+    await schema.validate(req.body, { abortEarly: true });
+    return next();
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
   }
 };

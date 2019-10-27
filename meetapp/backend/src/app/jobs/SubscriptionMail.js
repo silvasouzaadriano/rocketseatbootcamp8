@@ -1,4 +1,9 @@
+import { format, parseISO } from 'date-fns';
+import pt from 'date-fns/locale/pt-BR';
 import Mail from '../../lib/Mail';
+
+const formatDate = data =>
+  format(data, "dd ' de ' MMMM ', às' H'h'", { locale: pt });
 
 class SubscriptionMail {
   get key() {
@@ -6,17 +11,18 @@ class SubscriptionMail {
   }
 
   async handle({ data }) {
-    const { meetup, user } = data;
-
+    const { userName, meetapp, title, date, userSubName, userSubEmail } = data;
     await Mail.sendMail({
-      to: `${meetup.User.name} <${meetup.User.email}>`,
-      subject: `[${meetup.title}] Nova inscrição`,
+      to: `${meetapp.owner.name} <${meetapp.owner.email}>`,
+      subject: `${userName} inscreveu-se no seu Meetup ${title}!`,
       template: 'subscription',
       context: {
-        organizer: meetup.User.name,
-        meetup: meetup.title,
-        user: user.name,
-        email: user.email,
+        ownerName: meetapp.owner.name,
+        meetappTitle: title,
+        meetappDate: formatDate(parseISO(date)),
+        sendDate: formatDate(new Date()),
+        userSubName,
+        userSubEmail,
       },
     });
   }

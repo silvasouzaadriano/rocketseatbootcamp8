@@ -1,6 +1,10 @@
-<strong>Olá {{ organizer }}!</strong>
-<p>Houve uma nova inscrição no meetup {{ meetup }}, os dados do inscrito estão abaixo:</p>
+<strong>Olá {{ ownerName }}!</strong>
+<p>Há uma nova incrição no seu meetup <strong>{{ meetappTitle }}</strong></p>
 <p>
-  <strong>Nome: </strong> {{ user }} <br />
-  <strong>E-mail: </strong> {{ email }} <br />
+  <strong>Data: </strong>{{ meetappDate }} <br />
+  <br />
+  <strong>Inscrito: </strong>{{ userSubName }}<br />
+  <strong>E-mail: </strong>{{ userSubEmail }}<br /><br /><br />
+  <small>Data da inscrição: {{ sendDate }}</small>
+  <br />
 </p>

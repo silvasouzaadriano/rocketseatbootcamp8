@@ -1,9 +1,7 @@
 import Bee from 'bee-queue';
-import * as Sentry from '@sentry/node';
-import sentryConfig from '../config/sentry';
-import SubscriptionMail from '../app/jobs/SubscriptionMail';
+import redisConfig from '../config/redis';
 
-Sentry.init(sentryConfig);
+import SubscriptionMail from '../app/jobs/SubscriptionMail';
 
 const jobs = [SubscriptionMail];
 
@@ -18,10 +16,7 @@ class Queue {
     jobs.forEach(({ key, handle }) => {
       this.queues[key] = {
         bee: new Bee(key, {
-          redis: {
-            host: process.env.REDIS_HOST,
-            port: process.env.REDIS_PORT,
-          },
+          redis: redisConfig,
         }),
         handle,
       };
@@ -41,11 +36,7 @@ class Queue {
   }
 
   handleFailure(job, err) {
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`Queue ${job.queue.name}: FAILED`, err);
-    }
-
-    Sentry.captureException(err);
+    console.log(`Queue ${job.queue.name}: FAILED`, err);
   }
 }
 

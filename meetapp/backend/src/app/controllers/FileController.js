@@ -2,14 +2,25 @@ import File from '../models/File';
 
 class FileController {
   async store(req, res) {
+    const { type } = req.body;
+
+    switch (type) {
+      case 'avatar':
+      case 'banner':
+        break;
+      default:
+        return res.status(400).json({ error: 'Tipo de arquivo inválido' });
+    }
+
     const { originalname: name, filename: path } = req.file;
 
     const file = await File.create({
       name,
       path,
+      type,
     });
 
-    return res.json(file);
+    return res.status(201).json(file);
   }
 }
 
