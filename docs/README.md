@@ -11062,7 +11062,7 @@ RouteWrapper.defaultProps = {
 
       
 
-### GoBarber Mobile - Module 10 - Date Picker by platform
+### GoBarber Mobile - Module 10 - Date Picker by platform/Time Selection/Appointment Confirmation
 
   1) Add the library bellow
 
@@ -11104,6 +11104,46 @@ RouteWrapper.defaultProps = {
 
   
 
+### GoBarber Mobile - Module 10 - Appointments Load
 
 
+  1) On src/pages/Dashboard/index.js
 
+    a) Import the withNavigationFocus from react-navigation
+
+      import {withNavigationFocus} from 'react-navigation';
+
+    b) Exclude the export default from Dashboard function and add it to end of file as per bellow
+
+      export default withNavigationFocus(Dashboard);
+
+    c) Change the signature of Dashboard function adding a property called isFocused
+
+      function Dashboard({isFocused}) {
+
+    d) Create a new useEffect inside to Dashboard function to handle the property isFocused
+
+      async function loadAppointments() {
+        const response = await api.get('appointments');
+
+        setAppointments(response.data);
+      }
+
+      useEffect(() => {
+        if (isFocused) {
+          loadAppointments();
+        }
+      }, [isFocused]);
+
+    e) Add a propTypes validation regarding to isFocused
+
+      Dashboard.propTypes = {
+        isFocused: PropTypes.bool.isRequired,
+      };
+
+  
+  2) On src/routes.js change the code as per bellow
+
+    a) Add a property resetOnBluer before tabBarOptions 
+
+      resetOnBlur: true,

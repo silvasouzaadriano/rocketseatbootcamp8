@@ -1,8 +1,9 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useEffect, useState} from 'react';
 import {formatRelative, parseISO} from 'date-fns';
 import pt from 'date-fns/locale/pt';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, Platform} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 
 import api from '~/services/api';
 
@@ -13,6 +14,18 @@ import {Container, Avatar, Name, Time, SubmitButton} from './styles';
 export default function Confirm({navigation}) {
   const provider = navigation.getParam('provider');
   const time = navigation.getParam('time');
+  const [localIPFrom, setLocalIPFrom] = useState('localhost');
+  const [localIPTo, setLocalIPTo] = useState('10.0.2.2');
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      setLocalIPFrom('10.0.2.2');
+      setLocalIPTo('localhost');
+    } else {
+      setLocalIPFrom('localhost');
+      setLocalIPTo('10.0.2.2');
+    }
+  }, [localIPFrom, localIPTo]);
 
   const dateFormatted = useMemo(
     () => formatRelative(parseISO(time), new Date(), {locale: pt}),
@@ -34,7 +47,7 @@ export default function Confirm({navigation}) {
         <Avatar
           source={{
             uri: provider.avatar
-              ? provider.avatar.url
+              ? provider.avatar.url.replace(`${localIPFrom}`, `${localIPTo}`)
               : `https://api.adorable.io/avatar/50/${provider.name}.png`,
           }}
         />
@@ -61,3 +74,10 @@ Confirm.navigationOptions = ({navigation}) => ({
     </TouchableOpacity>
   ),
 });
+
+Confirm.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    getParam: PropTypes.func.isRequired,
+  }).isRequired,
+};
