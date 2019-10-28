@@ -172,7 +172,6 @@ export default function Meetapp({ match }) {
                           subscriber.avatar
                             ? subscriber.avatar.url
                             : `https://api.adorable.io/avatars/50/${subscriber.name}`
-                          // : adorable(subscriber.name)
                         }
                         alt={subscriber.name}
                       />
