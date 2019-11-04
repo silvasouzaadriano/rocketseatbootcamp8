@@ -11147,3 +11147,38 @@ RouteWrapper.defaultProps = {
     a) Add a property resetOnBluer before tabBarOptions 
 
       resetOnBlur: true,
+
+
+### Node Tests - Module 11 - Project setup
+
+  1) Install in global mode the library @rocketseat/omni as per bellow. This library is a CLI which helps initialize test project in Node, React and React Native using the Bootcampo structure
+
+    yarn global add @rocketseat/omni OR
+
+    npm install -g @rocketseat/omni
+
+  2) After install the libray @rocketseat/omni, in order to create test projects you may use the line command bellow
+
+    omni init <project folder> --only=server
+
+    Note that by ommiting th option --only the project will be created for Node, React and React Native. The options for --only are: server, web or mobile
+
+  3) On root folder create a file called .env with content of .env.example
+
+  4) In order to run the application execute: yarn dev
+
+  5) In order to test the DB connection
+  
+    a) Open modulo11/server/src/app.js and enable the line whih import the database (line 11) and exclude the comments
+
+    b) Enable your docker database
+
+    c) Create a database called modulotestes
+
+    d) Intall the library pg
+
+      yarn add pg
+
+    e) Then run the application by command yarn dev
+
+    
