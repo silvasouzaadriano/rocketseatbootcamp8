@@ -11179,6 +11179,99 @@ RouteWrapper.defaultProps = {
 
       yarn add pg
 
-    e) Then run the application by command yarn dev
+    e) Then run the application by command: yarn dev
 
-    
+
+
+### Node Tests - Module 11 - Jest setup
+
+
+  1) Install de jest by development dependency
+
+    yarn add jest -D
+
+  2) After install the jest, in order to setup it, initialize it by line command yarn jest --init and then:
+
+    a) For first question, say Yes not use package.json
+
+    b) For second question, choose node
+
+    c) For third question, say Yes to code cover reports in order to know how many code codes to finish tests
+
+    d) For forty question, say Yes to automatically clear mock calls instances between every test
+
+  
+  3) After conclude the setup, a file called jest.config.js will be created on root folder. Said that perform some changes on this file as per bellow
+
+    a) Enable the variable bail with the value equal to 1. This means that when the tests runs, once a fail is found out, all tests are stopped. If the value is not set to 1, all tests will be runn into the end, despite occurr fails or not.
+
+    b) Enable the variable collectCoverage with the value equal to true. 
+
+    c) Enable the variable collectCoverageFrom and in an array inform where will be the application codes for covery tests. For example: collectCoverageFrom: ['src/app/**/*.js']
+
+      Note that the ** means to check as folder from app on, despite of which levels
+
+    d) Enable the variable coverageReporters assigning only the options 'text' and 'lcov'
+
+    e) Enable the variable testMatch and exclude the second option, once all our tests will be stored under __tests__ folder. BTW, on root folder create a folder called __tests__. For first rules change it
+
+      from: testMatch: ['**/__tests__/**/*.[jt]s?(x)'],
+ 
+      to: testMatch: ['**/__tests__/**/*.test.js'],
+
+    f) Change the variable coverageDirectory to set the directory coverage inside to __tests__ folder, as per bellow
+
+      coverageDirectory: '__tests__/coverage',
+
+      
+
+  4) In order to use the import/export notation instead of required, install the @sucrase/jest-plugin (reference: https://www.npmjs.com/package/@sucrase/jest-plugin). With libray intalled, use the content bellow to add to jest configuration
+
+    transform: {
+      '.(js|jsx|ts|tsx)': '@sucrase/jest-plugin',
+    },
+
+    Basically, on jest.config.js enable the variable transform and replace it by the configuration bellow
+
+      transform: {
+        '.(js|jsx|ts|tsx)': '@sucrase/jest-plugin',
+      },
+
+  5) In order to avoid the server restart every time a test is created or even updatd, n nodemon.json add a new section called ignore as per bellow
+
+    {
+      "execMap": {
+        "js": "sucrase-node"
+      },
+      "ignore": [
+        "__test__"
+      ]
+    }
+
+
+  6) In order to make sure that everything is working fine, lets created the first test
+
+    a) As a good practice, even not using typescript, is install a type definition. This approach will help with intelicense on the files. Said that, install the library bellow as development dependency
+
+      yarn add @types/jest -D 
+
+
+    b) On __tests__ folder create a file called example.test.js as per bellow
+
+      function soma(a, b) {
+        return a + b;
+      }
+
+      test('If I call the soma function with 4 and 5, it should return 9.', () => {
+        const result = soma(4, 5);
+
+        expect(result).toBe(9);
+      });
+
+
+
+      Note that the server needs to be up and for run the test the line command is: yarn test
+
+
+
+  
