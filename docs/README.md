@@ -11274,4 +11274,59 @@ RouteWrapper.defaultProps = {
 
 
 
-  
+  ### Node Tests - Module 11 - Environment variables
+
+
+    1) In order to have environment variables with focus on test environments, create a new file called .env.test and copy the content of .env file changing the database section to have a connection to sqlite database. The beneffits of to use sqlite is that will not be necessary install nothing on the machine, even other databases.
+
+      DB_DIALECT=sqlite
+
+    2) Change the src/config/database.js as per bellow
+    
+    
+      a) In order to use a reference for DB_DIALECT instead of only the 'postgres' in the variable dialect
+
+        dialect: process.env.DB_DIALECT || 'postgres',
+
+      b) Add a new variable called storage to inform where the sqlite file will created and stored.
+
+        storage: './__tests__/database.sqlite',
+
+
+    3) Inside to src folder create a file called bootstrap.js to load the environment variables from application 
+
+      import dotenv from 'dotenv';
+
+      dotenv.config({
+        path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
+      });
+
+
+    4) As by default the dotenv/config load the the .env file, in order to load this file based on development environment or not, proceed with following changes
+
+      a) As the dotenv variables needs to be before all imports on src/app.js, its necessary create a file which will load all the environment variables from application. Said that, inside to src folder create a file called bootstrap.js as per bellow
+      
+      b) Change the src/app.js 
+
+        i - Excluding the current import: import 'dotenv/config';
+
+        ii - Import the bootstrap file
+
+          import './bootstrap';
+
+      c) Change the src/config/database.js 
+
+        a) To import the bootstrap file instead of dotenv/config
+
+          require('../bootstrap');
+
+      d) As on bootstrap file is being verified whether the NODE_ENV is equal to 'test' or not, its necessary set the package.json to test or not according to environment. Said that proceed with following changes to test command
+
+        "test": "NODE_ENV=test jest"
+
+        Note that for Windows the command is a little bit different: "test": "set NODE_ENV=test jest"
+
+
+
+
+
