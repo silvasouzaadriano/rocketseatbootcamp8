@@ -11295,7 +11295,7 @@ RouteWrapper.defaultProps = {
 
     3) Inside to src folder create a file called bootstrap.js to load the environment variables from application 
 
-      import dotenv from 'dotenv';
+      const dotenv = require('dotenv');
 
       dotenv.config({
         path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
@@ -11325,6 +11325,146 @@ RouteWrapper.defaultProps = {
         "test": "NODE_ENV=test jest"
 
         Note that for Windows the command is a little bit different: "test": "set NODE_ENV=test jest"
+
+
+
+  ### Node Tests - Module 11 - User creation test
+
+
+    1) Install the library sqlite3 as development dependency as per bellow
+
+      yarn add sqlite3 -D
+
+    2) Using sequelize command create a user migration
+
+      yarn sequelize migration:create --name=create-users
+
+    3) As by running the command sequelize db:migrate will be refer the .env file instead of .env.test and this development is to run tests exclusivelly in a temp database,  its necessary create a new configuration on package.json to run the migrations as a pretest before run the tests and another one after tests to undo the migrations dropping the tables. Basically this approach will
+    
+      a) For when the tests run (using test command), first the tables will be created
+
+      b) After that, the tests are done
+
+      c) Then the tables are dropped from database
+
+    . Said that, proceed with the following changes on package.json, section scripts.
+
+        a) Before the line "test", add the line bellow
+        
+          "pretest": "NODE_ENV=test sequelize db:migrate",
+
+        b) After the line "test", add the line bellow
+
+          "posttest": "NODE_ENV=test sequelize db:migration:undo:all"
+
+
+    4) Create the user model as per bellow
+
+      a) Inside to src/app/models create a file called User.js with the following configuration
+
+        import Sequelize, { Model } from 'sequelize';
+
+        class User extends Model {
+          static init(sequelize) {
+            super.init(
+              {
+                name: Sequelize.STRING,
+                email: Sequelize.STRING,
+                password_hash: Sequelize.STRING,
+              },
+              {
+                sequelize,
+              }
+            );
+
+            return this;
+          }
+        }
+
+        export default User;
+
+
+
+    5) Inside to src/database/index.js 
+    
+      a) Import the user model created on step 4
+
+        import User from '../app/models/User';
+
+      b) Add the User to models array
+
+        const models = [User];
+
+    
+    6) Now lets start the user creation tests
+
+      a) Change the src/routes.js to contemplate the post route called users, for user creation
+
+        routes.post('/users', (req, res) => {
+          return res.json({ id: 1 });
+        });
+
+        Note that this configuration with id hardcoder is the second part of TDD (the Green) when the test should be done in a way to pass.
+
+      b) Add the library called supertest as development dependency. This library is used to HTTP requistion, however for tests. Basially the reason for that is because the supertest will cold perfoming requests without it using a port or external address
+
+        yarn add supertest -D
+
+      c) Delete the current file on /__tests__/example.test.js
+
+      d) Inside to __tests__,
+      
+        i - Create a folder called integration
+
+          1) Inside to integration create a folder called controllers
+
+            a) Create a file called user.test.js as per bellow
+
+              import request from 'supertest';
+              import app from '../../../src/app';
+
+              describe('User', () => {
+                it('should be able to register', async () => {
+                  const response = await request(app)
+                    .post('/users')
+                    .send({
+                      name: 'Adriano Souza',
+                      email: 'silva.souza.adriano@gmail.com',
+                      password_hash: '123456',
+                    });
+
+                  expect(response.body).toHaveProperty('id');
+                });
+              });
+
+
+            Note that the describe will categorize the tests and for that reason is used around the tests. Also, before step e run the yarn test to assure that the TDD (green) is working as expected. On this case, returning the ID hardcoder with value 1.
+
+      e) Regardless which was set on step a, now its necessary refactory(last step of TDD) this code to run in a real way properly. it means creating the user and returning a real ID from DB. Said that,proceed with the following configurations.
+
+        i - Create on src/app/controllers a file called UserController.js as per bellow
+
+          import User from '../models/User';
+
+          class UserController {
+            async store(req, res) {
+              const user = await User.create(req.body);
+
+              return res.json(user);
+            }
+          }
+
+          export default new UserController();
+
+        ii - On src/routes.js 
+
+          1) Import the UserController from step i
+
+            import UserController from './app/controllers/UserController';
+
+          2) Change the post route users as per bellow
+
+            routes.post('/users', UserController.store);
 
 
 
