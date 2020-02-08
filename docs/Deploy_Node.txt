@@ -1,0 +1,81 @@
+Criar usuário
+adduser <username>
+
+Dar privilégios de administrador
+usermod -aG sudo <username>
+
+Permitir conexão ssh por novo usuário e não somente pelo root
+cd /home/deploy
+mkdir .ssh
+cd .ssh
+cp ~/.ssh/authorized_keys .
+chown deploy:deploy authorized_keys
+
+Permitir que o docker execute comandos como administrador
+sudo groupadd docker
+sudo usermod -aG docker $USER
+
+
+Para permitir usar porta de forma externa (no Insomnia por exemplo)
+sudo ufw allow 3333
+
+Commando para veriricar serviços ativos no Node
+ps aux | grep node ou
+lsof -i :3333
+
+Command para matar um serviço
+
+kill -9 PID
+
+Configurar SSH para não cair
+sudo vim /etc/ssh/sshd_config
+
+1) Acrescentar no final do arquivo as linhas abaixo:
+ClientAliveInterval 30
+TCPKeepAlive yes
+ClientAliveCountMax 99999
+
+2) Restart o serviço do ssh com o comando
+service sshd restart
+
+Rodar migrations
+npx sequelize db:migrate
+
+Nginx
+
+Liberar porta 80
+sudo ufw allow 80
+
+Liberar sites
+sudo vim /etc/nginx/sites-available/default
+
+Apague o conteúdo do arquivo e adicione o conteúdo abaixo:
+       listen [::]:80 default_server;
+
+        server_name _;
+
+        location / {
+                proxy_pass http://localhost:3333;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_cache_bypass $http_upgrade;
+        }
+Reinicie o serviço do nginx
+sudo service nginx restart
+
+Verificar se os serviços do nginx estão ok:
+sudo nginx -t
+
+Manter aplicação rodando (PM2)
+sudo npm install -g pm2
+
+pm2 start dist/server.js
+pm2 startup systemd
+sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u deploy --hp /home/deploy
+
+pm2 list
+pm2 monit
+pm2 kill
+

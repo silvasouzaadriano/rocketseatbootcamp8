@@ -1,11 +1,20 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { darken } from 'polished';
+import { above } from '../../styles/media';
 
 export const ProductList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 20px;
-  list-style: none;
+  grid-gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+
+  ${above(
+    700,
+    css`
+      > a:first-child {
+        grid-column: span 3;
+      }
+    `
+  )}
 
   li {
     display: flex;
@@ -13,11 +22,6 @@ export const ProductList = styled.ul`
     background: #fff;
     border-radius: 4px;
     padding: 20px;
-
-    img {
-      align-self: center;
-      max-width: 250px;
-    }
 
     > strong {
       font-size: 16px;
